@@ -56,6 +56,8 @@ namespace ASCOM.iOptronZEQ25
     /// ASCOM Telescope Driver for iOptronZEQ25.
     /// </summary>
     [Guid("b1ae37be-f8fd-44a5-8c0c-9959c8f45bc3")]
+    [ProgId("ASCOM.iOptronZEQ25.Telescope")]
+    [ServedClassName("iOptron ZEQ25 Telescope")]
     [ClassInterface(ClassInterfaceType.None)]
     public class Telescope : ReferenceCountedObjectBase, ITelescopeV3
     {
