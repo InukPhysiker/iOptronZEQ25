@@ -57,7 +57,7 @@ namespace ASCOM.iOptronZEQ25
     /// </summary>
     [Guid("b1ae37be-f8fd-44a5-8c0c-9959c8f45bc3")]
     [ClassInterface(ClassInterfaceType.None)]
-    public class Telescope : ITelescopeV3
+    public class Telescope : ReferenceCountedObjectBase, ITelescopeV3
     {
         /// <summary>
         /// ASCOM DeviceID (COM ProgID) for this driver.
