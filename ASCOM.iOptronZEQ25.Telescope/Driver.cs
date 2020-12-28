@@ -980,28 +980,28 @@ namespace ASCOM.iOptronZEQ25
         /// <summary>
         /// Read the device configuration from the ASCOM Profile store
         /// </summary>
-        internal void ReadProfile()
-        {
-            using (Profile driverProfile = new Profile())
-            {
-                driverProfile.DeviceType = "Telescope";
-                tl.Enabled = Convert.ToBoolean(driverProfile.GetValue(driverID, traceStateProfileName, string.Empty, traceStateDefault));
-                comPort = driverProfile.GetValue(driverID, comPortProfileName, string.Empty, comPortDefault);
-            }
-        }
+        //internal void ReadProfile()
+        //{
+        //    using (Profile driverProfile = new Profile())
+        //    {
+        //        driverProfile.DeviceType = "Telescope";
+        //        tl.Enabled = Convert.ToBoolean(driverProfile.GetValue(driverID, traceStateProfileName, string.Empty, traceStateDefault));
+        //        comPort = driverProfile.GetValue(driverID, comPortProfileName, string.Empty, comPortDefault);
+        //    }
+        //}
 
         /// <summary>
         /// Write the device configuration to the  ASCOM  Profile store
         /// </summary>
-        internal void WriteProfile()
-        {
-            using (Profile driverProfile = new Profile())
-            {
-                driverProfile.DeviceType = "Telescope";
-                driverProfile.WriteValue(driverID, traceStateProfileName, tl.Enabled.ToString());
-                driverProfile.WriteValue(driverID, comPortProfileName, comPort.ToString());
-            }
-        }
+        //internal void WriteProfile()
+        //{
+        //    using (Profile driverProfile = new Profile())
+        //    {
+        //        driverProfile.DeviceType = "Telescope";
+        //        driverProfile.WriteValue(driverID, traceStateProfileName, tl.Enabled.ToString());
+        //        driverProfile.WriteValue(driverID, comPortProfileName, comPort.ToString());
+        //    }
+        //}
 
         /// <summary>
         /// Log helper function that takes formatted strings and arguments
