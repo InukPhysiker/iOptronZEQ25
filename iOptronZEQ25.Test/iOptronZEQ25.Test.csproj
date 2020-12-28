@@ -80,6 +80,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ASCOM.iOptronZEQ25.Telescope\ASCOM.iOptronZEQ25.Telescope.csproj">
+      <Project>{64308775-bd4a-469c-bcab-3ed830b811af}</Project>
+      <Name>ASCOM.iOptronZEQ25.Telescope</Name>
+    </ProjectReference>
     <ProjectReference Include="..\iOptronZEQ25.csproj">
       <Project>{c708e487-e3a9-4073-a545-294b88674225}</Project>
       <Name>iOptronZEQ25</Name>
