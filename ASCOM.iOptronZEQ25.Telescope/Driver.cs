@@ -36,6 +36,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -65,12 +66,14 @@ namespace ASCOM.iOptronZEQ25
         /// ASCOM DeviceID (COM ProgID) for this driver.
         /// The DeviceID is used by ASCOM applications to load the driver at runtime.
         /// </summary>
-        internal static string driverID = "ASCOM.iOptronZEQ25.Telescope";
+        //internal static string driverID = "ASCOM.iOptronZEQ25.Telescope";
+        internal static string driverID;
         // TODO Change the descriptive string for your driver then remove this line
         /// <summary>
         /// Driver description that displays in the ASCOM Chooser.
         /// </summary>
-        private static string driverDescription = "ASCOM Telescope Driver for iOptronZEQ25.";
+        //private static string driverDescription = "ASCOM Telescope Driver for iOptronZEQ25.";
+        private static string driverDescription;
 
         internal static string comPortProfileName = "COM Port"; // Constants used for Profile persistence
         internal static string comPortDefault = "COM1";
@@ -105,6 +108,9 @@ namespace ASCOM.iOptronZEQ25
         /// </summary>
         public Telescope()
         {
+            driverID = Marshal.GenerateProgIdForType(this.GetType());
+            driverDescription = GetDriverDescription();
+
             tl = new TraceLogger("", "iOptronZEQ25");
             ReadProfile(); // Read device configuration from the ASCOM Profile store
 
@@ -118,6 +124,19 @@ namespace ASCOM.iOptronZEQ25
             tl.LogMessage("Telescope", "Completed initialisation");
         }
 
+        private string GetDriverDescription()
+        {
+            string descr;
+            if (this.GetType().GetCustomAttributes(typeof(ServedClassNameAttribute), true).FirstOrDefault() is ServedClassNameAttribute attr)
+            {
+                descr = attr.DisplayName;
+            }
+            else
+            {
+                descr = this.GetType().Assembly.FullName;
+            }
+            return descr;
+        }
 
         //
         // PUBLIC COM INTERFACE ITelescopeV3 IMPLEMENTATION
