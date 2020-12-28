@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ASCOM.iOptronZEQ25
 {
-    class Settings
+    internal partial class Settings
     {
     }
 }
