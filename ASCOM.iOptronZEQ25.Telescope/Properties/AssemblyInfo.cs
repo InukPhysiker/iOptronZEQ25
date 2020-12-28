@@ -8,10 +8,10 @@ using System.Runtime.InteropServices;
 //
 // TODO - Add your authorship information here
 [assembly: AssemblyTitle("ASCOM.iOptronZEQ25.Telescope")]
-[assembly: AssemblyDescription("ASCOM Telescope driver for iOptronZEQ25")]
+[assembly: AssemblyDescription("ASCOM Telescope driver for iOptron ZEQ25")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("The ASCOM Initiative")]
-[assembly: AssemblyProduct("ASCOM Telescope driver for iOptronZEQ25")]
+[assembly: AssemblyProduct("iOptron ZEQ25")]
 [assembly: AssemblyCopyright("Copyright © 2020 The ASCOM Initiative")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
