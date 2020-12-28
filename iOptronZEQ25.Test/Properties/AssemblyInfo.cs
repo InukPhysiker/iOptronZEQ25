@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ASCOM Initiative")]
-[assembly: AssemblyProduct("Driver Test Forms Application Template CSharp")]
+[assembly: AssemblyProduct("iOptron ZEQ25 Driver Test")]
 [assembly: AssemblyCopyright("Copyright © ASCOM Initiative 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
