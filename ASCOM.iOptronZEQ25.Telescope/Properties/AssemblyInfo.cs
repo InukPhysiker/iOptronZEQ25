@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("ASCOM Telescope driver for iOptron ZEQ25")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("The ASCOM Initiative")]
-[assembly: AssemblyProduct("iOptron ZEQ25")]
+[assembly: AssemblyProduct("iOptron ZEQ25 Telescope")]
 [assembly: AssemblyCopyright("Copyright © 2020 The ASCOM Initiative")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
