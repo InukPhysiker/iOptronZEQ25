@@ -112,7 +112,7 @@ namespace ASCOM.iOptronZEQ25
             driverDescription = GetDriverDescription();
 
             tl = new TraceLogger("", "iOptronZEQ25");
-            ReadProfile(); // Read device configuration from the ASCOM Profile store
+            //ReadProfile(); // Read device configuration from the ASCOM Profile store
 
             tl.LogMessage("Telescope", "Starting initialisation");
 
@@ -162,7 +162,7 @@ namespace ASCOM.iOptronZEQ25
                 var result = F.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    WriteProfile(); // Persist device configuration values to the ASCOM Profile store
+                    //WriteProfile(); // Persist device configuration values to the ASCOM Profile store
                 }
             }
         }
