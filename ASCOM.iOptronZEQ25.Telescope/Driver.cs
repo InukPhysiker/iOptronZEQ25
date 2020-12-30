@@ -75,8 +75,8 @@ namespace ASCOM.iOptronZEQ25
         //private static string driverDescription = "ASCOM Telescope Driver for iOptronZEQ25.";
         private static string driverDescription;
 
-        internal static string comPortProfileName = "COM Port"; // Constants used for Profile persistence
-        internal static string comPortDefault = "COM1";
+        // internal static string comPortProfileName = "COM Port"; // Constants used for Profile persistence
+        // internal static string comPortDefault = "COM1";
         internal static string traceStateProfileName = "Trace Level";
         internal static string traceStateDefault = "false";
 
