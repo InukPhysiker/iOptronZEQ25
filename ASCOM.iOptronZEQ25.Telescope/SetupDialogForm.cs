@@ -13,7 +13,7 @@ namespace ASCOM.iOptronZEQ25
     [ComVisible(false)]					// Form not registered for COM!
     public partial class SetupDialogForm : Form
     {
-        TraceLogger tl; // Holder for a reference to the driver's trace logger
+        readonly TraceLogger tl; // Holder for a reference to the driver's trace logger
 
         public SetupDialogForm(TraceLogger tlDriver)
         {
