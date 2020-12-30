@@ -34,5 +34,17 @@ namespace ASCOM.iOptronZEQ25.Properties {
                 this["COMPort"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Trace {
+            get {
+                return ((bool)(this["Trace"]));
+            }
+            set {
+                this["Trace"] = value;
+            }
+        }
     }
 }
