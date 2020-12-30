@@ -72,6 +72,10 @@ namespace ASCOM.iOptronZEQ25
             //{
             //    comboBoxComPort.SelectedItem = Telescope.comPort;
             //}
+            if (comboBoxComPort.Items.Contains(Properties.Settings.Default.COMPort))
+            {
+                comboBoxComPort.SelectedItem = Properties.Settings.Default.COMPort;
+            }
         }
     }
 }
