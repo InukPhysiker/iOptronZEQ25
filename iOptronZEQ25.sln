@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOptronZEQ25", "iOptronZEQ25.csproj", "{C708E487-E3A9-4073-A545-294B88674225}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASCOM.iOptronZEQ25.Telescope", "iOptronZEQ25.Telescope\ASCOM.iOptronZEQ25.Telescope.csproj", "{64308775-BD4A-469C-BCAB-3ED830B811AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOptronZEQ25.Telescope", "iOptronZEQ25.Telescope\iOptronZEQ25.Telescope.csproj", "{64308775-BD4A-469C-BCAB-3ED830B811AF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOptronZEQ25.Test", "iOptronZEQ25.Test\iOptronZEQ25.Test.csproj", "{8E8D406C-1838-4914-867D-AB602D0EAF3E}"
 EndProject
