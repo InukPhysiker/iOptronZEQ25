@@ -30,8 +30,13 @@ namespace ASCOM.iOptronZEQ25
         {
             // Place any validation constraint checks here
             // Update the state variables with results from the dialogue
-            Telescope.comPort = (string)comboBoxComPort.SelectedItem;
+            //Telescope.comPort = (string)comboBoxComPort.SelectedItem;
+            Properties.Settings.Default.COMPort = (string)comboBoxComPort.SelectedItem;
             tl.Enabled = chkTrace.Checked;
+            Properties.Settings.Default.Save();
+
+            // Properties.Settings.Default.CommPort = (string)comboBoxComPort.SelectedItem;
+            // Close();
         }
 
         private void CmdCancel_Click(object sender, EventArgs e) // Cancel button event handler
@@ -63,10 +68,10 @@ namespace ASCOM.iOptronZEQ25
             comboBoxComPort.Items.Clear();
             comboBoxComPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());      // use System.IO because it's static
             // select the current port if possible
-            if (comboBoxComPort.Items.Contains(Telescope.comPort))
-            {
-                comboBoxComPort.SelectedItem = Telescope.comPort;
-            }
+            //if (comboBoxComPort.Items.Contains(Telescope.comPort))
+            //{
+            //    comboBoxComPort.SelectedItem = Telescope.comPort;
+            //}
         }
     }
 }
