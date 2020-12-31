@@ -1,6 +1,6 @@
 using System;
 
-namespace ASCOM.iOptronZEQ25
+namespace ASCOM.iOptronZEQ25.Server
 {
     partial class frmMain
     {

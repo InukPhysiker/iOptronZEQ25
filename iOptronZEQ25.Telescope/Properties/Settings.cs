@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ASCOM.iOptronZEQ25
+namespace ASCOM.iOptronZEQ25.Server
 {
     [DeviceId("ASCOM.iOptronZEQ25.Telescope", DeviceName = "iOptron ZEQ25 Telescope")]
     [SettingsProvider(typeof(ASCOM.SettingsProvider))]

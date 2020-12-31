@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ASCOM.iOptronZEQ25
+namespace ASCOM.iOptronZEQ25.Server
 {
     [ComVisible(false)]
     public class ReferenceCountedObjectBase

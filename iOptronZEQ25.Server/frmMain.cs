@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ASCOM.iOptronZEQ25
+namespace ASCOM.iOptronZEQ25.Server
 {
     public partial class frmMain : Form
     {
