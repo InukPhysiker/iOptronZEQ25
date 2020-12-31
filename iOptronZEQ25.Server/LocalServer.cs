@@ -1,5 +1,5 @@
 //
-// ASCOM.iOptronZEQ25 Local COM Server
+// ASCOM.iOptronZEQ25.Server Local COM Server
 //
 // This is the core of a managed COM Local Server, capable of serving
 // multiple instances of multiple interfaces, within a single
@@ -27,7 +27,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ASCOM.iOptronZEQ25
+namespace ASCOM.iOptronZEQ25.Server
 {
     public static class Server
     {

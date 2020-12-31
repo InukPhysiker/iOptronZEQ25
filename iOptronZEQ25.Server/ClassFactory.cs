@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Runtime.InteropServices;
 
-namespace ASCOM.iOptronZEQ25
+namespace ASCOM.iOptronZEQ25.Server
 {
     #region C# Definition of IClassFactory
     //
