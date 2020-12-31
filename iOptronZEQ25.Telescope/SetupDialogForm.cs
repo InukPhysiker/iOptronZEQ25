@@ -33,7 +33,7 @@ namespace ASCOM.iOptronZEQ25.Server
             //Telescope.comPort = (string)comboBoxComPort.SelectedItem;
             Properties.Settings.Default.COMPort = (string)comboBoxComPort.SelectedItem;
             // tl.Enabled = chkTrace.Checked;
-            Properties.Settings.Default.Trace = chkTrace.Checked;
+            //Properties.Settings.Default.Trace = chkTrace.Checked;
             Properties.Settings.Default.Save();
 
             // Properties.Settings.Default.CommPort = (string)comboBoxComPort.SelectedItem;
