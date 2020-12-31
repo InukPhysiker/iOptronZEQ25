@@ -37,7 +37,7 @@ namespace ASCOM.iOptronZEQ25.Server
             Properties.Settings.Default.Save();
 
             // Properties.Settings.Default.CommPort = (string)comboBoxComPort.SelectedItem;
-            // Close();
+            Close();
         }
 
         private void CmdCancel_Click(object sender, EventArgs e) // Cancel button event handler
