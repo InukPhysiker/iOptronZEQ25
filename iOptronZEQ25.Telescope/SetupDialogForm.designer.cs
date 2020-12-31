@@ -97,6 +97,8 @@ namespace ASCOM.iOptronZEQ25.Server
             // chkTrace
             // 
             this.chkTrace.AutoSize = true;
+            this.chkTrace.Checked = global::ASCOM.iOptronZEQ25.Properties.Settings.Default.Trace;
+            this.chkTrace.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::ASCOM.iOptronZEQ25.Properties.Settings.Default, "Trace", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkTrace.Location = new System.Drawing.Point(77, 118);
             this.chkTrace.Name = "chkTrace";
             this.chkTrace.Size = new System.Drawing.Size(69, 17);
