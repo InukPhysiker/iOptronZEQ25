@@ -42,6 +42,7 @@ namespace ASCOM.iOptronZEQ25.Server
 
         private void CmdCancel_Click(object sender, EventArgs e) // Cancel button event handler
         {
+            Properties.Settings.Default.Reload();
             Close();
         }
 
