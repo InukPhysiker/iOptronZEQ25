@@ -33,7 +33,8 @@ namespace TA.PostSharp.Aspects
         /// </summary>
         public MustBeConnectedAttribute()
         {
-            ApplyToStateMachine = false;
+            //ApplyToStateMachine = false;
+            //Note: ApplyToStateMachine property is deprecated.
         }
 
         public override bool CompileTimeValidate(MethodBase method)
