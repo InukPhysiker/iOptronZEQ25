@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="ClassFactory.cs" />
     <Compile Include="ClientConnectionManager.cs" />
+    <Compile Include="ClientStatus.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
