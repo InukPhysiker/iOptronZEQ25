@@ -1,11 +1,6 @@
-﻿using NLog;
+using NLog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TA.Ascom.ReactiveCommunications;
-using TA.Ascom.ReactiveCommunications.Transactions;
 
 namespace iOptronZEQ25.TelescopeInterface
 {
