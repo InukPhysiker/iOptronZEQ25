@@ -26,19 +26,16 @@
 // unused code can be deleted and this definition removed.
 #define Telescope
 
-using ASCOM;
-using ASCOM.Astrometry;
 using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
+using iOptronZEQ25.TelescopeInterface;
+using NLog;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace ASCOM.iOptronZEQ25.Server
 {
