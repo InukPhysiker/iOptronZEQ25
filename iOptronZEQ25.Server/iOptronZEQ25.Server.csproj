@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <Import Project="..\packages\PostSharp.6.8.7\build\PostSharp.props" Condition="Exists('..\packages\PostSharp.6.8.7\build\PostSharp.props')" />
   <PropertyGroup>
@@ -119,6 +119,12 @@
     <Compile Include="ClassFactory.cs" />
     <Compile Include="ClientConnectionManager.cs" />
     <Compile Include="ClientStatus.cs" />
+    <Compile Include="CommunicationSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CommunicationSettingsControl.Designer.cs">
+      <DependentUpon>CommunicationSettingsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
