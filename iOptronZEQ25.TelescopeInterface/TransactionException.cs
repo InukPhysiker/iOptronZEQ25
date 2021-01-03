@@ -6,10 +6,6 @@
 // File: TransactionException.cs  Last modified: 2017-03-16@23:33 by Tim Long
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TA.Ascom.ReactiveCommunications;
 
 namespace iOptronZEQ25.TelescopeInterface
