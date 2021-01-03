@@ -13,10 +13,12 @@
 // Written by:	Bob Denny	29-May-2007
 // Modified by Chris Rowland and Peter Simpson to hamdle multiple hardware devices March 2011
 //
-using ASCOM;
+using ASCOM.iOptronZEQ25.Server.Properties;
+using iOptronZEQ25.TelescopeInterface;
+using NLog;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Windows.Forms;
 
 namespace ASCOM.iOptronZEQ25.Server
 {
