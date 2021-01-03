@@ -43,8 +43,8 @@ namespace iOptronZEQ25.TelescopeInterface
             processor = new ReactiveTransactionProcessor();
             processor.SubscribeTransactionObserver(observer, TimeSpan.FromMilliseconds(100));
             Channel.Open();
-            // iOptron ZEQ25 may need a few seconds to initialize after starting the connection
-            Task.Delay(TimeSpan.FromSeconds(5)).Wait();
+            // iOptron ZEQ25 may need a second to initialize after starting the connection
+            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
             return processor;
             }
 
