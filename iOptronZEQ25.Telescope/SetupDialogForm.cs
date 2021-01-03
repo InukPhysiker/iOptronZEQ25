@@ -1,11 +1,6 @@
-using ASCOM.iOptronZEQ25;
 using ASCOM.Utilities;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ASCOM.iOptronZEQ25.Server
