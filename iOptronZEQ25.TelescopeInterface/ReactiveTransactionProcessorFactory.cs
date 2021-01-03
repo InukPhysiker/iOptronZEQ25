@@ -5,28 +5,29 @@
 // File: ReactiveTransactionProcessorFactory.cs modified to use iOptronZEQ25.TelescopeInterace
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using TA.Ascom.ReactiveCommunications;
 
 namespace iOptronZEQ25.TelescopeInterface
 {
+    /// <summary>
+    ///     Class ReactiveTransactionProcessorFactory. Used to set up and tear down the communications stack
+    ///     as the device is connected and disconnected.
+    ///     Implements <see cref="iOptronZEQ25.TelescopeInterface.ITransactionProcessorFactory" />
+    /// </summary>
+    /// <seealso cref="iOptronZEQ25.TelescopeInterface.ITransactionProcessorFactory" />
     public class ReactiveTransactionProcessorFactory : ITransactionProcessorFactory
     {
-        public string ConnectionString { get; }
 
         private TransactionObserver observer;
         private ReactiveTransactionProcessor processor;
 
         public ReactiveTransactionProcessorFactory(string connectionString)
             {
-            this.ConnectionString = connectionString;
-            // Endpoint will be InvalidEndpoint if the connection string is invalid.
-            Endpoint = SerialDeviceEndpoint.FromConnectionString(connectionString);
+            ConnectionString = connectionString;
         }
+
+        public string ConnectionString { get; }
 
         public ICommunicationChannel Channel { get; private set; }
 
@@ -37,14 +38,13 @@ namespace iOptronZEQ25.TelescopeInterface
         /// <returns>ITransactionProcessor.</returns>
         public ITransactionProcessor CreateTransactionProcessor()
             {
-            Endpoint = SerialDeviceEndpoint.FromConnectionString(ConnectionString);
-            Channel = CommunicationsStackBuilder.BuildChannel(Endpoint);
+            Channel = new ChannelFactory().FromConnectionString(ConnectionString);
             observer = new TransactionObserver(Channel);
             processor = new ReactiveTransactionProcessor();
             processor.SubscribeTransactionObserver(observer, TimeSpan.FromMilliseconds(100));
             Channel.Open();
-            //Task.Delay(TimeSpan.FromSeconds(2)).Wait(); // Arduino needs 2 seconds to initialize
-            Thread.Sleep(TimeSpan.FromSeconds(3));
+            // iOptron ZEQ25 may need a few seconds to initialize after starting the connection
+            Task.Delay(TimeSpan.FromSeconds(5)).Wait();
             return processor;
             }
 
@@ -67,6 +67,6 @@ namespace iOptronZEQ25.TelescopeInterface
             GC.Collect(3, GCCollectionMode.Forced, blocking: true);
             }
 
-        public DeviceEndpoint Endpoint { get; set; }
+        public DeviceEndpoint Endpoint => Channel?.Endpoint ?? new InvalidEndpoint();
     }
 }
