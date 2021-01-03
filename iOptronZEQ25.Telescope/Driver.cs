@@ -114,7 +114,7 @@ namespace ASCOM.iOptronZEQ25.Server
             tl = new TraceLogger("", "iOptronZEQ25");
             //ReadProfile(); // Read device configuration from the ASCOM Profile store
             //Properties.Settings.Default.Reload();
-            comPort = Properties.Settings.Default.COMPort;
+            comPort = iOptronZEQ25.Properties.Settings.Default.COMPort;
 
             tl.LogMessage("Telescope", "Starting initialisation");
 
