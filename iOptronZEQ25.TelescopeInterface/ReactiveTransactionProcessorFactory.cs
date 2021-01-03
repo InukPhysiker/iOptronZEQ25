@@ -25,7 +25,7 @@ namespace iOptronZEQ25.TelescopeInterface
             {
             this.ConnectionString = connectionString;
             // Endpoint will be InvalidEndpoint if the connection string is invalid.
-            Endpoint = DeviceEndpoint.FromConnectionString(connectionString);
+            Endpoint = SerialDeviceEndpoint.FromConnectionString(connectionString);
         }
 
         public ICommunicationChannel Channel { get; private set; }
@@ -37,7 +37,7 @@ namespace iOptronZEQ25.TelescopeInterface
         /// <returns>ITransactionProcessor.</returns>
         public ITransactionProcessor CreateTransactionProcessor()
             {
-            Endpoint = DeviceEndpoint.FromConnectionString(ConnectionString);
+            Endpoint = SerialDeviceEndpoint.FromConnectionString(ConnectionString);
             Channel = CommunicationsStackBuilder.BuildChannel(Endpoint);
             observer = new TransactionObserver(Channel);
             processor = new ReactiveTransactionProcessor();
