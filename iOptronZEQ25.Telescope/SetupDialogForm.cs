@@ -31,10 +31,10 @@ namespace ASCOM.iOptronZEQ25.Server
             // Place any validation constraint checks here
             // Update the state variables with results from the dialogue
             //Telescope.comPort = (string)comboBoxComPort.SelectedItem;
-            Properties.Settings.Default.COMPort = (string)comboBoxComPort.SelectedItem;
+            iOptronZEQ25.Properties.Settings.Default.COMPort = (string)comboBoxComPort.SelectedItem;
             // tl.Enabled = chkTrace.Checked;
             //Properties.Settings.Default.Trace = chkTrace.Checked;
-            Properties.Settings.Default.Save();
+            iOptronZEQ25.Properties.Settings.Default.Save();
 
             // Properties.Settings.Default.CommPort = (string)comboBoxComPort.SelectedItem;
             Close();
@@ -42,7 +42,7 @@ namespace ASCOM.iOptronZEQ25.Server
 
         private void CmdCancel_Click(object sender, EventArgs e) // Cancel button event handler
         {
-            Properties.Settings.Default.Reload();
+            iOptronZEQ25.Properties.Settings.Default.Reload();
             Close();
         }
 
@@ -74,9 +74,9 @@ namespace ASCOM.iOptronZEQ25.Server
             //{
             //    comboBoxComPort.SelectedItem = Telescope.comPort;
             //}
-            if (comboBoxComPort.Items.Contains(Properties.Settings.Default.COMPort))
+            if (comboBoxComPort.Items.Contains(iOptronZEQ25.Properties.Settings.Default.COMPort))
             {
-                comboBoxComPort.SelectedItem = Properties.Settings.Default.COMPort;
+                comboBoxComPort.SelectedItem = iOptronZEQ25.Properties.Settings.Default.COMPort;
             }
         }
     }
