@@ -1,7 +1,7 @@
 ﻿
 namespace ASCOM.iOptronZEQ25.Server
 {
-    partial class SetupDialogForm
+    partial class ServerSetupDialogForm
     {
         /// <summary>
         /// Required designer variable.
@@ -119,7 +119,7 @@ namespace ASCOM.iOptronZEQ25.Server
             this.Location = global::ASCOM.iOptronZEQ25.Server.Properties.Settings.Default.SetupDialogLocation;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Text = "SetupDialogForm";
+            this.Text = "ServerSetupDialogForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Arduino Power Controller Setup";

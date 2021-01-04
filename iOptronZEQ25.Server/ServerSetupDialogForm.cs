@@ -13,9 +13,9 @@ using System.Windows.Forms;
 namespace ASCOM.iOptronZEQ25.Server
 {
     [ComVisible(false)] // Form not registered for COM!
-    public partial class SetupDialogForm : Form
+    public partial class ServerSetupDialogForm : Form
     {
-        public SetupDialogForm()
+        public ServerSetupDialogForm()
         {
             InitializeComponent();
         }
