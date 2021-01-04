@@ -29,6 +29,7 @@ namespace ASCOM.iOptronZEQ25.Server
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.cmdOK = new System.Windows.Forms.Button();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -36,7 +37,9 @@ namespace ASCOM.iOptronZEQ25.Server
             this.label2 = new System.Windows.Forms.Label();
             this.chkTrace = new System.Windows.Forms.CheckBox();
             this.comboBoxComPort = new System.Windows.Forms.ComboBox();
+            this.ConnectionErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ConnectionErrorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // cmdOK
@@ -114,6 +117,12 @@ namespace ASCOM.iOptronZEQ25.Server
             this.comboBoxComPort.Size = new System.Drawing.Size(90, 21);
             this.comboBoxComPort.TabIndex = 7;
             // 
+            // ConnectionErrorProvider
+            // 
+            this.ConnectionErrorProvider.BlinkRate = 1000;
+            this.ConnectionErrorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.AlwaysBlink;
+            this.ConnectionErrorProvider.ContainerControl = this;
+            // 
             // SetupDialogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -134,6 +143,7 @@ namespace ASCOM.iOptronZEQ25.Server
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "iOptronZEQ25 Setup";
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ConnectionErrorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -148,5 +158,6 @@ namespace ASCOM.iOptronZEQ25.Server
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox chkTrace;
         private System.Windows.Forms.ComboBox comboBoxComPort;
+        private System.Windows.Forms.ErrorProvider ConnectionErrorProvider;
     }
 }
