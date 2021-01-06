@@ -175,9 +175,15 @@ namespace ASCOM.iOptronZEQ25.Server
                 {
                     //WriteProfile(); // Persist device configuration values to the ASCOM Profile store
                     //Properties.Settings.Default.Save();
+                    //SharedResources.UpdateTransactionProcessFactory();
                 }
             }
         }
+
+        //public void SetupDialog()
+        //{
+        //    SharedResources.DoSetupDialog(clientId);
+        //}
 
         public ArrayList SupportedActions
         {
