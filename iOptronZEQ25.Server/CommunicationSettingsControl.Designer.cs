@@ -1,4 +1,4 @@
-
+﻿
 namespace ASCOM.iOptronZEQ25.Server
 {
     partial class CommunicationSettingsControl
@@ -48,9 +48,9 @@ namespace ASCOM.iOptronZEQ25.Server
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(159, 3);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 13);
+            this.label2.Size = new System.Drawing.Size(92, 13);
             this.label2.TabIndex = 2;
-            this.label2.Text = "9600,n,8,1";
+            this.label2.Text = "9600,None,8,One";
             // 
             // CommPortName
             // 
@@ -66,11 +66,11 @@ namespace ASCOM.iOptronZEQ25.Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.CommPortName);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.CommPortName);
-            this.Text = "CommunicationSettingsControl";
-            this.Size = new System.Drawing.Size(238, 22);
+            this.Name = "CommunicationSettingsControl";
+            this.Size = new System.Drawing.Size(255, 22);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -78,8 +78,8 @@ namespace ASCOM.iOptronZEQ25.Server
 
         #endregion
 
-        private System.Windows.Forms.ComboBox CommPortName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox CommPortName;
     }
 }
