@@ -57,6 +57,7 @@ namespace ASCOM.iOptronZEQ25.Server
     [ProgId("ASCOM.iOptronZEQ25.Telescope")]
     [ServedClassName("iOptron ZEQ25 Telescope")]
     [ClassInterface(ClassInterfaceType.None)]
+    //[NLogTraceWithArguments]
     public class Telescope : ReferenceCountedObjectBase, ITelescopeV3, IDisposable, IAscomDriver
     {
         /// <summary>
