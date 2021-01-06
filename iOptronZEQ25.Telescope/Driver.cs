@@ -36,6 +36,7 @@ using System.Collections;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using TA.PostSharp.Aspects;
 
 namespace ASCOM.iOptronZEQ25.Server
 {
@@ -202,6 +203,7 @@ namespace ASCOM.iOptronZEQ25.Server
             throw new ASCOM.ActionNotImplementedException("Action " + actionName + " is not implemented by this driver");
         }
 
+        [MustBeConnected]
         public void CommandBlind(string command, bool raw)
         {
             CheckConnected("CommandBlind");
@@ -211,6 +213,7 @@ namespace ASCOM.iOptronZEQ25.Server
             throw new ASCOM.MethodNotImplementedException("CommandBlind");
         }
 
+        [MustBeConnected]
         public bool CommandBool(string command, bool raw)
         {
             CheckConnected("CommandBool");
@@ -224,6 +227,7 @@ namespace ASCOM.iOptronZEQ25.Server
             throw new ASCOM.MethodNotImplementedException("CommandBool");
         }
 
+        [MustBeConnected]
         public string CommandString(string command, bool raw)
         {
             CheckConnected("CommandString");
