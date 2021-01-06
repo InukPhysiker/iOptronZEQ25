@@ -1,13 +1,7 @@
-using ASCOM.iOptronZEQ25.Server.Properties;
-using System;
+﻿using ASCOM.iOptronZEQ25.Server.Properties;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ASCOM.iOptronZEQ25.Server
