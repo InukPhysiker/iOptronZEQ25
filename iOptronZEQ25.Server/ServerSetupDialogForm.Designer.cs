@@ -119,7 +119,7 @@ namespace ASCOM.iOptronZEQ25.Server
             this.Location = global::ASCOM.iOptronZEQ25.Server.Properties.Settings.Default.SetupDialogLocation;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Text = "ServerSetupDialogForm";
+            this.Name = "ServerSetupDialogForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "iOptron ZEQ25 Server Setup";
