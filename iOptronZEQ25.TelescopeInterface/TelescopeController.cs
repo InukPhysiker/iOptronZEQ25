@@ -6,7 +6,7 @@ using TA.Ascom.ReactiveCommunications.Transactions;
 
 namespace iOptronZEQ25.TelescopeInterface
 {
-    public class TelescopeController : IDisposable
+    public partial class TelescopeController : IDisposable
     {
         private readonly ITransactionProcessorFactory factory;
         private readonly Logger log = LogManager.GetCurrentClassLogger();
@@ -16,7 +16,7 @@ namespace iOptronZEQ25.TelescopeInterface
         public TelescopeController(ITransactionProcessorFactory factory)
             {
             this.factory = factory;
-            }
+        }
 
         public bool IsOnline => transactionProcessor != null && (factory?.Channel?.IsOpen ?? false);
 
