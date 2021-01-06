@@ -26,12 +26,29 @@ namespace ASCOM.iOptronZEQ25.Server
             // Place any validation constraint checks here
             // Update the state variables with results from the dialogue
             //Telescope.comPort = (string)comboBoxComPort.SelectedItem;
-            iOptronZEQ25.Properties.Settings.Default.COMPort = (string)comboBoxComPort.SelectedItem;
+            var currentConnectionString = iOptronZEQ25.Properties.Settings.Default.ConnectionString;
+
+            var newCOMPort = (string)comboBoxComPort.SelectedItem;
+            var newConnectionString = $"{newCOMPort}:9600";
+
+            iOptronZEQ25.Properties.Settings.Default.COMPort = newCOMPort;
+            iOptronZEQ25.Properties.Settings.Default.ConnectionString = newConnectionString;
+
+            SharedResources.CommPortName = newCOMPort;
+            SharedResources.ConnectionString = newConnectionString;
+
             // tl.Enabled = chkTrace.Checked;
             //Properties.Settings.Default.Trace = chkTrace.Checked;
             iOptronZEQ25.Properties.Settings.Default.Save();
 
             // Properties.Settings.Default.CommPort = (string)comboBoxComPort.SelectedItem;
+            //Log.Info($"SetupDialog successful, saving settings");
+            if (newConnectionString != currentConnectionString)
+            {
+                //Log.Warn(
+                //    $"Connection string has changed from {oldConnectionString} to {newConnectionString} - replacing the TansactionProcessorFactory");
+                SharedResources.UpdateTransactionProcessFactory();
+            }
             Close();
         }
 
@@ -60,7 +77,19 @@ namespace ASCOM.iOptronZEQ25.Server
 
         private void InitUI()
         {
-            chkTrace.Checked = tl.Enabled;
+            var onlineClients = SharedResources.ConnectionManager.OnlineClientCount;
+            if (onlineClients == 0)
+            {
+                comboBoxComPort.Enabled = true;
+                ConnectionErrorProvider.SetError(comboBoxComPort, string.Empty);
+            }
+            else
+            {
+                comboBoxComPort.Enabled = false;
+                ConnectionErrorProvider.SetError(comboBoxComPort,
+                    "Connection settings cannot be changed while there are connected clients");
+            }
+            //chkTrace.Checked = tl.Enabled;
             // set the list of com ports to those that are currently available
             comboBoxComPort.Items.Clear();
             comboBoxComPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());      // use System.IO because it's static

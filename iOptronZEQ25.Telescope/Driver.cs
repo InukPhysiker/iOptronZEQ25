@@ -57,7 +57,7 @@ namespace ASCOM.iOptronZEQ25.Server
     [ProgId("ASCOM.iOptronZEQ25.Telescope")]
     [ServedClassName("iOptron ZEQ25 Telescope")]
     [ClassInterface(ClassInterfaceType.None)]
-    public class Telescope : ReferenceCountedObjectBase, ITelescopeV3
+    public class Telescope : ReferenceCountedObjectBase, ITelescopeV3, IDisposable, IAscomDriver
     {
         /// <summary>
         /// ASCOM DeviceID (COM ProgID) for this driver.
@@ -82,7 +82,7 @@ namespace ASCOM.iOptronZEQ25.Server
         /// <summary>
         /// Private variable to hold the connected state
         /// </summary>
-        private bool connectedState;
+        //private bool connectedState;
 
         /// <summary>
         /// Private variable to hold an ASCOM Utilities object
@@ -98,6 +98,13 @@ namespace ASCOM.iOptronZEQ25.Server
         /// Variable to hold the trace logger object (creates a diagnostic log file with information that you specify)
         /// </summary>
         internal TraceLogger tl;
+
+        // Reactive stuff
+        private readonly Guid clientId;
+        private readonly ILogger log = LogManager.GetCurrentClassLogger();
+        private TelescopeController telescope;
+
+        private bool disposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="iOptronZEQ25"/> class.
@@ -115,13 +122,17 @@ namespace ASCOM.iOptronZEQ25.Server
 
             tl.LogMessage("Telescope", "Starting initialisation");
 
-            connectedState = false; // Initialise connected to false
+            //connectedState = false; // Initialise connected to false
             utilities = new Util(); //Initialise util object
             astroUtilities = new AstroUtils(); // Initialise astro-utilities object
             //TODO: Implement your additional construction here
 
+            clientId = SharedResources.ConnectionManager.RegisterClient(SharedResources.TelescopeDriverId);
+
             tl.LogMessage("Telescope", "Completed initialisation");
         }
+
+        internal bool IsOnline => telescope?.IsOnline ?? false;
 
         private string GetDriverDescription()
         {
@@ -153,7 +164,7 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             // consider only showing the setup dialog if not connected
             // or call a different dialog if connected
-            if (IsConnected)
+            if (IsOnline)
                 System.Windows.Forms.MessageBox.Show("Already connected, just press OK");
 
             using (SetupDialogForm F = new SetupDialogForm(tl))
@@ -230,7 +241,7 @@ namespace ASCOM.iOptronZEQ25.Server
             get
             {
                 LogMessage("Connected", "Get {0}", IsConnected);
-                return IsConnected;
+                return IsOnline;
             }
             set
             {
@@ -240,13 +251,15 @@ namespace ASCOM.iOptronZEQ25.Server
 
                 if (value)
                 {
-                    connectedState = true;
+                    Connect();
+                    //connectedState = true;
                     LogMessage("Connected Set", "Connecting to port {0}", comPort);
                     // TODO connect to the device
                 }
                 else
                 {
-                    connectedState = false;
+                    Disconnect();
+                    //connectedState = false;
                     LogMessage("Connected Set", "Disconnecting from port {0}", comPort);
                     // TODO disconnect from the device
                 }
@@ -1035,7 +1048,8 @@ namespace ASCOM.iOptronZEQ25.Server
             get
             {
                 // TODO check that the driver hardware connection exists and is connected to the hardware
-                return connectedState;
+                return IsOnline;
+                //return connectedState;
             }
         }
 
@@ -1049,6 +1063,56 @@ namespace ASCOM.iOptronZEQ25.Server
             {
                 throw new ASCOM.NotConnectedException(message);
             }
+        }
+
+        /// <summary>
+        ///     Connects to the device.
+        /// </summary>
+        /// <exception cref="ASCOM.DriverException">
+        ///     Failed to connect. Open apparently succeeded but then the device reported that
+        ///     is was offline.
+        /// </exception>
+        private void Connect()
+        {
+            //connectedState = true;
+            telescope = SharedResources.ConnectionManager.GoOnline(clientId);
+            if (!telescope.IsOnline)
+            {
+                log.Error("Connect failed - device reported offline");
+                throw new DriverException(
+                    "Failed to connect. Open apparently succeeded but then the device reported that is was offline.");
+            }
+            telescope.PerformOnConnectTasks();
+        }
+
+        /// <summary>
+        ///     Disconnects from the device.
+        /// </summary>
+        private void Disconnect()
+        {
+            //connectedState = false;
+            SharedResources.ConnectionManager.GoOffline(clientId);
+            telescope = null; //[Sentinel]
+        }
+
+        protected virtual void Dispose(bool fromUserCode)
+        {
+            if (!disposed)
+            {
+                if (fromUserCode)
+                {
+                    SharedResources.ConnectionManager.UnregisterClient(clientId);
+                }
+            }
+            disposed = true;
+        }
+
+        /// <summary>
+        ///     Finalizes this instance (called prior to garbage collection by the CLR)
+        /// </summary>
+        ~Telescope()
+        {
+            Dispose(false);
         }
 
         /// <summary>
