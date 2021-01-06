@@ -1,6 +1,8 @@
 using NLog;
 using System;
+using System.Threading.Tasks;
 using TA.Ascom.ReactiveCommunications;
+using TA.Ascom.ReactiveCommunications.Transactions;
 
 namespace iOptronZEQ25.TelescopeInterface
 {
@@ -24,13 +26,39 @@ namespace iOptronZEQ25.TelescopeInterface
             GC.SuppressFinalize(this);
             }
 
-        //public void ClearRelay(ushort id)
-        //    {
-        //    var transaction = new WriteRelayTransaction(id, false);
-        //    transactionProcessor.CommitTransaction(transaction);
-        //    transaction.WaitForCompletionOrTimeout();
-        //    RaiseRelayStateChanged(id, false);
-        //    }
+        public void TestTransactions()
+        {
+
+            #region Submit some transactions
+            // Ready to go. We are going to use tasks to submit the transactions, just to demonstrate thread safety.
+            var raTransaction = new TerminatedStringTransaction(":GR#", '#', ':') { Timeout = TimeSpan.FromSeconds(2) };
+            // The terminator and initiator are optional parameters and default to values that work for Meade style protocols.
+            var decTransaction = new TerminatedStringTransaction(":GD#") { Timeout = TimeSpan.FromSeconds(2) };
+            Task.Run(() => transactionProcessor.CommitTransaction(raTransaction));
+            Task.Run(() => transactionProcessor.CommitTransaction(decTransaction));
+            #endregion Submit some transactions
+
+            // Command: �:AH#�
+            // Respond: �0� The telescope is not at �home� position,
+            // �1� The telescope is at �home� position.
+            // This command returns whether the telescope is at �home� position.
+            var AtHomeTransaction = new ZEQ25BooleanTransaction(":AH#") { Timeout = TimeSpan.FromSeconds(2) };
+            Task.Run(() => transactionProcessor.CommitTransaction(AtHomeTransaction));
+            AtHomeTransaction.WaitForCompletionOrTimeout();
+
+            #region Wait for the results
+            // NOTE we are using the transactions in the reverse order that we committed them, just to prove a point.
+            log.Info("Waiting for declination");
+            decTransaction.WaitForCompletionOrTimeout();
+            log.Info("Declination: {0}", decTransaction.Response);
+            log.Info("Waiting for Right Ascensions");
+            raTransaction.WaitForCompletionOrTimeout();
+            log.Info("Right Ascension: {0}", raTransaction.Response);
+            log.Info("Waiting for At Home");
+            raTransaction.WaitForCompletionOrTimeout();
+            log.Info("At Home: {0}", raTransaction.Response);
+            #endregion Wait for the results
+        }
 
         /// <summary>
         ///     Close the connection to the AWR system. This should never fail.
@@ -83,6 +111,7 @@ namespace iOptronZEQ25.TelescopeInterface
         public void PerformOnConnectTasks()
             {
             //TODO: perform any tasks that must occur as soon as the communication channel is connected.
-            }
+            TestTransactions();
+        }
     }
 }
