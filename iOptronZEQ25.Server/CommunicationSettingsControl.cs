@@ -1,4 +1,4 @@
-﻿using ASCOM.iOptronZEQ25.Server.Properties;
+using ASCOM.iOptronZEQ25.Server.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,8 +29,8 @@ namespace ASCOM.iOptronZEQ25.Server
             CommPortName.SelectedIndex = currentIndex;
             }
 
-        public void Save()
-            {
+        internal void Save()
+        {
             Settings.Default.ConnectionString = $"{Settings.Default.CommPortName}:9600";
             Settings.Default.Save();
         }
