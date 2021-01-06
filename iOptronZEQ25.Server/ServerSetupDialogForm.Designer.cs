@@ -1,4 +1,4 @@
-﻿
+
 namespace ASCOM.iOptronZEQ25.Server
 {
     partial class ServerSetupDialogForm
@@ -122,8 +122,7 @@ namespace ASCOM.iOptronZEQ25.Server
             this.Text = "ServerSetupDialogForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Arduino Power Controller Setup";
-            this.Load += new System.EventHandler(this.SetupDialogForm_Load);
+            this.Load += new System.EventHandler(this.ServerSetupDialogForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ConnectionErrorProvider)).EndInit();
             this.ResumeLayout(false);
