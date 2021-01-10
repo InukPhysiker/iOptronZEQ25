@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -11,7 +11,7 @@ using TA.Ascom.ReactiveCommunications;
 namespace iOptronZEQ25.TelescopeInterface
 {
     /// <summary>
-    ///     Receives a response consisting of <c>0#</c> or <c>1#</c> and interprets it as a boolean.
+    ///     Receives a response consisting of <c>0</c> or <c>1</c> and interprets it as a boolean.
     /// </summary>
     public class ZEQ25BooleanTransaction : DeviceTransaction
     {
