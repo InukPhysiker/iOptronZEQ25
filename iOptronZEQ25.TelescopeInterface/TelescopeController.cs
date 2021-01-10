@@ -56,7 +56,7 @@ namespace iOptronZEQ25.TelescopeInterface
             log.Info("Right Ascension: {0}", raTransaction.Response);
             log.Info("Waiting for At Home");
             raTransaction.WaitForCompletionOrTimeout();
-            log.Info("At Home: {0}", raTransaction.Response);
+            log.Info("At Home: {0}", AtHomeTransaction.Response);
             #endregion Wait for the results
         }
 
