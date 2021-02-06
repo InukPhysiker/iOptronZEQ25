@@ -31,9 +31,12 @@ namespace iOptronZEQ25.TelescopeInterface
         /// <param name="source">The source sequence.</param>
         public override void ObserveResponse(IObservable<char> source)
         {
-            //source.TerminatedBoolean('#').Take(1).Subscribe(OnNext, OnError, OnCompleted);
-            source.TerminatedBoolean('#').Take(1).Subscribe(OnNext, OnError, OnCompleted);
-            //source.Take(1).Subscribe(OnNext, OnError, OnCompleted);
+            source.Take(1).Subscribe(x => OnNext(x.ToString()), OnError, OnCompleted);
+        }
+
+        protected override void OnNext(string value)
+        {
+            base.OnNext(value);
         }
 
         /// <summary>
