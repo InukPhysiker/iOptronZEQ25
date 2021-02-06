@@ -1053,6 +1053,49 @@ namespace ASCOM.iOptronZEQ25.Server
 
         //#endregion
 
+        private void CheckRate(TelescopeAxes axis, double rate)
+        {
+            IAxisRates rates = AxisRates(axis);
+            string ratesStr = string.Empty;
+            foreach (Rate item in rates)
+            {
+                if (Math.Abs(rate) >= item.Minimum && Math.Abs(rate) <= item.Maximum)
+                {
+                    return;
+                }
+                ratesStr = string.Format("{0}, {1} to {2}", ratesStr, item.Minimum, item.Maximum);
+            }
+            throw new InvalidValueException("MoveAxis", rate.ToString(CultureInfo.InvariantCulture), ratesStr);
+        }
+
+        private static void CheckRange(double value, double min, double max, string propertyOrMethod, string valueName)
+        {
+            if (double.IsNaN(value))
+            {
+                //SharedResources.TrafficEnd(string.Format(CultureInfo.CurrentCulture, "{0}:{1} value has not been set", propertyOrMethod, valueName));
+                throw new ValueNotSetException(propertyOrMethod + ":" + valueName);
+            }
+            if (value < min || value > max)
+            {
+                //SharedResources.TrafficEnd(string.Format(CultureInfo.CurrentCulture, "{0}:{4} {1} out of range {2} to {3}", propertyOrMethod, value, min, max, valueName));
+                throw new InvalidValueException(propertyOrMethod, value.ToString(CultureInfo.CurrentCulture), string.Format(CultureInfo.CurrentCulture, "{0}, {1} to {2}", valueName, min, max));
+            }
+        }
+
+        private static void CheckRange(double value, double min, double max, string propertyOrMethod)
+        {
+            if (double.IsNaN(value))
+            {
+                //SharedResources.TrafficEnd(string.Format(CultureInfo.CurrentCulture, "{0} value has not been set", propertyOrMethod));
+                throw new ValueNotSetException(propertyOrMethod);
+            }
+            if (value < min || value > max)
+            {
+                //SharedResources.TrafficEnd(string.Format(CultureInfo.CurrentCulture, "{0} {1} out of range {2} to {3}", propertyOrMethod, value, min, max));
+                throw new InvalidValueException(propertyOrMethod, value.ToString(CultureInfo.CurrentCulture), string.Format(CultureInfo.CurrentCulture, "{0} to {1}", min, max));
+            }
+        }
+
         /// <summary>
         /// Returns true if there is a valid connection to the driver hardware
         /// </summary>
