@@ -26,6 +26,28 @@ namespace iOptronZEQ25.TelescopeInterface
             GC.SuppressFinalize(this);
             }
 
+        public void InitialTransactions()
+        {
+            //Command: “:V#”
+            //Response: “V1.00#”
+            //This command is the first initialization command of iOptron products.
+            var VersionTransaction = new ZEQ25Transaction(":V#") { Timeout = TimeSpan.FromSeconds(2) };
+            Task.Run(() => transactionProcessor.CommitTransaction(VersionTransaction));
+            log.Info("Waiting for Version");
+            VersionTransaction.WaitForCompletionOrTimeout();
+            log.Info("Version (Response): {0}", VersionTransaction.Response);
+
+            //Command: “:MountInfo#”
+            //Response: “8407”,”8497”,”8408” ,”8498”
+            //This command gets the mount type. “8407” means iEQ45 EQ mode or iEQ30, “8497” means iEQ45
+            //AA mode, “8408” means ZEQ25, “8498” means SmartEQ.
+            var MountInfoTransaction = new ZEQ25MountInfoTransaction(":MountInfo#") { Timeout = TimeSpan.FromSeconds(2) };
+            Task.Run(() => transactionProcessor.CommitTransaction(MountInfoTransaction));
+            log.Info("Waiting for MountInfo");
+            MountInfoTransaction.WaitForCompletionOrTimeout();
+            log.Info("MountInfo (Response): {0}", MountInfoTransaction.Response);
+        }
+
         public void TestTransactions()
         {
 
