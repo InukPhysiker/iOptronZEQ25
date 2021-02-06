@@ -53,9 +53,9 @@ namespace iOptronZEQ25.TelescopeInterface
 
             #region Submit some transactions
             // Ready to go. We are going to use tasks to submit the transactions, just to demonstrate thread safety.
-            var raTransaction = new TerminatedStringTransaction(":GR#", '#', ':') { Timeout = TimeSpan.FromSeconds(2) };
+            var raTransaction = new ZEQ25Transaction(":GR#") { Timeout = TimeSpan.FromSeconds(2) };
             // The terminator and initiator are optional parameters and default to values that work for Meade style protocols.
-            var decTransaction = new TerminatedStringTransaction(":GD#") { Timeout = TimeSpan.FromSeconds(2) };
+            var decTransaction = new ZEQ25Transaction(":GD#") { Timeout = TimeSpan.FromSeconds(2) };
             Task.Run(() => transactionProcessor.CommitTransaction(raTransaction));
             Task.Run(() => transactionProcessor.CommitTransaction(decTransaction));
             #endregion Submit some transactions
@@ -72,12 +72,13 @@ namespace iOptronZEQ25.TelescopeInterface
             // NOTE we are using the transactions in the reverse order that we committed them, just to prove a point.
             log.Info("Waiting for declination");
             decTransaction.WaitForCompletionOrTimeout();
-            log.Info("Declination: {0}", decTransaction.Response);
+            log.Info("Declination (Response): {0}", decTransaction.Response);
+            log.Info("Declination (Value): {0}", decTransaction.Value);
             log.Info("Waiting for Right Ascensions");
             raTransaction.WaitForCompletionOrTimeout();
-            log.Info("Right Ascension: {0}", raTransaction.Response);
+            log.Info("Right Ascension (Response): {0}", raTransaction.Response);
+            log.Info("Right Ascension (Value): {0}", raTransaction.Value);
             log.Info("Waiting for At Home");
-            raTransaction.WaitForCompletionOrTimeout();
             log.Info("At Home: {0}", AtHomeTransaction.Response);
             #endregion Wait for the results
         }
