@@ -135,7 +135,10 @@ namespace iOptronZEQ25.TelescopeInterface
         public void PerformOnConnectTasks()
             {
             //TODO: perform any tasks that must occur as soon as the communication channel is connected.
-            TestTransactions();
+            //TestTransactions();
+            InitialTransactions();
+            UpdateRightAscension();
+            UpdateDeclination();
         }
     }
 }
