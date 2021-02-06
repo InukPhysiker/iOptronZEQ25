@@ -36,6 +36,7 @@ using System.Collections;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using TA.PostSharp.Aspects;
 
 namespace ASCOM.iOptronZEQ25.Server
@@ -337,16 +338,18 @@ namespace ASCOM.iOptronZEQ25.Server
         #region ITelescope Implementation
         public void AbortSlew()
         {
-            tl.LogMessage("AbortSlew", "Not implemented");
-            throw new ASCOM.MethodNotImplementedException("AbortSlew");
+            //tl.LogMessage("AbortSlew", "Not implemented");
+            //throw new ASCOM.MethodNotImplementedException("AbortSlew");
+            telescope.AbortSlew();
         }
 
         public AlignmentModes AlignmentMode
         {
             get
             {
-                tl.LogMessage("AlignmentMode Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("AlignmentMode", false);
+                //tl.LogMessage("AlignmentMode Get", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("AlignmentMode", false);
+                return AlignmentModes.algGermanPolar;
             }
         }
 
@@ -354,8 +357,9 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             get
             {
-                tl.LogMessage("Altitude", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("Altitude", false);
+                //tl.LogMessage("Altitude", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("Altitude", false);
+                return telescope.Altitude;
             }
         }
 
@@ -381,8 +385,9 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             get
             {
-                tl.LogMessage("AtHome", "Get - " + false.ToString());
-                return false;
+                //tl.LogMessage("AtHome", "Get - " + false.ToString());
+                //return false;
+                return telescope.AtHome;
             }
         }
 
@@ -405,8 +410,9 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             get
             {
-                tl.LogMessage("Azimuth Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("Azimuth", false);
+                //tl.LogMessage("Azimuth Get", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("Azimuth", false);
+                return telescope.Azimuth;
             }
         }
 
@@ -570,9 +576,10 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             get
             {
-                double declination = 0.0;
-                tl.LogMessage("Declination", "Get - " + utilities.DegreesToDMS(declination, ":", ":"));
-                return declination;
+                //double declination = 0.0;
+                //tl.LogMessage("Declination", "Get - " + utilities.DegreesToDMS(declination, ":", ":"));
+                //return declination;
+                return telescope.Declination;
             }
         }
 
@@ -623,8 +630,9 @@ namespace ASCOM.iOptronZEQ25.Server
 
         public void FindHome()
         {
-            tl.LogMessage("FindHome", "Not implemented");
-            throw new ASCOM.MethodNotImplementedException("FindHome");
+            //tl.LogMessage("FindHome", "Not implemented");
+            //throw new ASCOM.MethodNotImplementedException("FindHome");
+            telescope.FindHome();
         }
 
         public double FocalLength
@@ -668,15 +676,22 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             get
             {
-                tl.LogMessage("IsPulseGuiding Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("IsPulseGuiding", false);
+                //tl.LogMessage("IsPulseGuiding Get", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("IsPulseGuiding", false);
+                return telescope.IsPulseGuiding;
             }
         }
 
         public void MoveAxis(TelescopeAxes Axis, double Rate)
         {
-            tl.LogMessage("MoveAxis", "Not implemented");
-            throw new ASCOM.MethodNotImplementedException("MoveAxis");
+            //tl.LogMessage("MoveAxis", "Not implemented");
+            //throw new ASCOM.MethodNotImplementedException("MoveAxis");
+            if (!CanMoveAxis(Axis))
+            {
+                throw new MethodNotImplementedException("CanMoveAxis " + Enum.GetName(typeof(TelescopeAxes), Axis));
+            }
+            CheckRate(Axis, Rate);
+            telescope.MoveAxis(Axis, Rate);
         }
 
         public void Park()
@@ -687,17 +702,19 @@ namespace ASCOM.iOptronZEQ25.Server
 
         public void PulseGuide(GuideDirections Direction, int Duration)
         {
-            tl.LogMessage("PulseGuide", "Not implemented");
-            throw new ASCOM.MethodNotImplementedException("PulseGuide");
+            //tl.LogMessage("PulseGuide", "Not implemented");
+            //throw new ASCOM.MethodNotImplementedException("PulseGuide");
+            telescope.PulseGuide(Direction, Duration);
         }
 
         public double RightAscension
         {
             get
             {
-                double rightAscension = 0.0;
-                tl.LogMessage("RightAscension", "Get - " + utilities.HoursToHMS(rightAscension));
-                return rightAscension;
+                //double rightAscension = 0.0;
+                //tl.LogMessage("RightAscension", "Get - " + utilities.HoursToHMS(rightAscension));
+                //return rightAscension;
+                return telescope.RightAscension;
             }
         }
 
@@ -726,8 +743,9 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             get
             {
-                tl.LogMessage("SideOfPier Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("SideOfPier", false);
+                //tl.LogMessage("SideOfPier Get", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("SideOfPier", false);
+                return telescope.SideOfPier;
             }
             set
             {
@@ -780,8 +798,9 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             get
             {
-                tl.LogMessage("SiteLatitude Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("SiteLatitude", false);
+                //tl.LogMessage("SiteLatitude Get", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("SiteLatitude", false);
+                return telescope.SiteLatitude;
             }
             set
             {
@@ -794,8 +813,9 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             get
             {
-                tl.LogMessage("SiteLongitude Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("SiteLongitude", false);
+                //tl.LogMessage("SiteLongitude Get", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("SiteLongitude", false);
+                return telescope.SiteLongitude;
             }
             set
             {
@@ -832,34 +852,86 @@ namespace ASCOM.iOptronZEQ25.Server
 
         public void SlewToCoordinates(double RightAscension, double Declination)
         {
-            tl.LogMessage("SlewToCoordinates", "Not implemented");
-            throw new ASCOM.MethodNotImplementedException("SlewToCoordinates");
+            //tl.LogMessage("SlewToCoordinates", "Not implemented");
+            //throw new ASCOM.MethodNotImplementedException("SlewToCoordinates");
+            CheckRange(RightAscension, 0, 24, "SlewToCoordinates", "RightAscension");
+            CheckRange(Declination, -90, 90, "SlewToCoordinates", "Declination");
+            //CheckParked("SlewToCoordinates");
+            //CheckTracking(true, "SlewToCoordinates");
+            _TargetRightAscension = RightAscension; // Set the Target RA and Dec prior to the Slew attempt per the ASCOM Telescope specification
+            _TargetDeclination = Declination;
+            telescope.SlewToCoordinates(RightAscension, Declination);
+            // Block until the slew completes
+            while (telescope.Slewing)
+            {
+                Thread.Sleep(1000);// Allow time for main timer loop to update the axis state
+            }
+            // Refine the slew
+            telescope.SlewToCoordinates(RightAscension, Declination);
+            //Block until the slew completes
+            while (telescope.Slewing)
+            {
+                Thread.Sleep(1000);  // Allow time for main timer loop to update the axis state
+            }
         }
 
         public void SlewToCoordinatesAsync(double RightAscension, double Declination)
         {
-            tl.LogMessage("SlewToCoordinatesAsync", "Not implemented");
-            throw new ASCOM.MethodNotImplementedException("SlewToCoordinatesAsync");
+            //tl.LogMessage("SlewToCoordinatesAsync", "Not implemented");
+            //throw new ASCOM.MethodNotImplementedException("SlewToCoordinatesAsync");
+            CheckRange(RightAscension, 0, 24, "SlewToCoordinates", "RightAscension");
+            CheckRange(Declination, -90, 90, "SlewToCoordinates", "Declination");
+            //CheckParked("SlewToCoordinates");
+            //CheckTracking(true, "SlewToCoordinates");
+            _TargetRightAscension = RightAscension; // Set the Target RA and Dec prior to the Slew attempt per the ASCOM Telescope specification
+            _TargetDeclination = Declination;
+            telescope.SlewToCoordinatesAsync(RightAscension, Declination);
+            // return immediately
         }
 
         public void SlewToTarget()
         {
-            tl.LogMessage("SlewToTarget", "Not implemented");
-            throw new ASCOM.MethodNotImplementedException("SlewToTarget");
+            //tl.LogMessage("SlewToTarget", "Not implemented");
+            //throw new ASCOM.MethodNotImplementedException("SlewToTarget");
+            CheckRange(telescope.TargetRightAscension, 0, 24, "SlewToTarget", "TargetRightAscension");
+            CheckRange(telescope.TargetDeclination, -90, 90, "SlewToTarget", "TargetDeclination");   ;
+            //CheckParked("SlewToTarget");
+            //CheckTracking(true, "SlewToTarget");
+            telescope.TargetRightAscension = TargetRightAscension;
+            telescope.TargetDeclination = TargetDeclination;
+            telescope.SlewToTarget();
+            // Block until the slew completes
+            while (telescope.Slewing)
+            {
+                Thread.Sleep(1000);// Allow time for main timer loop to update the axis state
+            }
+            // Refine the slew
+            telescope.SlewToTarget();
+            //Block until the slew completes
+            while (telescope.Slewing)
+            {
+                Thread.Sleep(1000);  // Allow time for main timer loop to update the axis state
+            }
         }
 
         public void SlewToTargetAsync()
         {
-            tl.LogMessage("SlewToTargetAsync", "Not implemented");
-            throw new ASCOM.MethodNotImplementedException("SlewToTargetAsync");
+            //tl.LogMessage("SlewToTargetAsync", "Not implemented");
+            //throw new ASCOM.MethodNotImplementedException("SlewToTargetAsync");
+            CheckRange(telescope.TargetRightAscension, 0, 24, "SlewToTargetAsync", "TargetRightAscension");
+            CheckRange(telescope.TargetDeclination, -90, 90, "SlewToTargetAsync", "TargetDeclination");
+            telescope.TargetRightAscension = TargetRightAscension;
+            telescope.TargetDeclination = TargetDeclination;
+            telescope.SlewToTargetAsync();
         }
 
         public bool Slewing
         {
             get
             {
-                tl.LogMessage("Slewing Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("Slewing", false);
+                //tl.LogMessage("Slewing Get", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("Slewing", false);
+                return telescope.Slewing;
             }
         }
 
@@ -871,41 +943,71 @@ namespace ASCOM.iOptronZEQ25.Server
 
         public void SyncToCoordinates(double RightAscension, double Declination)
         {
-            tl.LogMessage("SyncToCoordinates", "Not implemented");
-            throw new ASCOM.MethodNotImplementedException("SyncToCoordinates");
+            //tl.LogMessage("SyncToCoordinates", "Not implemented");
+            //throw new ASCOM.MethodNotImplementedException("SyncToCoordinates");
+            CheckRange(RightAscension, 0, 24, "SyncToCoordinates", "RightAscension");
+            CheckRange(Declination, -90, 90, "SyncToCoordinates", "Declination");
+            //CheckParked("SyncToCoordinates");
+            //CheckTracking(true, "SyncToCoordinates");
+            _TargetRightAscension = RightAscension;
+            _TargetDeclination = Declination;
+            telescope.SyncToCoordinates(RightAscension, Declination);
         }
 
         public void SyncToTarget()
         {
-            tl.LogMessage("SyncToTarget", "Not implemented");
-            throw new ASCOM.MethodNotImplementedException("SyncToTarget");
+            //tl.LogMessage("SyncToTarget", "Not implemented");
+            //throw new ASCOM.MethodNotImplementedException("SyncToTarget");
+            telescope.SyncToTarget();
         }
+
+        private double? _TargetDeclination;
 
         public double TargetDeclination
         {
             get
             {
-                tl.LogMessage("TargetDeclination Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("TargetDeclination", false);
+                //tl.LogMessage("TargetDeclination Get", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("TargetDeclination", false);
+                if (!_TargetDeclination.HasValue)
+                {
+                    throw new ASCOM.InvalidOperationException("Target declination has not been set.");
+                }
+                _TargetDeclination = telescope.TargetDeclination;
+                return _TargetDeclination.Value;
             }
             set
             {
-                tl.LogMessage("TargetDeclination Set", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("TargetDeclination", true);
+                //tl.LogMessage("TargetDeclination Set", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("TargetDeclination", true);
+                CheckRange(value, -90, 90, "TargetDeclination");
+                _TargetDeclination = value;
+                telescope.TargetDeclination = value;
             }
         }
+
+        private double? _TargetRightAscension;
 
         public double TargetRightAscension
         {
             get
             {
-                tl.LogMessage("TargetRightAscension Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("TargetRightAscension", false);
+                //tl.LogMessage("TargetRightAscension Get", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("TargetRightAscension", false);
+                if (!_TargetRightAscension.HasValue)
+                {
+                    throw new ASCOM.InvalidOperationException("Target right ascention has not been set.");
+                }
+                //_TargetRightAscension = telescope.TargetRightAscension;
+                return _TargetRightAscension.Value;
             }
             set
             {
-                tl.LogMessage("TargetRightAscension Set", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("TargetRightAscension", true);
+                //tl.LogMessage("TargetRightAscension Set", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("TargetRightAscension", true);
+                CheckRange(value, 0, 24, "TargetRightAscension");
+                _TargetRightAscension = value;
+                telescope.TargetRightAscension = value;
             }
         }
 
@@ -913,14 +1015,16 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             get
             {
-                bool tracking = true;
-                tl.LogMessage("Tracking", "Get - " + tracking.ToString());
-                return tracking;
+                //bool tracking = true;
+                //tl.LogMessage("Tracking", "Get - " + tracking.ToString());
+                //return tracking;
+                return telescope.Tracking;
             }
             set
             {
-                tl.LogMessage("Tracking Set", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("Tracking", true);
+                //tl.LogMessage("Tracking Set", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("Tracking", true);
+                telescope.Tracking = value;
             }
         }
 
@@ -928,13 +1032,21 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             get
             {
-                tl.LogMessage("TrackingRate Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("TrackingRate", false);
+                //tl.LogMessage("TrackingRate Get", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("TrackingRate", false);
+                return telescope.TrackingRate;
             }
             set
             {
-                tl.LogMessage("TrackingRate Set", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("TrackingRate", true);
+                //tl.LogMessage("TrackingRate Set", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("TrackingRate", true);
+                //if ((value < DriveRates.driveSidereal) || (value > DriveRates.driveKing))
+                if ((value != DriveRates.driveSidereal))
+                {
+                    //throw new InvalidValueException("TrackingRate", value.ToString(), "0 (driveSidereal) to 3 (driveKing)");
+                    throw new InvalidValueException("TrackingRate", value.ToString(), "0 (driveSidereal)");
+                }
+                telescope.TrackingRate = value;
             }
         }
 
