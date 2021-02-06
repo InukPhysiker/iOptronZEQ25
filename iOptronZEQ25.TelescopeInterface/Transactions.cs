@@ -143,4 +143,76 @@ namespace iOptronZEQ25.TelescopeInterface
         public bool Value { get; private set; }
     }
 
+    /// <summary>
+    ///     Receives a response consisting of 8408 if the mount is an iOptron ZEQ25
+    /// </summary>
+    public class ZEQ25MountInfoTransaction : DeviceTransaction
+    {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DeviceTransaction" /> class.
+        /// </summary>
+        /// <param name="command">The command string to send to the device.</param>
+        public ZEQ25MountInfoTransaction(string command) : base(command)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(command));
+        }
+
+        /// <summary>
+        ///     Observes the character sequence from the communications channel
+        ///     until a satisfactory response has been received.
+        /// </summary>
+        /// <param name="source">The source sequence.</param>
+        public override void ObserveResponse(IObservable<char> source)
+        {
+            //var _messageDelimiter = '#';
+
+            var buffer = new List<char>();
+
+            source.Subscribe(b =>
+            {
+                buffer.Add(b);
+                if (buffer.Count == 4)
+                {
+                    var Response = new string(buffer.ToArray());
+                    OnNext(Response);
+                    OnCompleted();
+                    buffer.Clear();
+                }
+            },
+            OnError, OnCompleted);
+        }
+
+        protected override void OnNext(string value)
+        {
+            base.OnNext(value);
+        }
+
+        /// <summary>
+        ///     Called when the response sequence completes. This indicates a successful transaction.
+        /// </summary>
+        /// <remarks>
+        ///     If there has been a valid response (<c>Response.Any() == true</c>) then it is converted to a boolean and placed in
+        ///     the <see cref="Value" /> property.
+        /// </remarks>
+        protected override void OnCompleted()
+        {
+            try
+            {
+                if (Response.Any())
+                    Value = Response.Single().Equals("8408");
+            }
+            catch (FormatException)
+            {
+                Value = false;
+            }
+            base.OnCompleted();
+        }
+
+        /// <summary>
+        ///     Gets the final value of teh transaction's response, as a boolean.
+        /// </summary>
+        /// <value><c>true</c> if value; otherwise, <c>false</c>.</value>
+        public bool Value { get; private set; }
+    }
+
 }
