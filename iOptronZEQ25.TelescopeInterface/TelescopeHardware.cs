@@ -1,4 +1,4 @@
-﻿using ASCOM.DeviceInterface;
+using ASCOM.DeviceInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +14,11 @@ namespace iOptronZEQ25.TelescopeInterface
 
         public void AbortSlew()
         {
+            // tl.LogMessage("AbortSlew", "Not implemented");
+            //throw new ASCOM.MethodNotImplementedException("AbortSlew");
             var AbortSlewTransaction = new NoReplyTransaction(":q#");
-            //    throw new ASCOM.MethodNotImplementedException("AbortSlew");
+            Task.Run(() => transactionProcessor.CommitTransaction(AbortSlewTransaction));
+            AbortSlewTransaction.WaitForCompletionOrTimeout();
         }
 
         #endregion
