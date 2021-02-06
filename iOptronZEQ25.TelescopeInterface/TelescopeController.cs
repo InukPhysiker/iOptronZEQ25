@@ -16,6 +16,7 @@ namespace iOptronZEQ25.TelescopeInterface
         public TelescopeController(ITransactionProcessorFactory factory)
             {
             this.factory = factory;
+            utilities = new ASCOM.Utilities.Util();
         }
 
         public bool IsOnline => transactionProcessor != null && (factory?.Channel?.IsOpen ?? false);
