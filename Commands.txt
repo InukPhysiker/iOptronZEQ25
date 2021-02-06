@@ -1,4 +1,4 @@
-Command: “:V#" V1.00
+Command: “:V#” V1.00
 Command: “:MountInfo#” 8400
 
 Note: commands need a moment to process a response
@@ -17,95 +17,76 @@ Frequently used
 :SE?# --> 0|1 (not in slewing | in slewing)
 :Q#  --> 1 (stop slewing) does not stop move started with :MxXXXXX#
 
-Command: “:GG#”
-Response: “sHH:MM#” -06:00
+Command: “:GG#”	Resonse: “sHH:MM#” -06:00
 Gets the offset from Greenwich Mean Time (Exclude Daylight Saving Time).
 
-Command: “:GDS#”
-Response: “0”or“1” 0
+Command: “:GDS#”	Resonse: “0”or“1” 0
 Gets the status of Daylight Saving Time. “1” means Daylight Saving Time enabled, “0” means
 Daylight Saving Time disabled.
 
-Command: “:Gg#”
-Response: “sDDD*MM:SS#” -106*25:50#
+Command: “:Gg#”	Resonse: “sDDD*MM:SS#” -106*25:50#
 Gets the current longitude. Note the return value will be in signed format, East is positive.
 
-Command: “:Gt#”
-Response: “sDD*MM:SS#” +52*04:56#
+Command: “:Gt#”	Resonse: “sDD*MM:SS#” +52*04:56#
 Gets the current latitude. Note the return value will be in signed format, North is positive.
 
-Command: “:GL#”
-Response: “HH:MM:SS#” 15:09:49#
+Command: “:GL#”	Resonse: “HH:MM:SS#” 15:09:49#
 Gets the current local time in 24 hour format. Overflows from 23:59:59 to 00:00:00. Updates
 calendar day on overflow.
 
-Command: “:GS#”
-Response: “HH:MM:SS#” 21:39:59#
+Command: “:GS#”	Resonse: “HH:MM:SS#” 21:39:59#
 Gets the current sidereal time in 24 hour format.
 
-Command: “:GR#”
-Response: “HH:MM:SS#” 03:40:57#
-Gets the current Right
+Command: “:GR#”	Resonse: “HH:MM:SS#” 03:40:57#
+Gets the current Right Ascension
 
-Command: “:GD#”
-Response: “sDD*MM:SS#” +90*00:00#
+Command: “:GD#”	Resonse: “sDD*MM:SS#” +90*00:00#
 Gets the current Declination.
 
-Command: “:GA#”
-Response: “sDD*MM:SS#” +52*04:56#
+Command: “:GA#”	Resonse: “sDD*MM:SS#” +52*04:56#
 Gets the current Altitude.
 
-Command: “:GZ#”
-Response: “DDD*MM:SS#” 000*00:00#
+Command: “:GZ#”	Resonse: “DDD*MM:SS#” 000*00:00#
 Gets the current Azimuth.
 
-Command: “:GC#”
-Response: “MM:DD:YY#” 12:29:20#
+Command: “:GC#”	Resonse: “MM:DD:YY#” 12:29:20#
 Gets the current calendar day.
 
-Command: “:Bs#”
-Response: “nnnn#” 0000#
+Command: “:Bs#”	Resonse: “nnnn#” 0000#
 Gets the RA backlash to nnnn steps. One steps equals to various arcsecond for different mounts,
 please referred to the manual or support website.
 
-Command: “:Be#”
-Response: “nnnn#”
+Command: “:Be#”	Resonse: “nnnn#”
 Gets the Dec backlash to nnnn steps. One steps equals to various arcsecond for different mounts,
 please referred to the manual or support website.
 
 Telescope Motion
 
-Command: “:MS#”
-Response: “1” if command accepted,
+Command: “:MS#”	Resonse: “1” if command accepted,
 “0” The desired object is below 0 degrees altitude.
 Slew to the most recently defined RA and DEC coordinates or most recently defined ALT and AZI
 coordinates. Slewing is performed at the currently selected slew rate. If the object is below the
 horizon, this will be stated, and no slewing will occur.
 
-Command: “:SE?#”
-Response: “0” not in slewing,
+Command: “:SE?#”	Resonse: “0” not in slewing,
 “1” in slewing.
 This command get the slewing status.
 
-Command: “:Q#”
-Response: “1”
+Command: “:Q#”	Resonse: “1”
 This command will stop slewing. Tracking and moving by arrow keys will not be affected
 
 Note: Motion will be difficult to detect since it is slow.
 Note: Does not report as Slewing.
-Command: “:MnXXXXX#” “:MsXXXXX#” “:MeXXXXX#” “:MwXXXXX#”
-Response: (none)
+Command: “:MnXXXXX#” “:MsXXXXX#” “:MeXXXXX#” “:MwXXXXX#”	Resonse: (none)
 Command motion for XXXXX milliseconds in the direction specified at the currently selected guide
 rate. If XXXXX has a value of zero, motion is continuous and requires a “:Mx00000#” command
 to terminate. x is the same direction of the previous command. XXXXX is in the range of 0 to 32767.
 
-Command: “:AG#”
-Response: “n.nn#” 0.20#
+Command: “:AG#”	Resonse: “n.nn#” 0.20#
 This command returns the guide rate.
 
 Note: Minimum is 0.20x sidereal rate. Maximum is 1.00x sidereal rate
-Command: “:RGnnn#”
-Response: “1”
+Command: “:RGnnn#”	Resonse: “1”
 Selects guide rate nnn*0.01x sidereal rate. nnn is in the range of 10 to 90, and 100.
 
 Command: “:ST0#” “:ST1#”
@@ -123,43 +104,36 @@ driveLunar        1    Lunar tracking rate (14.685 arcseconds per second).
 driveSolar        2    Solar tracking rate (15.0 arcseconds per second).
 driveKing         3    King tracking rate (15.0369 arcseconds per second).
 
-Command: “:QT#”
-Response: “0” Sidereal rate
+Command: “:QT#”	Resonse: “0” Sidereal rate
 “1” Lunar rate
 “2” Solar rate
 “3” King rate
 “4” Custom rate
 This command gets the tracking rate.
 
-Command: “:RT0#” “:RT1#” “:RT2#” “:RT3#” “:RT4#”
-Response: “1”
+Command: “:RT0#” “:RT1#” “:RT2#” “:RT3#” “:RT4#”	Resonse: “1”
 This command selects the tracking rate. It selects sidereal (:RT0#), lunar (:RT1#), solar (:RT2#),
 King (:RT3#), or custom (“:RT4#”). The sidereal rate is assumed as a default by the next power up.
 This command has no effect on the use of the N-S-E-W buttons.
 
 Note: Error in manual. Parking commands do not work (no response from mount)
-Command: “:AP#”
-Response: “0” Un-parking state,
+Command: “:AP#”	Resonse: “0” Un-parking state,
 “1” Parking state.
 This command gets the parking status.
 
-Command: “:AP#”
-Response: “0” Un-parking state,
+Command: “:AP#”	Resonse: “0” Un-parking state,
 “1” Parking state.
 This command gets the parking status.
 
-Command: “:MP0#”
-Response: “1”
+Command: “:MP0#”	Resonse: “1”
 This command un-parks the telescope.
 
-Command: “:MP1#”
-Response: “1”
+Command: “:MP1#”	Resonse: “1”
 This command invokes the parked mode. In parked mode, the telescope cannot slew, track, and
 guide unless a un-park command is issued.
 Caution: Any movement caused by hand controller will make the telescope into un-park state.
 
-Command: “:pS#”
-Response: “0” East,
+Command: “:pS#”	Resonse: “0” East,
 “1” West.
 This command returns the side of the pier on which the telescope is currently positioned. It is useful
 for remote observatories where it is not possible for the viewer to see the mount. Initially, the
@@ -175,42 +149,36 @@ Respond: “0” The telescope is not at “home” position,
 “1” The telescope is at “home” position.
 This command returns whether the telescope is at “home” position.
 
-Command: “:SRn#”
-Response: “1”
+Command: “:SRn#”	Resonse: “1”
 Sets the moving rate used for the N-S-E-W buttons. For n, specify an integer from 1 to 9. 1 stands
 for 1x sidereal tracking rate, 2 stands for 2x, 3 stands for 8x, 4 stands for 16x, 5 stands for 64x, 6
 stands for 128x, 7 stands for 256x, 8 stands for 512x, 9 stands for maximum speed(larger than
 512x).
 
 Note: Error in manual. This command does not work!
-Command: “:RR snn.nnnn#”
-Response: “1”
+Command: “:RR snn.nnnn#”	Resonse: “1”
 “Custom Tracking Rate”(“:RT4#”) must be selected before this command to take effect.
 The command selects the tracking rate in the RA axis to nn.nnnn. The rate added to the standard
 sidereal rate and can be positive or negative. In equatorial mounts, snn.nnnn is limited to the range
 of -0.0100 to +0.0100.
 
 Note: N/A
-Command: “:RD snn.nnnn#”
-Response: “1”
+Command: “:RD snn.nnnn#”	Resonse: “1”
 This command only works with Alt-Azi Mounts. “Custom Tracking Rate” (“:RT4#”) must be
 selected before this command to take effect.
 The command selects the tracking rate in the DEC axis to nn.nnnn. The rate added to the standard
 sidereal rate and can be positive or negative.
 
 Note: East and West appear to be inverted. Need to double check!
-Command: “:mn#” “:me#” “:ms#” “:mw#”
-Response: (none)
+Command: “:mn#” “:me#” “:ms#” “:mw#”	Resonse: (none)
 These commands have identical function as pressed arrow key. They will move mounts to N-E-SW direction at specified speed (may change by “:SRn#”). The mount will keep moving until a
 “:q#” sent.
 
-Command: “:q#”
-Response: (none)
+Command: “:q#”	Resonse: (none)
 This commands will stop moving by arrow keys or “:mn#”, “:me#”, “:ms#”, “:mw#” command.
 Slewing and tracking will not be affected.
 
-Command: “:Gr#”
-Response: “n#”
+Command: “:Gr#”	Resonse: “n#”
 Gets the moving rate used for the N-S-E-W buttons. For n, specify an integer from 1 to 9. 1 stands
 for 1x sidereal tracking rate, 2 stands for 2x, 3 stands for 8x, 4 stands for 16x, 5 stands for 64x, 6
 stands for 128x, 7 stands for 256x, 8 stands for 512x, 9 stands for maximum speed(larger than
@@ -218,8 +186,7 @@ stands for 128x, 7 stands for 256x, 8 stands for 512x, 9 stands for maximum spee
 
 Position
 
-Command: “:CM#”
-Response: “1”
+Command: “:CM#”	Resonse: “1”
 Calibrate mount (Sync). If in equatorial mounts or in RA-DEC mode with Alt-Azi mounts, Current
 Right Ascension and Declination become the commanded Right Ascension and Declination
 respectively. If in Alt-Azi mode (only works with Alt-Azi mounts), then the commanded Altitude
@@ -228,22 +195,18 @@ positioned on the proper pier side for the calibration object. This command is i
 in progress. This command should be used for initial calibration. It should not be used after the
 mount has been tracking unless it is known that it has not tracked across the meridian.
 
-Command: “:Sr HH:MM:SS#”
-Response: “1”
+Command: “:Sr HH:MM:SS#”	Resonse: “1”
 Defines the commanded Right Ascension, RA. This command automatically selects RA-DEC mode.
 Move and calibrate commands operate on the most recently defined RA.
 
-Command: “:Sd sDD*MM:SS#”
-Response: “1”
+Command: “:Sd sDD*MM:SS#”	Resonse: “1”
 Defines the commanded Declination, DEC. This command automatically selects RA-DEC mode.
 Move and calibrate commands operate on the most recently defined DEC.
 
-Command: “:Sa sDD*MM:SS#”
-Response: “1”
+Command: “:Sa sDD*MM:SS#”	Resonse: “1”
 This command only works with Alt-Azi Mounts. Defines the commanded Altitude, ALT.
 Move and calibrate commands operate on the most recently defined ALT.
-This command automatically selects Alt-Azi mode, however tracking rate is unaffected.Command: “:Sz DDD*MM:SS#”
-Response: “1”
+This command automatically selects Alt-Azi mode, however tracking rate is unaffected.Command: “:Sz DDD*MM:SS#”	Resonse: “1”
 This command only works with Alt-Azi Mounts. Defines the commanded Azimuth, AZI.
 Move and calibrate commands operate on the most recently defined AZI. This command automati
 cally selects Alt-Azi mode, however tracking rate is unaffected.
