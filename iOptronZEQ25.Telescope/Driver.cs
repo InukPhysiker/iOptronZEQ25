@@ -414,8 +414,8 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             get
             {
-                tl.LogMessage("CanFindHome", "Get - " + false.ToString());
-                return false;
+                tl.LogMessage("CanFindHome", "Get - " + true.ToString());
+                return true;
             }
         }
 
@@ -424,8 +424,8 @@ namespace ASCOM.iOptronZEQ25.Server
             tl.LogMessage("CanMoveAxis", "Get - " + Axis.ToString());
             switch (Axis)
             {
-                case TelescopeAxes.axisPrimary: return false;
-                case TelescopeAxes.axisSecondary: return false;
+                case TelescopeAxes.axisPrimary: return true;
+                case TelescopeAxes.axisSecondary: return true;
                 case TelescopeAxes.axisTertiary: return false;
                 default: throw new InvalidValueException("CanMoveAxis", Axis.ToString(), "0 to 2");
             }
@@ -445,7 +445,7 @@ namespace ASCOM.iOptronZEQ25.Server
             get
             {
                 tl.LogMessage("CanPulseGuide", "Get - " + false.ToString());
-                return false;
+                return true;
             }
         }
 
@@ -499,7 +499,7 @@ namespace ASCOM.iOptronZEQ25.Server
             get
             {
                 tl.LogMessage("CanSetTracking", "Get - " + false.ToString());
-                return false;
+                return true;
             }
         }
 
@@ -508,7 +508,7 @@ namespace ASCOM.iOptronZEQ25.Server
             get
             {
                 tl.LogMessage("CanSlew", "Get - " + false.ToString());
-                return false;
+                return true;
             }
         }
 
@@ -535,7 +535,7 @@ namespace ASCOM.iOptronZEQ25.Server
             get
             {
                 tl.LogMessage("CanSlewAsync", "Get - " + false.ToString());
-                return false;
+                return true;
             }
         }
 
@@ -544,7 +544,7 @@ namespace ASCOM.iOptronZEQ25.Server
             get
             {
                 tl.LogMessage("CanSync", "Get - " + false.ToString());
-                return false;
+                return true;
             }
         }
 
