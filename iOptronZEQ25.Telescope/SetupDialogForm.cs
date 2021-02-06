@@ -1,11 +1,6 @@
-using ASCOM.iOptronZEQ25;
 using ASCOM.Utilities;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ASCOM.iOptronZEQ25.Server
@@ -31,18 +26,35 @@ namespace ASCOM.iOptronZEQ25.Server
             // Place any validation constraint checks here
             // Update the state variables with results from the dialogue
             //Telescope.comPort = (string)comboBoxComPort.SelectedItem;
-            Properties.Settings.Default.COMPort = (string)comboBoxComPort.SelectedItem;
+            var currentConnectionString = iOptronZEQ25.Properties.Settings.Default.ConnectionString;
+
+            var newCOMPort = (string)comboBoxComPort.SelectedItem;
+            var newConnectionString = $"{newCOMPort}:9600";
+
+            iOptronZEQ25.Properties.Settings.Default.COMPort = newCOMPort;
+            iOptronZEQ25.Properties.Settings.Default.ConnectionString = newConnectionString;
+
+            SharedResources.CommPortName = newCOMPort;
+            SharedResources.ConnectionString = newConnectionString;
+
             // tl.Enabled = chkTrace.Checked;
             //Properties.Settings.Default.Trace = chkTrace.Checked;
-            Properties.Settings.Default.Save();
+            iOptronZEQ25.Properties.Settings.Default.Save();
 
             // Properties.Settings.Default.CommPort = (string)comboBoxComPort.SelectedItem;
+            //Log.Info($"SetupDialog successful, saving settings");
+            if (newConnectionString != currentConnectionString)
+            {
+                //Log.Warn(
+                //    $"Connection string has changed from {oldConnectionString} to {newConnectionString} - replacing the TansactionProcessorFactory");
+                SharedResources.UpdateTransactionProcessFactory();
+            }
             Close();
         }
 
         private void CmdCancel_Click(object sender, EventArgs e) // Cancel button event handler
         {
-            Properties.Settings.Default.Reload();
+            iOptronZEQ25.Properties.Settings.Default.Reload();
             Close();
         }
 
@@ -65,7 +77,19 @@ namespace ASCOM.iOptronZEQ25.Server
 
         private void InitUI()
         {
-            chkTrace.Checked = tl.Enabled;
+            var onlineClients = SharedResources.ConnectionManager.OnlineClientCount;
+            if (onlineClients == 0)
+            {
+                comboBoxComPort.Enabled = true;
+                ConnectionErrorProvider.SetError(comboBoxComPort, string.Empty);
+            }
+            else
+            {
+                comboBoxComPort.Enabled = false;
+                ConnectionErrorProvider.SetError(comboBoxComPort,
+                    "Connection settings cannot be changed while there are connected clients");
+            }
+            //chkTrace.Checked = tl.Enabled;
             // set the list of com ports to those that are currently available
             comboBoxComPort.Items.Clear();
             comboBoxComPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());      // use System.IO because it's static
@@ -74,9 +98,9 @@ namespace ASCOM.iOptronZEQ25.Server
             //{
             //    comboBoxComPort.SelectedItem = Telescope.comPort;
             //}
-            if (comboBoxComPort.Items.Contains(Properties.Settings.Default.COMPort))
+            if (comboBoxComPort.Items.Contains(iOptronZEQ25.Properties.Settings.Default.COMPort))
             {
-                comboBoxComPort.SelectedItem = Properties.Settings.Default.COMPort;
+                comboBoxComPort.SelectedItem = iOptronZEQ25.Properties.Settings.Default.COMPort;
             }
         }
     }

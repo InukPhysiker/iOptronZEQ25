@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ASCOM.iOptronZEQ25.Properties {
+namespace TA.Ascom.ReactiveCommunications.Sample.ConsoleApp.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -25,31 +25,7 @@ namespace ASCOM.iOptronZEQ25.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM1")]
-        public string COMPort {
-            get {
-                return ((string)(this["COMPort"]));
-            }
-            set {
-                this["COMPort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Trace {
-            get {
-                return ((bool)(this["Trace"]));
-            }
-            set {
-                this["Trace"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM1:9600")]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM3:")]
         public string ConnectionString {
             get {
                 return ((string)(this["ConnectionString"]));

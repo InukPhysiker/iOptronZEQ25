@@ -202,6 +202,12 @@ namespace ASCOM.iOptronZEQ25.Server
                 }
             }
         }
+
+        public static void TerminateLocalServer()
+        {
+            if (StartedByCOM)
+                Application.Exit();
+        }
         #endregion
 
         // -----------------

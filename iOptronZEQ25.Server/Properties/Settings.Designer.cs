@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ASCOM.iOptronZEQ25.Properties {
+namespace ASCOM.iOptronZEQ25.Server.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -25,37 +25,49 @@ namespace ASCOM.iOptronZEQ25.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM1")]
-        public string COMPort {
+        [global::System.Configuration.DefaultSettingValueAttribute("(not set)")]
+        public string CommPortName {
             get {
-                return ((string)(this["COMPort"]));
+                return ((string)(this["CommPortName"]));
             }
             set {
-                this["COMPort"] = value;
+                this["CommPortName"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Trace {
-            get {
-                return ((bool)(this["Trace"]));
-            }
-            set {
-                this["Trace"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM1:9600")]
+        [global::System.Configuration.DefaultSettingValueAttribute("(not set)")]
         public string ConnectionString {
             get {
                 return ((string)(this["ConnectionString"]));
             }
             set {
                 this["ConnectionString"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point MainFormLocation {
+            get {
+                return ((global::System.Drawing.Point)(this["MainFormLocation"]));
+            }
+            set {
+                this["MainFormLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point SetupDialogLocation {
+            get {
+                return ((global::System.Drawing.Point)(this["SetupDialogLocation"]));
+            }
+            set {
+                this["SetupDialogLocation"] = value;
             }
         }
     }

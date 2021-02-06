@@ -8,5 +8,8 @@
     <Setting Name="Trace" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="ConnectionString" Type="System.String" Scope="User">
+      <Value Profile="(Default)">COM1:9600</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -13,10 +13,12 @@
 // Written by:	Bob Denny	29-May-2007
 // Modified by Chris Rowland and Peter Simpson to hamdle multiple hardware devices March 2011
 //
-using ASCOM;
+using ASCOM.iOptronZEQ25.Server.Properties;
+using iOptronZEQ25.TelescopeInterface;
+using NLog;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Windows.Forms;
 
 namespace ASCOM.iOptronZEQ25.Server
 {
@@ -30,12 +32,85 @@ namespace ASCOM.iOptronZEQ25.Server
     /// </summary>
     public static class SharedResources
     {
+
+        /// <summary>
+        ///     ASCOM DeviceID (COM ProgID) for the telescope driver.
+        /// </summary>
+        public const string TelescopeDriverId = "ASCOM.iOptronZEQ25.Telescope";
+        /// <summary>
+        ///     Driver description for the telescope driver.
+        /// </summary>
+        public const string TelescopeDriverName = "iOptron ZEQ25 Telescope";
+
+        private static readonly ILogger Log;
+
         // object used for locking to prevent multiple drivers accessing common code at the same time
         private static readonly object lockObject = new object();
 
         // Shared serial port. This will allow multiple drivers to use one single serial port.
         private static ASCOM.Utilities.Serial s_sharedSerial = new ASCOM.Utilities.Serial();        // Shared serial port
         private static int s_z = 0;     // counter for the number of connections to the serial port
+
+        static SharedResources()
+        {
+            Log = LogManager.GetCurrentClassLogger();
+            CommPortName = Settings.Default.CommPortName;
+            ConnectionString = Settings.Default.ConnectionString;
+            ConnectionManager = CreateConnectionManager();
+        }
+
+        /// <summary>
+        ///     Gets the connection manager.
+        /// </summary>
+        /// <value>The connection manager.</value>
+        public static ClientConnectionManager ConnectionManager { get; }
+
+        private static ClientConnectionManager CreateConnectionManager()
+        {
+            Log.Info("Creating ClientConnectionManager");
+            return new ClientConnectionManager(
+                CreateTransactionProcessorFactory());
+        }
+
+        private static ITransactionProcessorFactory CreateTransactionProcessorFactory()
+        {
+            Log.Warn(
+                $"Creating transaction processor factory with connection string {Settings.Default.ConnectionString}");
+            return new ReactiveTransactionProcessorFactory(Settings.Default.ConnectionString ?? "(not set)");
+        }
+
+        public static void DoSetupDialog(Guid clientId)
+        {
+            var oldConnectionString = Settings.Default.ConnectionString;
+            Log.Info($"SetupDialog requested by client {clientId}");
+            using (var dialogForm = new ServerSetupDialogForm())
+            {
+                var result = dialogForm.ShowDialog();
+                switch (result)
+                {
+                    case DialogResult.OK:
+                        Log.Info($"SetupDialog successful, saving settings");
+                        Settings.Default.Save();
+                        var newConnectionString = Settings.Default.ConnectionString;
+                        if (oldConnectionString != newConnectionString)
+                        {
+                            Log.Warn(
+                                $"Connection string has changed from {oldConnectionString} to {newConnectionString} - replacing the TansactionProcessorFactory");
+                            ConnectionManager.TransactionProcessorFactory = CreateTransactionProcessorFactory();
+                        }
+                        break;
+                    default:
+                        Log.Warn("SetupDialog cancelled or failed - reverting to previous settings");
+                        Settings.Default.Reload();
+                        break;
+                }
+            }
+        }
+
+        public static void UpdateTransactionProcessFactory()
+        {
+            ConnectionManager.TransactionProcessorFactory = CreateTransactionProcessorFactory();
+        }
 
         //
         // Public access to shared resources
@@ -116,6 +191,9 @@ namespace ASCOM.iOptronZEQ25.Server
             }
             get { return SharedSerial.Connected; }
         }
+
+        public static string CommPortName { get; set; }
+        public static string ConnectionString { get; set; }
 
         #endregion
 
