@@ -606,7 +606,20 @@ namespace iOptronZEQ25.TelescopeInterface
                 SideOfPierTransaction.WaitForCompletionOrTimeout();
                 String response = SideOfPierTransaction.Response.ToString();
                 log.Info("Update SideOfPier (Response): {0}", SideOfPierTransaction.Response);
-                return SideOfPierTransaction.Value ? PierSide.pierWest : PierSide.pierEast;
+                double HourAngle = astroUtilities.ConditionHA(SiderealTime - RightAscension);
+
+                // pierWest is returned when the mount is observing at an hour angle between -6.0 and 0.0
+                // pierEast is returned when the mount is observing at an hour angle between 0.0 and + 6.0
+
+                // "Through the pole"
+                if (HourAngle < -6 || HourAngle > 6) // between -12.0 and -6.0 or between + 6.0 and + 12.0
+                {
+                    return SideOfPierTransaction.Value ? PierSide.pierEast : PierSide.pierWest;
+                }
+                else // between -6.0 and 0.0 or between 0.0 and + 6.0 (Normal pointing state) - 1 = West, 0 = East
+                {
+                    return SideOfPierTransaction.Value ? PierSide.pierWest : PierSide.pierEast;
+                } //
             }
             set
             {
