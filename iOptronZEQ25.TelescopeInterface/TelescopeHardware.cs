@@ -347,6 +347,10 @@ namespace iOptronZEQ25.TelescopeInterface
 
         public void MoveAxis(TelescopeAxes Axis, double Rate)
         {
+            // When the motion is stopped by setting the rate to zero the scope will be set to the previous TrackingRate
+            // or to no movement, depending on the state of the Tracking property.
+            // iOptron ZEQ25 mount takes care of this.
+
             isMoving = (Rate != 0);
             //Command: “:SRn#”
             //Response: “1”
