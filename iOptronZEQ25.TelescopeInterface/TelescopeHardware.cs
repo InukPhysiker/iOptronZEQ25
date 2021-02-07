@@ -1,4 +1,4 @@
-﻿using ASCOM.Astrometry.AstroUtils;
+using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
@@ -641,7 +641,7 @@ namespace iOptronZEQ25.TelescopeInterface
                 else // between -6.0 and 0.0 or between 0.0 and + 6.0 (Normal pointing state) - 1 = West, 0 = East
                 {
                     return SideOfPierTransaction.Value ? PierSide.pierWest : PierSide.pierEast;
-                } //
+                }
             }
             set
             {
