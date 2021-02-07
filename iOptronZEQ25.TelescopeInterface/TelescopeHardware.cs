@@ -718,6 +718,30 @@ namespace iOptronZEQ25.TelescopeInterface
             }
         }
 
+        private void UpdateSiteLongitude()
+        {
+            var SiteLongitudeTransaction = new ZEQ25Transaction(":Gg#") { Timeout = TimeSpan.FromSeconds(2) };
+            int Retry = 1;
+            for (int i = 0; i < Retry; i++)
+            {
+                Task.Run(() => transactionProcessor.CommitTransaction(SiteLongitudeTransaction));
+                log.Info("Waiting for SiteLongitude");
+                SiteLongitudeTransaction.WaitForCompletionOrTimeout();
+                if (!SiteLongitudeTransaction.Failed)
+                {
+                    log.Info("SiteLongitude (Response): {0}", SiteLongitudeTransaction.Response);
+                    String response = SiteLongitudeTransaction.Response.ToString();
+                    response = response.Replace("#", "");
+                    response = response.Replace("*", ":");
+                    latitude = utilities.DMSToDegrees(response);
+                    break; // jump out of loop
+                }
+                else
+                {
+                    log.Info("UpdateSiteLongitude: Failed");
+                }
+            }
+        }
 
         public double SiteLongitude
         {
@@ -729,17 +753,18 @@ namespace iOptronZEQ25.TelescopeInterface
                 //String response = CommandString(":Gg#", false);
                 //tl.LogMessage("SiteLongitude", "Get - " + response);
 
-                var SiteLongitudeTransaction = new ZEQ25Transaction(":Gg#") { Timeout = TimeSpan.FromSeconds(2) };
-                Task.Run(() => transactionProcessor.CommitTransaction(SiteLongitudeTransaction));
-                log.Info("Waiting for SiteLongitude");
-                SiteLongitudeTransaction.WaitForCompletionOrTimeout();
-                log.Info("SiteLongitude (Response): {0}", SiteLongitudeTransaction.Response);
-                String response = SiteLongitudeTransaction.Response.ToString();
+                //var SiteLongitudeTransaction = new ZEQ25Transaction(":Gg#") { Timeout = TimeSpan.FromSeconds(2) };
+                //Task.Run(() => transactionProcessor.CommitTransaction(SiteLongitudeTransaction));
+                //log.Info("Waiting for SiteLongitude");
+                //SiteLongitudeTransaction.WaitForCompletionOrTimeout();
+                //log.Info("SiteLongitude (Response): {0}", SiteLongitudeTransaction.Response);
+                //String response = SiteLongitudeTransaction.Response.ToString();
 
-                response = response.Replace("#", "");
-                response = response.Replace("*", ":");
-                longitude = utilities.DMSToDegrees(response);
-                //tl.LogMessage("SiteLongitude", "Get - " + longitude);
+                //response = response.Replace("#", "");
+                //response = response.Replace("*", ":");
+                //longitude = utilities.DMSToDegrees(response);
+                //tl.LogMessage("SiteLongitude", "Get - " + longitude
+                UpdateSiteLongitude();
                 return longitude;
             }
             //Command: “:Sg sDDD*MM:SS#”
