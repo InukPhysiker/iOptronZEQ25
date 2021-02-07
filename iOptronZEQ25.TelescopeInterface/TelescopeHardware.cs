@@ -1,10 +1,7 @@
-using ASCOM.Astrometry.AstroUtils;
+﻿using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -244,11 +241,10 @@ namespace iOptronZEQ25.TelescopeInterface
             //tl.LogMessage("FindHome", "Finding Home");
             //CommandBool(":MH#", false);
             var FindHomeTransaction = new ZEQ25BooleanTransaction(":MH#") { Timeout = TimeSpan.FromSeconds(2) };
-              
+
             int Retry = 1;
             for (int i = 0; i < Retry; i++)
             {
-
                 Task.Run(() => transactionProcessor.CommitTransaction(FindHomeTransaction));
                 FindHomeTransaction.WaitForCompletionOrTimeout();
                 if (!FindHomeTransaction.Failed)
@@ -276,7 +272,7 @@ namespace iOptronZEQ25.TelescopeInterface
             //Command: “:AG#”
             //Response: “n.nn#”
             //This command returns the guide rate.
-            //The current Declination movement rate offset for telescope guiding (degrees/sec) 
+            //The current Declination movement rate offset for telescope guiding (degrees/sec)
             get
             {
                 //String response = CommandString(":AG#", false);
@@ -291,7 +287,7 @@ namespace iOptronZEQ25.TelescopeInterface
             //Command: “:RGnnn#”
             //Response: “1”
             //Selects guide rate nnn*0.01x sidereal rate. nnn is in the range of 10 to 90, and 100.
-            //The current Declination movement rate offset for telescope guiding (degrees/sec) 
+            //The current Declination movement rate offset for telescope guiding (degrees/sec)
             set
             {
                 int guiderate = (int)((value / SiderealRateDPS) * 100);
@@ -308,7 +304,7 @@ namespace iOptronZEQ25.TelescopeInterface
             //Command: “:AG#”
             //Response: “n.nn#”
             //This command returns the guide rate.
-            //The current Declination movement rate offset for telescope guiding (degrees/sec) 
+            //The current Declination movement rate offset for telescope guiding (degrees/sec)
             get
             {
                 //String response = CommandString(":AG#", false);
@@ -324,7 +320,7 @@ namespace iOptronZEQ25.TelescopeInterface
             //Command: “:RGnnn#”
             //Response: “1”
             //Selects guide rate nnn*0.01x sidereal rate. nnn is in the range of 10 to 90, and 100.
-            //The current Declination movement rate offset for telescope guiding (degrees/sec) 
+            //The current Declination movement rate offset for telescope guiding (degrees/sec)
             set
             {
                 int guiderate = (int)((value / SiderealRateDPS) * 100);
@@ -385,10 +381,9 @@ namespace iOptronZEQ25.TelescopeInterface
             int x = speed >> 1; // previous power of 2
 
             // next power of 2 - requested speed        (proximity to next power of 2)
-            // requested speed - previous power of 2    (proximity to previous power of 2) 
+            // requested speed - previous power of 2    (proximity to previous power of 2)
             // set speed_power to nearest power of 2
             int speed_power = (speed - speed_int) > (speed_int - x) ? x : speed;
-
 
             log.Info("MoveAxis, Speed: {0} x SiderealRateDPS", speed);
             switch (speed_power)
@@ -402,39 +397,51 @@ namespace iOptronZEQ25.TelescopeInterface
                     StopMovingTransaction.WaitForCompletionOrTimeout();
                     Thread.Sleep(250);
                     return;
+
                 case (1):
                     SetRateCommand = ":SR1#";
                     break;
+
                 case (2):
                     SetRateCommand = ":SR2#";
                     break;
+
                 case (4):
                     SetRateCommand = ":SR2#"; // 4x not supported set to 2x instead
                     break;
+
                 case (8):
                     SetRateCommand = ":SR3#";
                     break;
+
                 case (16):
                     SetRateCommand = ":SR4#";
                     break;
+
                 case (32):
                     SetRateCommand = ":SR4#"; // 32x not supported set to 16x instead
                     break;
+
                 case (64):
                     SetRateCommand = ":SR5#";
                     break;
+
                 case (128):
                     SetRateCommand = ":SR6#";
                     break;
+
                 case (256):
                     SetRateCommand = ":SR7#";
                     break;
+
                 case (512):
                     SetRateCommand = ":SR8#";
                     break;
+
                 case (1024):
                     SetRateCommand = ":SR9#";
                     break;
+
                 default:
                     SetRateCommand = ":SR1#";
                     break;
@@ -459,6 +466,7 @@ namespace iOptronZEQ25.TelescopeInterface
                     //moving = true;
                     //CommandBlind(MoveCommand, false);
                     break;
+
                 case TelescopeAxes.axisSecondary:
                     // Mount is physically on East side of pier ":mn#" moves south!
                     // Mount is physically on East side of pier and pointing through the pole: ":mn#" moves north (okay)
@@ -509,15 +517,19 @@ namespace iOptronZEQ25.TelescopeInterface
                 case ASCOM.DeviceInterface.GuideDirections.guideEast:
                     MoveDurationCommand = ":Me" + XXXXX + "#";
                     break;
+
                 case ASCOM.DeviceInterface.GuideDirections.guideNorth:
                     MoveDurationCommand = ":Mn" + XXXXX + "#";
                     break;
+
                 case ASCOM.DeviceInterface.GuideDirections.guideSouth:
                     MoveDurationCommand = ":Ms" + XXXXX + "#";
                     break;
+
                 case ASCOM.DeviceInterface.GuideDirections.guideWest:
                     MoveDurationCommand = ":Mw" + XXXXX + "#";
                     break;
+
                 default:
                     MoveDurationCommand = "";
                     break;
@@ -580,7 +592,7 @@ namespace iOptronZEQ25.TelescopeInterface
 
         private void UpdateSideOfPier()
         {
-            if (Slewing || AtHome )
+            if (Slewing || AtHome)
             {
                 return;
             }
@@ -995,7 +1007,7 @@ namespace iOptronZEQ25.TelescopeInterface
             set
             {
                 targetRaDec.X = value;
-                //targetRightAscension = value;          
+                //targetRightAscension = value;
                 String HHMMSS = utilities.HoursToHMS(value);
                 String Command = ":Sr " + HHMMSS + "#";
                 //tl.LogMessage("TargetRightAscension", "Set - Sending Command " + Command);
@@ -1004,10 +1016,8 @@ namespace iOptronZEQ25.TelescopeInterface
                 Task.Run(() => transactionProcessor.CommitTransaction(TargetRightAscensionTransaction));
                 TargetRightAscensionTransaction.WaitForCompletionOrTimeout();
                 log.Info("TargetRightAscension (Response): {0}", TargetRightAscensionTransaction.Response);
-                
             }
         }
-
 
         private void UpdateTracking()
         {
@@ -1047,7 +1057,7 @@ namespace iOptronZEQ25.TelescopeInterface
                     String Command = ":ST0#";
                     var TrackingTransaction = new ZEQ25BooleanTransaction(Command) { Timeout = TimeSpan.FromSeconds(2) };
                     Task.Run(() => transactionProcessor.CommitTransaction(TrackingTransaction));
-                    TrackingTransaction.WaitForCompletionOrTimeout();         
+                    TrackingTransaction.WaitForCompletionOrTimeout();
                     //previousTrackingRate = false;
                 }
             }
@@ -1113,7 +1123,6 @@ namespace iOptronZEQ25.TelescopeInterface
             }
         }
 
-
         //public ITrackingRates TrackingRates
         //{
         //    get
@@ -1149,7 +1158,6 @@ namespace iOptronZEQ25.TelescopeInterface
         //    throw new ASCOM.MethodNotImplementedException("Unpark");
         //}
 
-        #endregion
-
+        #endregion ITelescope Implementation
     }
 }
