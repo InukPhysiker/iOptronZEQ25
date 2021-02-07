@@ -1,4 +1,4 @@
-using ASCOM.Astrometry.AstroUtils;
+﻿using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
@@ -481,6 +481,10 @@ namespace iOptronZEQ25.TelescopeInterface
             Task.Run(() => transactionProcessor.CommitTransaction(MoveTransaction));
             log.Info("Waiting for move command completion");
             MoveTransaction.WaitForCompletionOrTimeout();
+            if (MoveTransaction.Failed)
+            {
+                log.Info("MoveTransaction Failed!");
+            }
         }
 
         //public void Park()
