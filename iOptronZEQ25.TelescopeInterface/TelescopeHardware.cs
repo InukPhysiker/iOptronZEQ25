@@ -611,31 +611,31 @@ namespace iOptronZEQ25.TelescopeInterface
             }
         }
 
-        //public double SiderealTime
-        //{
-        //    get
-        //    {
-        //        // Now using NOVAS 3.1
-        //        double siderealTime = 0.0;
-        //        using (var novas = new ASCOM.Astrometry.NOVAS.NOVAS31())
-        //        {
-        //            var jd = utilities.DateUTCToJulian(DateTime.UtcNow);
-        //            novas.SiderealTime(jd, 0, novas.DeltaT(jd),
-        //                ASCOM.Astrometry.GstType.GreenwichApparentSiderealTime,
-        //                ASCOM.Astrometry.Method.EquinoxBased,
-        //                ASCOM.Astrometry.Accuracy.Reduced, ref siderealTime);
-        //        }
+        public double SiderealTime
+        {
+            get
+            {
+                // Now using NOVAS 3.1
+                double siderealTime = 0.0;
+                using (var novas = new ASCOM.Astrometry.NOVAS.NOVAS31())
+                {
+                    var jd = utilities.DateUTCToJulian(DateTime.UtcNow);
+                    novas.SiderealTime(jd, 0, novas.DeltaT(jd),
+                        ASCOM.Astrometry.GstType.GreenwichApparentSiderealTime,
+                        ASCOM.Astrometry.Method.EquinoxBased,
+                        ASCOM.Astrometry.Accuracy.Reduced, ref siderealTime);
+                }
 
-        //        // Allow for the longitude
-        //        siderealTime += SiteLongitude / 360.0 * 24.0;
+                // Allow for the longitude
+                siderealTime += SiteLongitude / 360.0 * 24.0;
 
-        //        // Reduce to the range 0 to 24 hours
-        //        siderealTime = astroUtilities.ConditionRA(siderealTime);
+                // Reduce to the range 0 to 24 hours
+                siderealTime = astroUtilities.ConditionRA(siderealTime);
 
-        //        // tl.LogMessage("SiderealTime", "Get - " + siderealTime.ToString());
-        //        return siderealTime;
-        //    }
-        //}
+                // tl.LogMessage("SiderealTime", "Get - " + siderealTime.ToString());
+                return siderealTime;
+            }
+        }
 
         //public double SiteElevation
         //{
