@@ -877,7 +877,7 @@ namespace iOptronZEQ25.TelescopeInterface
                 targetRaDec.Y = value;
                 //targetDeclination = value;
                 String DDMMSS = utilities.DegreesToDMS(value, "*", ":", "");
-                String sign = (value < 0) ? "-" : "+";
+                String sign = (value < 0) ? "" : "+";
                 String Command = ":Sd " + sign + DDMMSS + "#";
                 //tl.LogMessage("TargetDeclination", "Set - Sending Command " + Command);
                 //CommandBool(Command, false);
