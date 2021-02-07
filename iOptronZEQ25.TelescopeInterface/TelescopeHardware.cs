@@ -106,11 +106,6 @@ namespace iOptronZEQ25.TelescopeInterface
 
         private void UpdateAtHome()
         {
-            //if ( slewingState )
-            //{
-            //    isAtHome = false;
-            //    return;
-            //}
             // Command: “:AH#”
             // Respond: “0” The telescope is not at “home” position,
             // “1” The telescope is at “home” position.
@@ -229,17 +224,10 @@ namespace iOptronZEQ25.TelescopeInterface
 
         public void FindHome()
         {
-            //if (AtPark)
-            //{
-            //    throw new ParkedException("Cannot find Home when Parked");
-            //}
-
             //Tracking = false;
             //Command: “:MH#”
             //Respond: “1”
             //This command will slew to the “home” position immediately.
-            //tl.LogMessage("FindHome", "Finding Home");
-            //CommandBool(":MH#", false);
             var FindHomeTransaction = new ZEQ25BooleanTransaction(":MH#") { Timeout = TimeSpan.FromSeconds(2) };
 
             int Retry = 1;
@@ -275,8 +263,6 @@ namespace iOptronZEQ25.TelescopeInterface
             //The current Declination movement rate offset for telescope guiding (degrees/sec)
             get
             {
-                //String response = CommandString(":AG#", false);
-                //tl.LogMessage("GuideRateDeclination Get - ", response);
                 var GuideRateDeclinationeTransaction = new ZEQ25BooleanTransaction(":AG#") { Timeout = TimeSpan.FromSeconds(2) };
                 Task.Run(() => transactionProcessor.CommitTransaction(GuideRateDeclinationeTransaction));
                 GuideRateDeclinationeTransaction.WaitForCompletionOrTimeout();
@@ -292,8 +278,6 @@ namespace iOptronZEQ25.TelescopeInterface
             {
                 int guiderate = (int)((value / SiderealRateDPS) * 100);
                 String command = ":RG" + guiderate.ToString().PadLeft(3, '0') + "#";
-                //CommandBool(command, false);
-                //tl.LogMessage("GuideRateDeclination Set", command);
                 var GuideRateDeclinationeTransaction = new ZEQ25BooleanTransaction(command) { Timeout = TimeSpan.FromSeconds(2) };
                 Task.Run(() => transactionProcessor.CommitTransaction(GuideRateDeclinationeTransaction));
             }
@@ -307,13 +291,10 @@ namespace iOptronZEQ25.TelescopeInterface
             //The current Declination movement rate offset for telescope guiding (degrees/sec)
             get
             {
-                //String response = CommandString(":AG#", false);
                 var GuideRateRightAscensionTransaction = new ZEQ25BooleanTransaction(":AG#") { Timeout = TimeSpan.FromSeconds(2) };
                 Task.Run(() => transactionProcessor.CommitTransaction(GuideRateRightAscensionTransaction));
                 GuideRateRightAscensionTransaction.WaitForCompletionOrTimeout();
                 String response = GuideRateRightAscensionTransaction.Response.ToString();
-
-                //tl.LogMessage("GuideRateRightAscension Get - ", response);
                 response = response.Replace("#", "");
                 return SiderealRateDPS * Convert.ToDouble(response);
             }
@@ -325,8 +306,6 @@ namespace iOptronZEQ25.TelescopeInterface
             {
                 int guiderate = (int)((value / SiderealRateDPS) * 100);
                 String command = ":RG" + guiderate.ToString().PadLeft(3, '0') + "#";
-                //CommandBool(command, false);
-                //tl.LogMessage("GuideRateRightAscension Set", command);
                 var GuideRateRightAscensionTransaction = new ZEQ25BooleanTransaction(command) { Timeout = TimeSpan.FromSeconds(2) };
                 Task.Run(() => transactionProcessor.CommitTransaction(GuideRateRightAscensionTransaction));
             }
@@ -336,8 +315,6 @@ namespace iOptronZEQ25.TelescopeInterface
         {
             get
             {
-                //tl.LogMessage("IsPulseGuiding Get", "Not implemented");
-                //throw new ASCOM.PropertyNotImplementedException("IsPulseGuiding", false);
                 return pulseGuiding;
             }
         }
@@ -389,9 +366,6 @@ namespace iOptronZEQ25.TelescopeInterface
             switch (speed_power)
             {
                 case (0):
-                    // CommandBlind(":q#", false); // Stop moving
-                    //Tracking = previousTrackingRate;
-                    //moving = false;
                     var StopMovingTransaction = new NoReplyTransaction(":q#") { Timeout = TimeSpan.FromSeconds(2) };
                     Task.Run(() => transactionProcessor.CommitTransaction(StopMovingTransaction));
                     StopMovingTransaction.WaitForCompletionOrTimeout();
@@ -463,8 +437,6 @@ namespace iOptronZEQ25.TelescopeInterface
             {
                 case TelescopeAxes.axisPrimary:
                     MoveCommand = (direction == -1) ? ":me#" : ":mw#";
-                    //moving = true;
-                    //CommandBlind(MoveCommand, false);
                     break;
 
                 case TelescopeAxes.axisSecondary:
@@ -476,12 +448,10 @@ namespace iOptronZEQ25.TelescopeInterface
                     if (SideOfPier == PierSide.pierEast) // ":mn#" moves north
                     {
                         MoveCommand = (direction == 1) ? ":mn#" : ":ms#";
-                        //CommandBlind(MoveCommand, false);
                     }
                     if (SideOfPier == PierSide.pierWest) // ":mn#" moves south (inverted)
                     {
                         MoveCommand = (direction == -1) ? ":mn#" : ":ms#";
-                        //CommandBlind(MoveCommand, false);
                     }
                     break;
             }
@@ -598,9 +568,6 @@ namespace iOptronZEQ25.TelescopeInterface
             }
             //Command: “:pS#”
             //Response: “0” East, “1” West.
-            //tl.LogMessage("SideOfPier Get", "Not implemented");
-            //throw new ASCOM.PropertyNotImplementedException("SideOfPier", false);
-            //bool result = CommandBool(":pS#", false);
             var SideOfPierTransaction = new ZEQ25BooleanTransaction(":pS#") { Timeout = TimeSpan.FromSeconds(2) };
             Task.Run(() => transactionProcessor.CommitTransaction(SideOfPierTransaction));
             SideOfPierTransaction.WaitForCompletionOrTimeout();
@@ -628,13 +595,8 @@ namespace iOptronZEQ25.TelescopeInterface
         {
             get
             {
-                //tl.LogMessage("SideOfPier Get", "Not implemented");
-                //throw new ASCOM.PropertyNotImplementedException("SideOfPier", false);
                 //Command: “:pS#”
                 //Response: “0” East, “1” West.
-                //tl.LogMessage("SideOfPier Get", "Not implemented");
-                //throw new ASCOM.PropertyNotImplementedException("SideOfPier", false);
-                //bool result = CommandBool(":pS#", false);
                 var SideOfPierTransaction = new ZEQ25BooleanTransaction(":pS#") { Timeout = TimeSpan.FromSeconds(2) };
                 Task.Run(() => transactionProcessor.CommitTransaction(SideOfPierTransaction));
                 SideOfPierTransaction.WaitForCompletionOrTimeout();
@@ -734,19 +696,6 @@ namespace iOptronZEQ25.TelescopeInterface
             //Gets the current latitude. Note the return value will be in signed format, North is positive.
             get
             {
-                //String response = CommandString(":Gt#", false);
-
-                //var SiteLatitudeTransaction = new ZEQ25Transaction(":Gt#") { Timeout = TimeSpan.FromSeconds(2) };
-                //Task.Run(() => transactionProcessor.CommitTransaction(SiteLatitudeTransaction));
-                //log.Info("Waiting for SiteLatitude");
-                //SiteLatitudeTransaction.WaitForCompletionOrTimeout();
-                //log.Info("SiteLatitude (Response): {0}", SiteLatitudeTransaction.Response);
-                //String response = SiteLatitudeTransaction.Response.ToString();
-
-                //response = response.Replace("#", "");
-                //response = response.Replace("*", ":");
-                //latitude = utilities.DMSToDegrees(response);
-                //tl.LogMessage("SiteLatitude", "Get - " + latitude);
                 UpdateSiteLatitude();
                 return latitude;
             }
@@ -761,8 +710,6 @@ namespace iOptronZEQ25.TelescopeInterface
                 String DDMMSS = utilities.DegreesToDMS(value, "*", ":", "");
                 String sign = (value < 0) ? "" : "+";
                 String Command = ":St " + sign + DDMMSS + "#";
-                //tl.LogMessage("SiteLatitude", "Set - Sending Command " + Command);
-                //CommandBool(Command, false);
                 var SiteLatitudeTransaction = new ZEQ25BooleanTransaction(Command) { Timeout = TimeSpan.FromSeconds(2) };
                 Task.Run(() => transactionProcessor.CommitTransaction(SiteLatitudeTransaction));
                 SiteLatitudeTransaction.WaitForCompletionOrTimeout();
@@ -801,20 +748,6 @@ namespace iOptronZEQ25.TelescopeInterface
             //Gets the current longitude. Note the return value will be in signed format, East is positive.
             get
             {
-                //String response = CommandString(":Gg#", false);
-                //tl.LogMessage("SiteLongitude", "Get - " + response);
-
-                //var SiteLongitudeTransaction = new ZEQ25Transaction(":Gg#") { Timeout = TimeSpan.FromSeconds(2) };
-                //Task.Run(() => transactionProcessor.CommitTransaction(SiteLongitudeTransaction));
-                //log.Info("Waiting for SiteLongitude");
-                //SiteLongitudeTransaction.WaitForCompletionOrTimeout();
-                //log.Info("SiteLongitude (Response): {0}", SiteLongitudeTransaction.Response);
-                //String response = SiteLongitudeTransaction.Response.ToString();
-
-                //response = response.Replace("#", "");
-                //response = response.Replace("*", ":");
-                //longitude = utilities.DMSToDegrees(response);
-                //tl.LogMessage("SiteLongitude", "Get - " + longitude
                 UpdateSiteLongitude();
                 return longitude;
             }
@@ -830,8 +763,6 @@ namespace iOptronZEQ25.TelescopeInterface
                 String sign = (value < 0) ? "" : "+";
                 String zero = (Math.Abs(value) <= 100) ? "0" : "";
                 String Command = ":Sg " + sign + zero + DDMMSS + "#";
-                //tl.LogMessage("SiteLongitude", "Set - Sending Command " + Command);
-                //CommandBool(Command, false);
                 var SiteLongitudeTransaction = new ZEQ25BooleanTransaction(Command) { Timeout = TimeSpan.FromSeconds(2) };
                 Task.Run(() => transactionProcessor.CommitTransaction(SiteLongitudeTransaction));
                 SiteLongitudeTransaction.WaitForCompletionOrTimeout();
@@ -890,8 +821,6 @@ namespace iOptronZEQ25.TelescopeInterface
             slewingState = true;
             //Server.s_MainForm.labelSlew.ForeColor = Color.Red;
             isAtHome = false;
-            //tl.LogMessage("SlewToTarget", "Sending :MS#");
-            //CommandBool(":MS#", false);
             String Command = ":MS#";
             var SlewToTargetTransaction = new ZEQ25BooleanTransaction(Command) { Timeout = TimeSpan.FromSeconds(2) };
             Task.Run(() => transactionProcessor.CommitTransaction(SlewToTargetTransaction));
@@ -903,8 +832,6 @@ namespace iOptronZEQ25.TelescopeInterface
             slewingState = true;
             //Server.s_MainForm.labelSlew.ForeColor = Color.Red;
             isAtHome = false;
-            //tl.LogMessage("SlewToTargetAsync", "Sending :MS#");
-            //CommandBool(":MS#", false);
             String Command = ":MS#";
             var SlewToTargetAsyncTransaction = new ZEQ25BooleanTransaction(Command) { Timeout = TimeSpan.FromSeconds(2) };
             Task.Run(() => transactionProcessor.CommitTransaction(SlewToTargetAsyncTransaction));
@@ -951,7 +878,6 @@ namespace iOptronZEQ25.TelescopeInterface
         public void SyncToTarget()
         {
             //tl.LogMessage("SyncToTarget", "Sending Command :CM#");
-            //CommandBool(":CM#", false);
             String Command = ":CM#";
             var SyncToTargetTransaction = new ZEQ25BooleanTransaction(Command) { Timeout = TimeSpan.FromSeconds(2) };
             Task.Run(() => transactionProcessor.CommitTransaction(SyncToTargetTransaction));
@@ -960,29 +886,17 @@ namespace iOptronZEQ25.TelescopeInterface
 
         public double TargetDeclination
         {
-            //get { return targetRaDec.Y; }
-            //set { targetRaDec.Y = value; }
             get
             {
                 // Note: ":GD#" gets the current declination! Not commanded declination.
-                //String response = CommandString(":GD#", false);
-                //tl.LogMessage("Declination", "Get - " + response);
-                //response = response.Replace("#", "");
-                //response = response.Replace("*", ":");
-                //double targetdeclination = utilities.DMSToDegrees(response);
-                //tl.LogMessage("TargetDeclination", "Get - " + targetdeclination);
-                //return targetDeclination;
                 return targetRaDec.Y;
             }
             set
             {
                 targetRaDec.Y = value;
-                //targetDeclination = value;
                 String DDMMSS = utilities.DegreesToDMS(value, "*", ":", "");
                 String sign = (value < 0) ? "" : "+";
                 String Command = ":Sd " + sign + DDMMSS + "#";
-                //tl.LogMessage("TargetDeclination", "Set - Sending Command " + Command);
-                //CommandBool(Command, false);
                 var TargetDeclinationTransaction = new ZEQ25BooleanTransaction(Command) { Timeout = TimeSpan.FromSeconds(2) };
                 Task.Run(() => transactionProcessor.CommitTransaction(TargetDeclinationTransaction));
                 TargetDeclinationTransaction.WaitForCompletionOrTimeout();
@@ -992,26 +906,15 @@ namespace iOptronZEQ25.TelescopeInterface
 
         public double TargetRightAscension
         {
-            //get { return targetRaDec.X; }
-            //set { targetRaDec.X = value; }
             get
             {
-                //String response = CommandString(":GR#", false);
-                //tl.LogMessage("TargetRightAscension", "Get - " + response);
-                //response = response.Replace("#", "");
-                //double rightAscension = utilities.HMSToHours(response);
-                //tl.LogMessage("TargetRightAscension", "Get - " + rightAscension);
-                //return targetRightAscension;
                 return targetRaDec.X;
             }
             set
             {
                 targetRaDec.X = value;
-                //targetRightAscension = value;
                 String HHMMSS = utilities.HoursToHMS(value);
                 String Command = ":Sr " + HHMMSS + "#";
-                //tl.LogMessage("TargetRightAscension", "Set - Sending Command " + Command);
-                //CommandBool(Command, false);
                 var TargetRightAscensionTransaction = new ZEQ25BooleanTransaction(Command) { Timeout = TimeSpan.FromSeconds(2) };
                 Task.Run(() => transactionProcessor.CommitTransaction(TargetRightAscensionTransaction));
                 TargetRightAscensionTransaction.WaitForCompletionOrTimeout();
@@ -1021,8 +924,6 @@ namespace iOptronZEQ25.TelescopeInterface
 
         private void UpdateTracking()
         {
-            //bool tracking = CommandBool(":AT#", false);
-            //tl.LogMessage("Tracking", "Get - " + tracking.ToString());
             var TrackingTransaction = new ZEQ25BooleanTransaction(":AT#") { Timeout = TimeSpan.FromSeconds(2) };
             Task.Run(() => transactionProcessor.CommitTransaction(TrackingTransaction));
             TrackingTransaction.WaitForCompletionOrTimeout();
@@ -1041,24 +942,18 @@ namespace iOptronZEQ25.TelescopeInterface
                 if (value)
                 {
                     isTracking = true;
-                    //tl.LogMessage("Tracking", "Set - 1");
-                    //CommandBool(":ST1#", false);
                     String Command = ":ST1#";
                     var TrackingTransaction = new ZEQ25BooleanTransaction(Command) { Timeout = TimeSpan.FromSeconds(2) };
                     Task.Run(() => transactionProcessor.CommitTransaction(TrackingTransaction));
                     TrackingTransaction.WaitForCompletionOrTimeout();
-                    //previousTrackingRate = true;
                 }
                 else
                 {
                     isTracking = false;
-                    //tl.LogMessage("Tracking", "Set - 0");
-                    //CommandBool(":ST0#", false);
                     String Command = ":ST0#";
                     var TrackingTransaction = new ZEQ25BooleanTransaction(Command) { Timeout = TimeSpan.FromSeconds(2) };
                     Task.Run(() => transactionProcessor.CommitTransaction(TrackingTransaction));
                     TrackingTransaction.WaitForCompletionOrTimeout();
-                    //previousTrackingRate = false;
                 }
             }
         }
