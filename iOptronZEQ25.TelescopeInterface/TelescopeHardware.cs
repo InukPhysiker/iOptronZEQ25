@@ -459,12 +459,17 @@ namespace iOptronZEQ25.TelescopeInterface
                     //CommandBlind(MoveCommand, false);
                     break;
                 case TelescopeAxes.axisSecondary:
-                    if (SideOfPier == PierSide.pierEast)
+                    // Mount is physically on East side of pier ":mn#" moves south!
+                    // Mount is physically on East side of pier and pointing through the pole: ":mn#" moves north (okay)
+                    // Mount is physically on West side of pier ":mn#" moves north (okay)
+                    // Mount is physically on West side of pier and pointing through the pole ":mn#" moves south!
+
+                    if (SideOfPier == PierSide.pierEast) // ":mn#" moves north
                     {
-                        MoveCommand = (direction == -1) ? ":ms#" : ":mn#";
+                        MoveCommand = (direction == 1) ? ":mn#" : ":ms#";
                         //CommandBlind(MoveCommand, false);
                     }
-                    if (SideOfPier == PierSide.pierWest)
+                    if (SideOfPier == PierSide.pierWest) // ":mn#" moves south (inverted)
                     {
                         MoveCommand = (direction == -1) ? ":mn#" : ":ms#";
                         //CommandBlind(MoveCommand, false);
