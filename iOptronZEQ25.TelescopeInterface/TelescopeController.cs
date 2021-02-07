@@ -140,6 +140,8 @@ namespace iOptronZEQ25.TelescopeInterface
             InitialTransactions();
             UpdateRightAscension();
             UpdateDeclination();
+            UpdateSiteLatitude();
+            UpdateSiteLongitude();
         }
     }
 }
