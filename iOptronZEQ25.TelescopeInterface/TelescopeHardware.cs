@@ -1,4 +1,5 @@
-﻿using ASCOM.DeviceInterface;
+using ASCOM.Astrometry.AstroUtils;
+using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,11 @@ namespace iOptronZEQ25.TelescopeInterface
         /// Private variable to hold an ASCOM Utilities object
         /// </summary>
         private static Util utilities;
+
+        /// <summary>
+        /// Private variable to hold an ASCOM AstroUtilities object to provide the Range method
+        /// </summary>
+        private AstroUtils astroUtilities;
 
         //
         // Vectors are used for pairs of angles that represent the various positions and rates
