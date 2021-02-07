@@ -696,7 +696,7 @@ namespace iOptronZEQ25.TelescopeInterface
             //Gets the current latitude. Note the return value will be in signed format, North is positive.
             get
             {
-                UpdateSiteLatitude();
+                // UpdateSiteLatitude();
                 return latitude;
             }
             //Command: “:St sDD*MM:SS#”
