@@ -17,6 +17,7 @@ namespace iOptronZEQ25.TelescopeInterface
             {
             this.factory = factory;
             utilities = new ASCOM.Utilities.Util(); //Initialise util object
+            astroUtilities = new ASCOM.Astrometry.AstroUtils.AstroUtils(); // Initialise astro-utilities object
         }
 
         public bool IsOnline => transactionProcessor != null && (factory?.Channel?.IsOpen ?? false);
