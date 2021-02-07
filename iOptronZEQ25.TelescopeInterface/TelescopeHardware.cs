@@ -1,4 +1,4 @@
-﻿using ASCOM.Astrometry.AstroUtils;
+using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
@@ -855,8 +855,11 @@ namespace iOptronZEQ25.TelescopeInterface
         {
             get
             {
+                if (isMoving) {
+                    return true;
+                }
                 UpdateSlewing();
-                return slewingState | isMoving;
+                return slewingState;
             }
         }
 
