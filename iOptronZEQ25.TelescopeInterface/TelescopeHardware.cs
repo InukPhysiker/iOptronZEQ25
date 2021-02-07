@@ -651,6 +651,31 @@ namespace iOptronZEQ25.TelescopeInterface
         //    }
         //}
 
+        private void UpdateSiteLatitude()
+        {
+            var SiteLatitudeTransaction = new ZEQ25Transaction(":Gt#") { Timeout = TimeSpan.FromSeconds(2) };
+            int Retry = 1;
+            for (int i = 0; i < Retry; i++)
+            {
+                Task.Run(() => transactionProcessor.CommitTransaction(SiteLatitudeTransaction));
+                log.Info("Waiting for SiteLatitude");
+                SiteLatitudeTransaction.WaitForCompletionOrTimeout();
+                if (!SiteLatitudeTransaction.Failed)
+                {
+                    log.Info("SiteLatitude (Response): {0}", SiteLatitudeTransaction.Response);
+                    String response = SiteLatitudeTransaction.Response.ToString();
+                    response = response.Replace("#", "");
+                    response = response.Replace("*", ":");
+                    latitude = utilities.DMSToDegrees(response);
+                    break; // jump out of loop
+                }
+                else
+                {
+                    log.Info("UpdateSiteLatitude: Failed");
+                }
+            }
+        }
+
         public double SiteLatitude
         {
             //Command: “:Gt#”
@@ -660,17 +685,18 @@ namespace iOptronZEQ25.TelescopeInterface
             {
                 //String response = CommandString(":Gt#", false);
 
-                var SiteLatitudeTransaction = new ZEQ25Transaction(":Gt#") { Timeout = TimeSpan.FromSeconds(2) };
-                Task.Run(() => transactionProcessor.CommitTransaction(SiteLatitudeTransaction));
-                log.Info("Waiting for SiteLatitude");
-                SiteLatitudeTransaction.WaitForCompletionOrTimeout();
-                log.Info("SiteLatitude (Response): {0}", SiteLatitudeTransaction.Response);
-                String response = SiteLatitudeTransaction.Response.ToString();
+                //var SiteLatitudeTransaction = new ZEQ25Transaction(":Gt#") { Timeout = TimeSpan.FromSeconds(2) };
+                //Task.Run(() => transactionProcessor.CommitTransaction(SiteLatitudeTransaction));
+                //log.Info("Waiting for SiteLatitude");
+                //SiteLatitudeTransaction.WaitForCompletionOrTimeout();
+                //log.Info("SiteLatitude (Response): {0}", SiteLatitudeTransaction.Response);
+                //String response = SiteLatitudeTransaction.Response.ToString();
 
-                response = response.Replace("#", "");
-                response = response.Replace("*", ":");
-                latitude = utilities.DMSToDegrees(response);
+                //response = response.Replace("#", "");
+                //response = response.Replace("*", ":");
+                //latitude = utilities.DMSToDegrees(response);
                 //tl.LogMessage("SiteLatitude", "Get - " + latitude);
+                UpdateSiteLatitude();
                 return latitude;
             }
             //Command: “:St sDD*MM:SS#”
