@@ -4,10 +4,10 @@
 //
 // ASCOM Telescope driver for iOptronZEQ25
 //
-// Description:	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
-//				nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam 
-//				erat, sed diam voluptua. At vero eos et accusam et justo duo 
-//				dolores et ea rebum. Stet clita kasd gubergren, no sea takimata 
+// Description:	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+//				nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+//				erat, sed diam voluptua. At vero eos et accusam et justo duo
+//				dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
 //				sanctus est Lorem ipsum dolor sit amet.
 //
 // Implements:	ASCOM Telescope interface version: <To be completed by driver developer>
@@ -20,7 +20,6 @@
 // dd-mmm-yyyy	XXX	6.0.0	Initial edit, created from ASCOM driver template
 // --------------------------------------------------------------------------------
 //
-
 
 // This is used to define code in the template that is specific to one class implementation
 // unused code can be deleted and this definition removed.
@@ -70,6 +69,7 @@ namespace ASCOM.iOptronZEQ25.Server
         /// </summary>
         //internal static string driverID = "ASCOM.iOptronZEQ25.Telescope";
         internal static string driverID;
+
         // TODO Change the descriptive string for your driver then remove this line
         /// <summary>
         /// Driver description that displays in the ASCOM Chooser.
@@ -80,6 +80,7 @@ namespace ASCOM.iOptronZEQ25.Server
         // internal static string comPortProfileName = "COM Port"; // Constants used for Profile persistence
         // internal static string comPortDefault = "COM1";
         internal static string traceStateProfileName = "Trace Level";
+
         internal static string traceStateDefault = "false";
 
         internal static string comPort; // Variables to hold the current device configuration
@@ -106,6 +107,7 @@ namespace ASCOM.iOptronZEQ25.Server
 
         // Reactive stuff
         private readonly Guid clientId;
+
         private readonly ILogger log = LogManager.GetCurrentClassLogger();
         private TelescopeController telescope;
 
@@ -333,9 +335,10 @@ namespace ASCOM.iOptronZEQ25.Server
             }
         }
 
-        #endregion
+        #endregion Common properties and methods.
 
         #region ITelescope Implementation
+
         public void AbortSlew()
         {
             //tl.LogMessage("AbortSlew", "Not implemented");
@@ -894,7 +897,7 @@ namespace ASCOM.iOptronZEQ25.Server
             //tl.LogMessage("SlewToTarget", "Not implemented");
             //throw new ASCOM.MethodNotImplementedException("SlewToTarget");
             CheckRange(telescope.TargetRightAscension, 0, 24, "SlewToTarget", "TargetRightAscension");
-            CheckRange(telescope.TargetDeclination, -90, 90, "SlewToTarget", "TargetDeclination");   ;
+            CheckRange(telescope.TargetDeclination, -90, 90, "SlewToTarget", "TargetDeclination"); ;
             //CheckParked("SlewToTarget");
             //CheckTracking(true, "SlewToTarget");
             telescope.TargetRightAscension = TargetRightAscension;
@@ -1085,16 +1088,17 @@ namespace ASCOM.iOptronZEQ25.Server
             throw new ASCOM.MethodNotImplementedException("Unpark");
         }
 
-        #endregion
+        #endregion ITelescope Implementation
 
         #region Private properties and methods
+
         // here are some useful properties and methods that can be used as required
         // to help with driver development
 
         //#region ASCOM Registration
 
         //// Register or unregister driver for ASCOM. This is harmless if already
-        //// registered or unregistered. 
+        //// registered or unregistered.
         ////
         ///// <summary>
         ///// Register or unregister the driver with the ASCOM Platform.
@@ -1320,6 +1324,7 @@ namespace ASCOM.iOptronZEQ25.Server
             var msg = string.Format(message, args);
             tl.LogMessage(identifier, msg);
         }
-        #endregion
+
+        #endregion Private properties and methods
     }
 }
