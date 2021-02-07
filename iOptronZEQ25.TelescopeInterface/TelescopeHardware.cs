@@ -1,4 +1,4 @@
-using ASCOM.Astrometry.AstroUtils;
+﻿using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
@@ -748,7 +748,7 @@ namespace iOptronZEQ25.TelescopeInterface
             //Gets the current longitude. Note the return value will be in signed format, East is positive.
             get
             {
-                UpdateSiteLongitude();
+                //UpdateSiteLongitude();
                 return longitude;
             }
             //Command: “:Sg sDDD*MM:SS#”
