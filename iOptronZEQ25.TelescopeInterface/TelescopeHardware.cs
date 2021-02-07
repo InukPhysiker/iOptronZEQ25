@@ -469,7 +469,6 @@ namespace iOptronZEQ25.TelescopeInterface
                         MoveCommand = (direction == -1) ? ":mn#" : ":ms#";
                         //CommandBlind(MoveCommand, false);
                     }
-                    //moving = true;
                     break;
             }
             var MoveTransaction = new NoReplyTransaction(MoveCommand) { Timeout = TimeSpan.FromSeconds(2) };
