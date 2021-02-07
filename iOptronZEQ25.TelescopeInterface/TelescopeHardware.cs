@@ -52,10 +52,10 @@ namespace iOptronZEQ25.TelescopeInterface
 
         private bool isTracking = false;
         private bool slewingState;
-        private double latitude;
+        private double? _SiteLatitude;
         private static bool isAtHome;
         private static bool pulseGuiding;
-        private static double longitude;
+        private static double? _SiteLongitude;
         private bool isMoving = false;
         private PierSide _SideOfPier;
         private static readonly double SiderealRateDPS = 0.004178; // degrees / second;;
@@ -679,7 +679,7 @@ namespace iOptronZEQ25.TelescopeInterface
                     String response = SiteLatitudeTransaction.Response.ToString();
                     response = response.Replace("#", "");
                     response = response.Replace("*", ":");
-                    latitude = utilities.DMSToDegrees(response);
+                    _SiteLatitude = utilities.DMSToDegrees(response);
                     break; // jump out of loop
                 }
                 else
@@ -696,8 +696,12 @@ namespace iOptronZEQ25.TelescopeInterface
             //Gets the current latitude. Note the return value will be in signed format, North is positive.
             get
             {
-                // UpdateSiteLatitude();
-                return latitude;
+                while (!_SiteLatitude.HasValue)
+                {
+                    UpdateSiteLatitude();
+                    Thread.Sleep(1000);
+                }
+                return _SiteLatitude.Value;
             }
             //Command: “:St sDD*MM:SS#”
             //Response: “1”
@@ -706,7 +710,7 @@ namespace iOptronZEQ25.TelescopeInterface
             //The latitude can only be entered in the range of - 90 to 90, north is positive.
             set
             {
-                latitude = value;
+                _SiteLatitude = value;
                 String DDMMSS = utilities.DegreesToDMS(value, "*", ":", "");
                 String sign = (value < 0) ? "" : "+";
                 String Command = ":St " + sign + DDMMSS + "#";
@@ -731,7 +735,7 @@ namespace iOptronZEQ25.TelescopeInterface
                     String response = SiteLongitudeTransaction.Response.ToString();
                     response = response.Replace("#", "");
                     response = response.Replace("*", ":");
-                    latitude = utilities.DMSToDegrees(response);
+                    _SiteLongitude = utilities.DMSToDegrees(response);
                     break; // jump out of loop
                 }
                 else
@@ -748,8 +752,12 @@ namespace iOptronZEQ25.TelescopeInterface
             //Gets the current longitude. Note the return value will be in signed format, East is positive.
             get
             {
-                //UpdateSiteLongitude();
-                return longitude;
+                while (!_SiteLongitude.HasValue)
+                {
+                    UpdateSiteLongitude();
+                    Thread.Sleep(1000);
+                }
+                return _SiteLongitude.Value;
             }
             //Command: “:Sg sDDD*MM:SS#”
             //Response: “1”
@@ -758,7 +766,7 @@ namespace iOptronZEQ25.TelescopeInterface
             //range of -180 to 180, east is positive.
             set
             {
-                longitude = value;
+                _SiteLongitude = value;
                 String DDMMSS = utilities.DegreesToDMS(value, "*", ":", "");
                 String sign = (value < 0) ? "" : "+";
                 String zero = (Math.Abs(value) <= 100) ? "0" : "";
