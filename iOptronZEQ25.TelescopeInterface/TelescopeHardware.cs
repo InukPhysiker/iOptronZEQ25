@@ -60,6 +60,7 @@ namespace iOptronZEQ25.TelescopeInterface
         private static bool pulseGuiding;
         private static double longitude;
         private bool isMoving = false;
+        private PierSide _SideOfPier;
         private static readonly double SiderealRateDPS = 0.004178; // degrees / second;;
 
         #region ITelescope Implementation
