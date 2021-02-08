@@ -157,6 +157,7 @@ namespace iOptronZEQ25.TelescopeInterface
             InitialTransactions();
             UpdateRightAscension();
             UpdateDeclination();
+            // Ensure mount location is updated
             UpdateSiteLatitude();
             UpdateSiteLongitude();
             TelescopeUpdateTimer.Start();
