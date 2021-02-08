@@ -868,7 +868,10 @@ namespace iOptronZEQ25.TelescopeInterface
             var SlewingStateTransaction = new ZEQ25BooleanTransaction(Command) { Timeout = TimeSpan.FromSeconds(2) };
             Task.Run(() => transactionProcessor.CommitTransaction(SlewingStateTransaction));
             SlewingStateTransaction.WaitForCompletionOrTimeout();
-            slewingState = SlewingStateTransaction.Value;
+            if (!SlewingStateTransaction.Failed)
+            {
+                slewingState = SlewingStateTransaction.Value;
+            }
             log.Info("Update Slewing (Response): {0}", SlewingStateTransaction.Response);
         }
 
