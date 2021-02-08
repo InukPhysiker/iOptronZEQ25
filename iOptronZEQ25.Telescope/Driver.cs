@@ -876,6 +876,7 @@ namespace ASCOM.iOptronZEQ25.Server
             {
                 Thread.Sleep(1000);  // Allow time for main timer loop to update the axis state
             }
+            Thread.Sleep(1000); // Allow the telescope positions to update
         }
 
         public void SlewToCoordinatesAsync(double RightAscension, double Declination)
@@ -915,6 +916,7 @@ namespace ASCOM.iOptronZEQ25.Server
             {
                 Thread.Sleep(1000);  // Allow time for main timer loop to update the axis state
             }
+            Thread.Sleep(1000); // Allow the telescope positions to update
         }
 
         public void SlewToTargetAsync()
