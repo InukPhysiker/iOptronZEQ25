@@ -1,6 +1,7 @@
 using NLog;
 using System;
 using System.Threading.Tasks;
+using System.Timers;
 using TA.Ascom.ReactiveCommunications;
 
 namespace iOptronZEQ25.TelescopeInterface
@@ -13,11 +14,23 @@ namespace iOptronZEQ25.TelescopeInterface
         private bool disposed;
         private ITransactionProcessor transactionProcessor;
 
+        private readonly Timer TelescopeUpdateTimer = new Timer { AutoReset = true };
+        public TimeSpan TelescopeUpdateTickInterval { get; set; } = TimeSpan.FromMilliseconds(1000);
+
         public TelescopeController(ITransactionProcessorFactory factory)
         {
             this.factory = factory;
             utilities = new ASCOM.Utilities.Util(); //Initialise util object
             astroUtilities = new ASCOM.Astrometry.AstroUtils.AstroUtils(); // Initialise astro-utilities object
+            TelescopeUpdateTimer.Interval = TelescopeUpdateTickInterval.TotalMilliseconds;
+            TelescopeUpdateTimer.Elapsed += TelescopeUpdateTimerElapsed;
+        }
+
+        //Update the Telescope Based on Timed Events
+        private void TelescopeUpdateTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            UpdateRightAscension();
+            UpdateDeclination();
         }
 
         public bool IsOnline => transactionProcessor != null && (factory?.Channel?.IsOpen ?? false);
@@ -146,6 +159,7 @@ namespace iOptronZEQ25.TelescopeInterface
             UpdateDeclination();
             UpdateSiteLatitude();
             UpdateSiteLongitude();
+            TelescopeUpdateTimer.Start();
         }
     }
 }
