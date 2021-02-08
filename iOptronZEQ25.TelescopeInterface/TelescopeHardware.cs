@@ -166,7 +166,7 @@ namespace iOptronZEQ25.TelescopeInterface
             set { altAzm.X = value; }
         }
 
-        internal double UpdateDeclination()
+        internal void UpdateDeclination()
         {
             //Command: “:GD#”
             //Response: “sDD*MM:SS#”
@@ -174,19 +174,19 @@ namespace iOptronZEQ25.TelescopeInterface
             Task.Run(() => transactionProcessor.CommitTransaction(DeclinationTransaction));
             DeclinationTransaction.WaitForCompletionOrTimeout();
             String response = DeclinationTransaction.Response.ToString();
-            if (response != null)
+            if (!DeclinationTransaction.Failed)
             {
                 response = response.Replace("#", "");
                 response = response.Replace("*", ":");
                 currentRaDec.Y = utilities.DMSToDegrees(response);
             }
             log.Info("Declination (Response): {0}", DeclinationTransaction.Response);
-            return currentRaDec.Y;
+            //return currentRaDec.Y;
         }
 
         public double Declination
         {
-            get { return UpdateDeclination(); }
+            get { return currentRaDec.Y; }
             set { currentRaDec.Y = value; }
         }
 
