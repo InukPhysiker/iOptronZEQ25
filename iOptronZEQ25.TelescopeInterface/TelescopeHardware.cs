@@ -472,6 +472,7 @@ namespace iOptronZEQ25.TelescopeInterface
             Task.Run(() => transactionProcessor.CommitTransaction(MoveTransaction));
             log.Info("Waiting for move command completion");
             MoveTransaction.WaitForCompletionOrTimeout();
+            Thread.Sleep(250);
             if (MoveTransaction.Failed)
             {
                 log.Info("MoveTransaction Failed!");
