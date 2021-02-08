@@ -1,4 +1,4 @@
-﻿using ASCOM.Astrometry.AstroUtils;
+using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
@@ -66,9 +66,22 @@ namespace iOptronZEQ25.TelescopeInterface
         {
             // tl.LogMessage("AbortSlew", "Not implemented");
             //throw new ASCOM.MethodNotImplementedException("AbortSlew");
-            var AbortSlewTransaction = new NoReplyTransaction(":q#");
-            Task.Run(() => transactionProcessor.CommitTransaction(AbortSlewTransaction));
-            AbortSlewTransaction.WaitForCompletionOrTimeout();
+            var AbortSlewTransaction = new ZEQ25BooleanTransaction(":Q#") { Timeout = TimeSpan.FromSeconds(2) };
+ 
+            int Retry = 3;
+            for (int i = 0; i < Retry; i++)
+            {
+                Task.Run(() => transactionProcessor.CommitTransaction(AbortSlewTransaction));
+                AbortSlewTransaction.WaitForCompletionOrTimeout();
+                if (!AbortSlewTransaction.Failed)
+                {
+                    break;
+                }
+                else
+                {
+                    log.Info("AbortSlew: Failed after 3 retries!");
+                }
+            }
         }
 
         //public AlignmentModes AlignmentMode
