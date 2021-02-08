@@ -1,4 +1,4 @@
-using ASCOM.Astrometry.AstroUtils;
+﻿using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
@@ -529,7 +529,7 @@ namespace iOptronZEQ25.TelescopeInterface
             pulseGuiding = false;
         }
 
-        public double UpdateRightAscension()
+        public void UpdateRightAscension()
         {
             //Command: “:GR#”
             //Response: “HH:MM:SS#”
@@ -538,18 +538,18 @@ namespace iOptronZEQ25.TelescopeInterface
             Task.Run(() => transactionProcessor.CommitTransaction(RightAscensionTransaction));
             RightAscensionTransaction.WaitForCompletionOrTimeout();
             String response = RightAscensionTransaction.Response.ToString();
-            if (response != null)
+            if (!RightAscensionTransaction.Failed)
             {
                 response = response.Replace("#", "");
                 currentRaDec.X = utilities.HMSToHours(response);
             }
             log.Info("Update Right Ascension (Response): {0}", RightAscensionTransaction.Response);
-            return currentRaDec.X;
+            //return currentRaDec.X;
         }
 
         public double RightAscension
         {
-            get { return UpdateRightAscension(); }
+            get { return currentRaDec.X; }
             set { currentRaDec.X = value; }
         }
 
