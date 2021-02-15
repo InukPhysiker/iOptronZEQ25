@@ -1,4 +1,4 @@
-using ASCOM.Astrometry.AstroUtils;
+﻿using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
@@ -58,6 +58,10 @@ namespace iOptronZEQ25.TelescopeInterface
         private static double? _SiteLongitude;
         private bool isMoving = false;
         private PierSide _SideOfPier;
+        private bool UpdatingDeclination;
+        private bool UpdatingRightAscension;
+        private bool UpdatingSlewing;
+        private bool UpdatingTracking;
         private static readonly double SiderealRateDPS = 0.004178; // degrees / second;;
 
         #region ITelescope Implementation
@@ -170,6 +174,7 @@ namespace iOptronZEQ25.TelescopeInterface
         {
             //Command: “:GD#”
             //Response: “sDD*MM:SS#”
+            UpdatingDeclination = true;
             var DeclinationTransaction = new ZEQ25Transaction(":GD#") { Timeout = TimeSpan.FromSeconds(2) };
             Task.Run(() => transactionProcessor.CommitTransaction(DeclinationTransaction));
             DeclinationTransaction.WaitForCompletionOrTimeout();
@@ -181,12 +186,24 @@ namespace iOptronZEQ25.TelescopeInterface
                 currentRaDec.Y = utilities.DMSToDegrees(response);
             }
             log.Info("Declination (Response): {0}", DeclinationTransaction.Response);
-            //return currentRaDec.Y;
+            UpdatingDeclination = false;
         }
 
         public double Declination
         {
-            get { return currentRaDec.Y; }
+            get
+            {
+                if (!UpdatingDeclination)
+                {
+                    UpdatingDeclination = true;
+                    UpdateDeclination();
+                }
+                while (UpdatingDeclination)
+                {
+                    Thread.Sleep(250);
+                }
+                return currentRaDec.Y;
+            }
             set { currentRaDec.Y = value; }
         }
 
@@ -338,7 +355,8 @@ namespace iOptronZEQ25.TelescopeInterface
             // or to no movement, depending on the state of the Tracking property.
             // iOptron ZEQ25 mount takes care of this.
 
-            isMoving = (Rate != 0);
+            // StopMovingTransaction should execute before setting isMoving to false
+            isMoving = (Rate != 0) || isMoving;
             //Command: “:SRn#”
             //Response: “1”
             //Sets the moving rate used for the N-S-E-W buttons.
@@ -530,6 +548,7 @@ namespace iOptronZEQ25.TelescopeInterface
 
         public void UpdateRightAscension()
         {
+            UpdatingRightAscension = true;
             //Command: “:GR#”
             //Response: “HH:MM:SS#”
             //Gets the current Right Ascension.
@@ -543,12 +562,24 @@ namespace iOptronZEQ25.TelescopeInterface
                 currentRaDec.X = utilities.HMSToHours(response);
             }
             log.Info("Update Right Ascension (Response): {0}", RightAscensionTransaction.Response);
-            //return currentRaDec.X;
+            UpdatingRightAscension = false;
         }
 
         public double RightAscension
         {
-            get { return currentRaDec.X; }
+            get
+            {
+                if (!UpdatingRightAscension)
+                {
+                    UpdatingRightAscension = true;
+                    UpdateRightAscension();
+                }
+                while (UpdatingRightAscension)
+                {
+                    Thread.Sleep(250);
+                }
+                return currentRaDec.X;
+            }
             set { currentRaDec.X = value; }
         }
 
@@ -861,6 +892,7 @@ namespace iOptronZEQ25.TelescopeInterface
 
         private void UpdateSlewing()
         {
+            UpdatingSlewing = true;
             //Command: “:SE?#”
             //Response: “0” not in slewing, “1” in slewing.
             //This command get the slewing status.
@@ -873,16 +905,26 @@ namespace iOptronZEQ25.TelescopeInterface
                 slewingState = SlewingStateTransaction.Value;
             }
             log.Info("Update Slewing (Response): {0}", SlewingStateTransaction.Response);
+            UpdatingSlewing = false;
         }
 
         public bool Slewing
         {
             get
             {
-                if (isMoving) {
+                if (isMoving)
+                {
                     return true;
                 }
-                UpdateSlewing();
+                if (!UpdatingSlewing)
+                {
+                    UpdatingSlewing = true;
+                    UpdateSlewing();
+                }
+                while (UpdatingSlewing)
+                {
+                    Thread.Sleep(250);
+                }
                 return slewingState;
             }
         }
@@ -951,17 +993,27 @@ namespace iOptronZEQ25.TelescopeInterface
 
         private void UpdateTracking()
         {
+            UpdatingTracking = true;
             var TrackingTransaction = new ZEQ25BooleanTransaction(":AT#") { Timeout = TimeSpan.FromSeconds(2) };
             Task.Run(() => transactionProcessor.CommitTransaction(TrackingTransaction));
             TrackingTransaction.WaitForCompletionOrTimeout();
             isTracking = TrackingTransaction.Value;
+            UpdatingTracking = false;
         }
 
         public bool Tracking
         {
             get
             {
-                UpdateTracking();
+                if (!UpdatingTracking)
+                {
+                    UpdatingTracking = true;
+                    UpdateTracking();
+                }
+                while (UpdatingTracking)
+                {
+                    Thread.Sleep(250);
+                }
                 return isTracking;
             }
             set
