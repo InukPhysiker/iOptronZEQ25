@@ -101,36 +101,36 @@ namespace ASCOM.iOptronZEQ25.Server
                     // TODO Initialize this array with any Primary axis rates that your driver may provide
                     // Example: m_Rates = new Rate[] { new Rate(10.5, 30.2), new Rate(54.0, 43.6) }
                     // this.rates = new Rate[0];
-                    this.rates = new Rate[2]
+                    this.rates = new Rate[10]
                         {
-                        new Rate(SiderealRateDPS *    0, SiderealRateDPS *       0), //Rate 0
-                        new Rate(SiderealRateDPS *    1, SiderealRateDPS *    1024) //Rate 1
-                        //new Rate(SiderealRateDPS *    2, SiderealRateDPS *    2), //Rate 2
-                        //new Rate(SiderealRateDPS *    8, SiderealRateDPS *    8), //Rate 3
-                        //new Rate(SiderealRateDPS *   16, SiderealRateDPS *   16), //Rate 4
-                        //new Rate(SiderealRateDPS *   64, SiderealRateDPS *   64), //Rate 5
-                        //new Rate(SiderealRateDPS *  128, SiderealRateDPS *  128), //Rate 6
-                        //new Rate(SiderealRateDPS *  256, SiderealRateDPS *  256), //Rate 7
-                        //new Rate(SiderealRateDPS *  512, SiderealRateDPS *  512), //Rate 8
-                        //new Rate(SiderealRateDPS * 1024, SiderealRateDPS * 1024)  //Rate 9
+                        new Rate(SiderealRateDPS *    0, SiderealRateDPS *    0), //Rate 0
+                        new Rate(SiderealRateDPS *    1, SiderealRateDPS *    1), //Rate 1
+                        new Rate(SiderealRateDPS *    2, SiderealRateDPS *    2), //Rate 2
+                        new Rate(SiderealRateDPS *    8, SiderealRateDPS *    8), //Rate 3
+                        new Rate(SiderealRateDPS *   16, SiderealRateDPS *   16), //Rate 4
+                        new Rate(SiderealRateDPS *   64, SiderealRateDPS *   64), //Rate 5
+                        new Rate(SiderealRateDPS *  128, SiderealRateDPS *  128), //Rate 6
+                        new Rate(SiderealRateDPS *  256, SiderealRateDPS *  256), //Rate 7
+                        new Rate(SiderealRateDPS *  512, SiderealRateDPS *  512), //Rate 8
+                        new Rate(SiderealRateDPS * 1024, SiderealRateDPS * 1024)  //Rate 9
                         };
                     break;
                 case TelescopeAxes.axisSecondary:
                     // TODO Initialize this array with any Secondary axis rates that your driver may provide
                     // this.rates = new Rate[0];
                     // Secondary axis rates that ZEQ25 driver may provide
-                    this.rates = new Rate[2]
+                    this.rates = new Rate[10]
                         {
-                        new Rate(SiderealRateDPS *    0, SiderealRateDPS *       0), //Rate 0
-                        new Rate(SiderealRateDPS *    1, SiderealRateDPS *    1024) //Rate 1
-                        //new Rate(SiderealRateDPS *    2, SiderealRateDPS *    2), //Rate 2
-                        //new Rate(SiderealRateDPS *    8, SiderealRateDPS *    8), //Rate 3
-                        //new Rate(SiderealRateDPS *   16, SiderealRateDPS *   16), //Rate 4
-                        //new Rate(SiderealRateDPS *   64, SiderealRateDPS *   64), //Rate 5
-                        //new Rate(SiderealRateDPS *  128, SiderealRateDPS *  128), //Rate 6
-                        //new Rate(SiderealRateDPS *  256, SiderealRateDPS *  256), //Rate 7
-                        //new Rate(SiderealRateDPS *  512, SiderealRateDPS *  512), //Rate 8
-                        //new Rate(SiderealRateDPS * 1024, SiderealRateDPS * 1024)  //Rate 9
+                        new Rate(SiderealRateDPS *    0, SiderealRateDPS *    0), //Rate 0
+                        new Rate(SiderealRateDPS *    1, SiderealRateDPS *    1), //Rate 1
+                        new Rate(SiderealRateDPS *    2, SiderealRateDPS *    2), //Rate 2
+                        new Rate(SiderealRateDPS *    8, SiderealRateDPS *    8), //Rate 3
+                        new Rate(SiderealRateDPS *   16, SiderealRateDPS *   16), //Rate 4
+                        new Rate(SiderealRateDPS *   64, SiderealRateDPS *   64), //Rate 5
+                        new Rate(SiderealRateDPS *  128, SiderealRateDPS *  128), //Rate 6
+                        new Rate(SiderealRateDPS *  256, SiderealRateDPS *  256), //Rate 7
+                        new Rate(SiderealRateDPS *  512, SiderealRateDPS *  512), //Rate 8
+                        new Rate(SiderealRateDPS * 1024, SiderealRateDPS * 1024)  //Rate 9
                         };
                     break;
                 case TelescopeAxes.axisTertiary:
