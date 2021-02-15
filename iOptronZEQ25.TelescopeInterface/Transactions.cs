@@ -215,4 +215,69 @@ namespace iOptronZEQ25.TelescopeInterface
 		public bool Value { get; private set; }
 	}
 
+    public class ZEQ25NoReplyTransaction : DeviceTransaction
+    {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DeviceTransaction" /> class.
+        /// </summary>
+        /// <param name="command">The command to be sent to the communications channel.</param>
+        public ZEQ25NoReplyTransaction(string command) : base(command)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(command));
+            Timeout = TimeSpan.FromMilliseconds(500); // No reply expected but allow time to process
+        }
+
+        /// <summary>
+        ///     Ignores the source sequence and does not wait for any received data. Completes the transaction immediately.
+        /// </summary>
+        /// <param name="source">The source sequence of received characters (ignored).</param>
+        public override void ObserveResponse(IObservable<char> source)
+        {
+            Contract.Ensures(Response != null);
+            Response = new Maybe<string>(string.Empty); // string.Empty is a value, not the absence of a value.
+
+            // iOptron ZEQ25 requires a fraction of a second to process a NoReplyTransaction
+            source.Buffer(TimeSpan.FromMilliseconds(250)).Take(1).Subscribe(x =>
+            {
+                if (x.Count > 0) // Unexpected reply!
+                {
+                    string Unexpected = new string(x.ToArray());
+                    OnNext(Unexpected);
+                }
+                else
+                {
+                    OnNext(string.Empty); // Expected no reply
+                }
+            }, OnError, OnCompleted);
+        }
+
+        /// <summary>
+        ///     Called when the response sequence completes. This indicates a successful transaction.
+        /// </summary>
+        /// <remarks>
+        ///     If there has been an unexpected response (<c>Response.Any() == true</c>) then false is placed in
+        ///     the <see cref="Value" /> property.
+        /// </remarks>
+        protected override void OnCompleted()
+        {
+            try
+            {
+                if (Response.Any())
+                    Value = false; // Unexpected response
+                else
+                    Value = true; // Expected with no reply tranacation
+            }
+            catch (FormatException)
+            {
+                Value = false;
+            }
+            base.OnCompleted();
+        }
+
+        /// <summary>
+        ///     Gets the final value of the transaction's response, as a boolean.
+        /// </summary>
+        /// <value><c>true</c> if value; otherwise, <c>false</c>.</value>
+        public bool Value { get; private set; }
+    }
 }

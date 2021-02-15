@@ -1,4 +1,4 @@
-﻿using ASCOM.Astrometry.AstroUtils;
+using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
@@ -379,10 +379,10 @@ namespace iOptronZEQ25.TelescopeInterface
             switch (speed_power)
             {
                 case (0):
-                    var StopMovingTransaction = new NoReplyTransaction(":q#") { Timeout = TimeSpan.FromSeconds(2) };
+                    var StopMovingTransaction = new ZEQ25NoReplyTransaction(":q#");
                     Task.Run(() => transactionProcessor.CommitTransaction(StopMovingTransaction));
                     StopMovingTransaction.WaitForCompletionOrTimeout();
-                    Thread.Sleep(250);
+                    isMoving = false;
                     return;
 
                 case (1):
@@ -468,11 +468,10 @@ namespace iOptronZEQ25.TelescopeInterface
                     }
                     break;
             }
-            var MoveTransaction = new NoReplyTransaction(MoveCommand) { Timeout = TimeSpan.FromSeconds(2) };
+            var MoveTransaction = new ZEQ25NoReplyTransaction(MoveCommand);
             Task.Run(() => transactionProcessor.CommitTransaction(MoveTransaction));
             log.Info("Waiting for move command completion");
             MoveTransaction.WaitForCompletionOrTimeout();
-            Thread.Sleep(250);
             if (MoveTransaction.Failed)
             {
                 log.Info("MoveTransaction Failed!");
@@ -520,7 +519,7 @@ namespace iOptronZEQ25.TelescopeInterface
             }
             if (MoveDurationCommand != "")
             {
-                var MoveDurationTransaction = new NoReplyTransaction(MoveDurationCommand) { Timeout = TimeSpan.FromSeconds(2) };
+                var MoveDurationTransaction = new ZEQ25NoReplyTransaction(MoveDurationCommand);
                 Task.Run(() => transactionProcessor.CommitTransaction(MoveDurationTransaction));
                 log.Info("Waiting for move command completion");
                 MoveDurationTransaction.WaitForCompletionOrTimeout();
