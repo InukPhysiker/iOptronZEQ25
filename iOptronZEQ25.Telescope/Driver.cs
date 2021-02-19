@@ -707,6 +707,7 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             //tl.LogMessage("PulseGuide", "Not implemented");
             //throw new ASCOM.MethodNotImplementedException("PulseGuide");
+            CheckRange(Duration, 0, 32767, "PulseGuide", "Duration");
             telescope.PulseGuide(Direction, Duration);
         }
 
