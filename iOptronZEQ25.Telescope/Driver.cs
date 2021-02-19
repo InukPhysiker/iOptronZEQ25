@@ -651,13 +651,17 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             get
             {
-                tl.LogMessage("GuideRateDeclination Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("GuideRateDeclination", false);
+                //tl.LogMessage("GuideRateDeclination Get", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("GuideRateDeclination", false);
+                return telescope.GuideRateDeclination;
             }
             set
             {
-                tl.LogMessage("GuideRateDeclination Set", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("GuideRateDeclination", true);
+                double SiderealRateDPS = 0.004178; // degrees / second;
+                //tl.LogMessage("GuideRateDeclination Set", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("GuideRateDeclination", true);
+                CheckRange(value, 0.2 * SiderealRateDPS, 1.00 * SiderealRateDPS, "GuideRateDeclination", "Rate");
+                telescope.GuideRateDeclination = value;
             }
         }
 
@@ -665,13 +669,17 @@ namespace ASCOM.iOptronZEQ25.Server
         {
             get
             {
-                tl.LogMessage("GuideRateRightAscension Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("GuideRateRightAscension", false);
+                //tl.LogMessage("GuideRateRightAscension Get", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("GuideRateRightAscension", false);
+                return telescope.GuideRateRightAscension;
             }
             set
             {
-                tl.LogMessage("GuideRateRightAscension Set", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("GuideRateRightAscension", true);
+                double SiderealRateDPS = 0.004178; // degrees / second;
+                //tl.LogMessage("GuideRateRightAscension Set", "Not implemented");
+                //throw new ASCOM.PropertyNotImplementedException("GuideRateRightAscension", true);
+                CheckRange(value, 0.2 * SiderealRateDPS, 1.00 * SiderealRateDPS, "GuideRateDeclination", "Rate");
+                telescope.GuideRateDeclination = value;
             }
         }
 
