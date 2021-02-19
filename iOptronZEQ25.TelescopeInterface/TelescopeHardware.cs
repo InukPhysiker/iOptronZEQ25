@@ -1,4 +1,4 @@
-﻿using ASCOM.Astrometry.AstroUtils;
+using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
@@ -200,7 +200,7 @@ namespace iOptronZEQ25.TelescopeInterface
                 }
                 while (UpdatingDeclination)
                 {
-                    Thread.Sleep(250);
+                    Thread.Sleep(100);
                 }
                 return currentRaDec.Y;
             }
@@ -576,7 +576,7 @@ namespace iOptronZEQ25.TelescopeInterface
                 }
                 while (UpdatingRightAscension)
                 {
-                    Thread.Sleep(250);
+                    Thread.Sleep(100);
                 }
                 return currentRaDec.X;
             }
