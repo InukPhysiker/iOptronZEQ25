@@ -62,7 +62,7 @@ namespace iOptronZEQ25.TelescopeInterface
         private bool UpdatingRightAscension;
         private bool UpdatingSlewing;
         private bool UpdatingTracking;
-        private static readonly double SiderealRateDPS = 0.004178; // degrees / second;;
+        private static readonly double SiderealRateDPS = 0.004178; // degrees / second;
 
         #region ITelescope Implementation
 
