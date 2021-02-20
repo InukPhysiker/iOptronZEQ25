@@ -1,4 +1,4 @@
-﻿using ASCOM.Astrometry.AstroUtils;
+using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
@@ -468,7 +468,8 @@ namespace iOptronZEQ25.TelescopeInterface
             switch (Axis)
             {
                 case TelescopeAxes.axisPrimary:
-                    MoveCommand = (direction == -1) ? ":me#" : ":mw#";
+                   // East is positive
+                    MoveCommand = (direction == +1) ? ":me#" : ":mw#";
                     break;
 
                 case TelescopeAxes.axisSecondary:
