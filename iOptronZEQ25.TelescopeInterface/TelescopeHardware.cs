@@ -1,4 +1,4 @@
-using ASCOM.Astrometry.AstroUtils;
+﻿using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
@@ -63,6 +63,7 @@ namespace iOptronZEQ25.TelescopeInterface
         private bool UpdatingSlewing;
         private bool UpdatingTracking;
         private static readonly double SiderealRateDPS = 0.004178; // degrees / second;
+        private bool UpdatingSideOfPier;
 
         #region ITelescope Implementation
 
@@ -639,27 +640,16 @@ namespace iOptronZEQ25.TelescopeInterface
         {
             get
             {
-                //Command: “:pS#”
-                //Response: “0” East, “1” West.
-                var SideOfPierTransaction = new ZEQ25BooleanTransaction(":pS#") { Timeout = TimeSpan.FromSeconds(2) };
-                Task.Run(() => transactionProcessor.CommitTransaction(SideOfPierTransaction));
-                SideOfPierTransaction.WaitForCompletionOrTimeout();
-                String response = SideOfPierTransaction.Response.ToString();
-                log.Info("Update SideOfPier (Response): {0}", SideOfPierTransaction.Response);
-                double HourAngle = astroUtilities.ConditionHA(SiderealTime - RightAscension);
-
-                // pierWest is returned when the mount is observing at an hour angle between -6.0 and 0.0
-                // pierEast is returned when the mount is observing at an hour angle between 0.0 and + 6.0
-
-                // "Through the pole"
-                if (HourAngle < -6 || HourAngle > 6) // between -12.0 and -6.0 or between + 6.0 and + 12.0
+                if (!UpdatingSideOfPier)
                 {
-                    return SideOfPierTransaction.Value ? PierSide.pierEast : PierSide.pierWest;
+                    UpdatingSideOfPier = true;
+                    UpdateSideOfPier();
                 }
-                else // between -6.0 and 0.0 or between 0.0 and + 6.0 (Normal pointing state) - 1 = West, 0 = East
+                while (UpdatingSideOfPier)
                 {
-                    return SideOfPierTransaction.Value ? PierSide.pierWest : PierSide.pierEast;
+                    Thread.Sleep(100);
                 }
+                return _SideOfPier;
             }
             set
             {
