@@ -1,4 +1,4 @@
-using ASCOM.Astrometry.AstroUtils;
+﻿using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
@@ -464,29 +464,21 @@ namespace iOptronZEQ25.TelescopeInterface
                 log.Info("MoveAxis", "Error setting speed!");
                 return;
             }
-            MoveCommand = ":q#";
             switch (Axis)
             {
                 case TelescopeAxes.axisPrimary:
-                   // East is positive
-                    MoveCommand = (direction == +1) ? ":me#" : ":mw#";
+                    // East is positive
+                    MoveCommand = (direction == 1) ? ":me#" : ":mw#";
                     break;
 
                 case TelescopeAxes.axisSecondary:
-                    // Mount is physically on East side of pier ":mn#" moves south!
-                    // Mount is physically on East side of pier and pointing through the pole: ":mn#" moves north (okay)
-                    // Mount is physically on West side of pier ":mn#" moves north (okay)
-                    // Mount is physically on West side of pier and pointing through the pole ":mn#" moves south!
-
-                    if (SideOfPier == PierSide.pierEast) // ":mn#" moves north
-                    {
-                        MoveCommand = (direction == 1) ? ":mn#" : ":ms#";
-                    }
-                    if (SideOfPier == PierSide.pierWest) // ":mn#" moves south (inverted)
-                    {
-                        MoveCommand = (direction == -1) ? ":mn#" : ":ms#";
-                    }
+                    // North is positive if pierSide is pierEast
+                    MoveCommand = (direction == 1) ? ":mn#" : ":ms#";
+                    // Not inverting axis intentionally to avoid problems near pole
                     break;
+                default:
+                    // Not expected!
+                    return;
             }
             var MoveTransaction = new ZEQ25NoReplyTransaction(MoveCommand);
             Task.Run(() => transactionProcessor.CommitTransaction(MoveTransaction));
