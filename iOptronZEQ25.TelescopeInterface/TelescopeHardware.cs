@@ -1,4 +1,4 @@
-﻿using ASCOM.Astrometry.AstroUtils;
+using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
@@ -612,6 +612,17 @@ namespace iOptronZEQ25.TelescopeInterface
             {
                 return;
             }
+
+            double HourAngle = astroUtilities.ConditionHA(SiderealTime - RightAscension);
+
+            bool NearMeridian = (HourAngle < -11 || HourAngle > 11) || (HourAngle > -1 && HourAngle < 1);
+
+            if (!NearMeridian) // SideOfPier is constrained by mount design (no need to send :pS# command)
+            {
+                _SideOfPier = (HourAngle > 0) ? PierSide.pierEast : PierSide.pierWest;
+                return;
+            }
+
             //Command: “:pS#”
             //Response: “0” East, “1” West.
             var SideOfPierTransaction = new ZEQ25BooleanTransaction(":pS#") { Timeout = TimeSpan.FromSeconds(2) };
@@ -619,7 +630,6 @@ namespace iOptronZEQ25.TelescopeInterface
             SideOfPierTransaction.WaitForCompletionOrTimeout();
             String response = SideOfPierTransaction.Response.ToString();
             log.Info("Update SideOfPier (Response): {0}", SideOfPierTransaction.Response);
-            double HourAngle = astroUtilities.ConditionHA(SiderealTime - RightAscension);
 
             // pierEast is returned when the mount is observing at an hour angle between -12.0 and  -6.0
             // pierWest is returned when the mount is observing at an hour angle between  -6.0 and   0.0
