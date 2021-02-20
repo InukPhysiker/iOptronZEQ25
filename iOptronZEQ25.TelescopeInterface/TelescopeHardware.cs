@@ -1,4 +1,4 @@
-using ASCOM.Astrometry.AstroUtils;
+﻿using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
@@ -621,8 +621,10 @@ namespace iOptronZEQ25.TelescopeInterface
             log.Info("Update SideOfPier (Response): {0}", SideOfPierTransaction.Response);
             double HourAngle = astroUtilities.ConditionHA(SiderealTime - RightAscension);
 
-            // pierWest is returned when the mount is observing at an hour angle between -6.0 and 0.0
-            // pierEast is returned when the mount is observing at an hour angle between 0.0 and + 6.0
+            // pierEast is returned when the mount is observing at an hour angle between -12.0 and  -6.0
+            // pierWest is returned when the mount is observing at an hour angle between  -6.0 and   0.0
+            // pierEast is returned when the mount is observing at an hour angle between   0.0 and  +6.0
+            // pierWest is returned when the mount is observing at an hour angle between  +6.0 and +12.0
 
             // "Through the pole"
             if (HourAngle < -6 || HourAngle > 6) // between -12.0 and -6.0 or between + 6.0 and + 12.0
