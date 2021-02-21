@@ -602,6 +602,7 @@ namespace iOptronZEQ25.TelescopeInterface
         {
             if (Slewing || AtHome)
             {
+                UpdatingSideOfPier = false;
                 return;
             }
 
@@ -612,6 +613,7 @@ namespace iOptronZEQ25.TelescopeInterface
             if (!NearMeridian) // SideOfPier is constrained by mount design (no need to send :pS# command)
             {
                 _SideOfPier = (HourAngle > 0) ? PierSide.pierEast : PierSide.pierWest;
+                UpdatingSideOfPier = false;
                 return;
             }
 
@@ -637,6 +639,7 @@ namespace iOptronZEQ25.TelescopeInterface
             {
                 _SideOfPier = SideOfPierTransaction.Value ? PierSide.pierWest : PierSide.pierEast;
             }
+            UpdatingSideOfPier = false;
         }
 
         //public PierSide SideOfPier { get; set; }
