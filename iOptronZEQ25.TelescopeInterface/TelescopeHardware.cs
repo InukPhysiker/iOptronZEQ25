@@ -57,7 +57,7 @@ namespace iOptronZEQ25.TelescopeInterface
         private static bool pulseGuiding;
         private static double? _SiteLongitude;
         private bool isMoving = false;
-        private PierSide _SideOfPier;
+        private PierSide _SideOfPier = PierSide.pierEast;
         private bool UpdatingDeclination;
         private bool UpdatingRightAscension;
         private bool UpdatingSlewing;
