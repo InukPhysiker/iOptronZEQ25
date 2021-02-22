@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 
 namespace ASCOM.iOptronZEQ25
@@ -36,8 +36,10 @@ namespace ASCOM.iOptronZEQ25
             }
             else
             {
-                driver = new ASCOM.DriverAccess.Telescope(Properties.Settings.Default.DriverId);
-                driver.Connected = true;
+                driver = new ASCOM.DriverAccess.Telescope(Properties.Settings.Default.DriverId)
+                {
+                    Connected = true
+                };
             }
             SetUIState();
         }
