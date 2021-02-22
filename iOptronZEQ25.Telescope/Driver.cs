@@ -472,7 +472,7 @@ namespace ASCOM.iOptronZEQ25.Server
             get
             {
                 tl.LogMessage("CanSetGuideRates", "Get - " + false.ToString());
-                return false;
+                return true;
             }
         }
 
@@ -660,7 +660,10 @@ namespace ASCOM.iOptronZEQ25.Server
                 double SiderealRateDPS = 0.004178; // degrees / second;
                 //tl.LogMessage("GuideRateDeclination Set", "Not implemented");
                 //throw new ASCOM.PropertyNotImplementedException("GuideRateDeclination", true);
+                if (value != 0)
+                {
                 CheckRange(value, 0.2 * SiderealRateDPS, 1.00 * SiderealRateDPS, "GuideRateDeclination", "Rate");
+                }
                 telescope.GuideRateDeclination = value;
             }
         }
@@ -678,7 +681,10 @@ namespace ASCOM.iOptronZEQ25.Server
                 double SiderealRateDPS = 0.004178; // degrees / second;
                 //tl.LogMessage("GuideRateRightAscension Set", "Not implemented");
                 //throw new ASCOM.PropertyNotImplementedException("GuideRateRightAscension", true);
+                if (value != 0)
+                {
                 CheckRange(value, 0.2 * SiderealRateDPS, 1.00 * SiderealRateDPS, "GuideRateDeclination", "Rate");
+                }
                 telescope.GuideRateDeclination = value;
             }
         }
