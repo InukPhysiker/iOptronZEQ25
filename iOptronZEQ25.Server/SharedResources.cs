@@ -13,14 +13,14 @@
 // Written by:	Bob Denny	29-May-2007
 // Modified by Chris Rowland and Peter Simpson to hamdle multiple hardware devices March 2011
 //
-using ASCOM.iOptronZEQ25.Server.Properties;
+using ASCOM.iOptronZEQ25.Properties;
 using iOptronZEQ25.TelescopeInterface;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ASCOM.iOptronZEQ25.Server
+namespace ASCOM.iOptronZEQ25
 {
     /// <summary>
     /// The resources shared by all drivers and devices, in this example it's a serial port with a shared SendMessage method

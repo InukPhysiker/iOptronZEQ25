@@ -27,7 +27,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ASCOM.iOptronZEQ25.Server
+namespace ASCOM.iOptronZEQ25
 {
     public static class Server
     {

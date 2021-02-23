@@ -1,5 +1,5 @@
 
-namespace ASCOM.iOptronZEQ25.Server
+namespace ASCOM.iOptronZEQ25
 {
     partial class SetupDialogForm
     {

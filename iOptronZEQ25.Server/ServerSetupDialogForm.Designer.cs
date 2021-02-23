@@ -1,5 +1,5 @@
 ﻿
-namespace ASCOM.iOptronZEQ25.Server
+namespace ASCOM.iOptronZEQ25
 {
     partial class ServerSetupDialogForm
     {
@@ -35,7 +35,7 @@ namespace ASCOM.iOptronZEQ25.Server
             this.picASCOM = new System.Windows.Forms.PictureBox();
             this.ConnectionErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.AboutBox = new System.Windows.Forms.Button();
-            this.communicationSettingsControl1 = new ASCOM.iOptronZEQ25.Server.CommunicationSettingsControl();
+            this.communicationSettingsControl1 = new ASCOM.iOptronZEQ25.CommunicationSettingsControl();
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ConnectionErrorProvider)).BeginInit();
             this.SuspendLayout();
@@ -68,8 +68,8 @@ namespace ASCOM.iOptronZEQ25.Server
             // 
             this.picASCOM.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.picASCOM.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picASCOM.Image = global::ASCOM.iOptronZEQ25.Server.Properties.Resources.ASCOM;
-            this.picASCOM.InitialImage = global::ASCOM.iOptronZEQ25.Server.Properties.Resources.ASCOM;
+            this.picASCOM.Image = global::ASCOM.iOptronZEQ25.Properties.Resources.ASCOM;
+            this.picASCOM.InitialImage = global::ASCOM.iOptronZEQ25.Properties.Resources.ASCOM;
             this.picASCOM.Location = new System.Drawing.Point(292, 9);
             this.picASCOM.Name = "picASCOM";
             this.picASCOM.Size = new System.Drawing.Size(48, 56);

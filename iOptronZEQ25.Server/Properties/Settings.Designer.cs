@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ASCOM.iOptronZEQ25.Server.Properties {
+namespace ASCOM.iOptronZEQ25.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
