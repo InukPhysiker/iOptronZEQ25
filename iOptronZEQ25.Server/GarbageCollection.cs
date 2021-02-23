@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace ASCOM.iOptronZEQ25.Server
+namespace ASCOM.iOptronZEQ25
 {
     /// <summary>
     /// Summary description for GarbageCollection.

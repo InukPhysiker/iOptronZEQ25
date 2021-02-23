@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ASCOM.iOptronZEQ25.Server
+namespace ASCOM.iOptronZEQ25
 {
     /// <summary>
     ///     Records the connection status of a client.

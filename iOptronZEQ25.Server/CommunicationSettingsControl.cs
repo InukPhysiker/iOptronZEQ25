@@ -1,10 +1,10 @@
-﻿using ASCOM.iOptronZEQ25.Server.Properties;
+﻿using ASCOM.iOptronZEQ25.Properties;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ASCOM.iOptronZEQ25.Server
+namespace ASCOM.iOptronZEQ25
 {
     public partial class CommunicationSettingsControl : UserControl
     {

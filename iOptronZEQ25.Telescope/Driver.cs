@@ -38,7 +38,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using TA.PostSharp.Aspects;
 
-namespace ASCOM.iOptronZEQ25.Server
+namespace ASCOM.iOptronZEQ25
 {
     //
     // Your driver's DeviceID is ASCOM.iOptronZEQ25.Telescope
