@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ASCOM.iOptronZEQ25.Server
+namespace ASCOM.iOptronZEQ25
 {
 	[ComVisible(false)] // Form not registered for COM!
 	public partial class ServerSetupDialogForm : Form

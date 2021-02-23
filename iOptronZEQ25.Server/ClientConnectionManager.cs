@@ -16,7 +16,7 @@ using iOptronZEQ25.TelescopeInterface;
 using TA.Ascom.ReactiveCommunications;
 using TA.PostSharp.Aspects;
 
-namespace ASCOM.iOptronZEQ25.Server
+namespace ASCOM.iOptronZEQ25
 {
     /// <summary>
     ///     Manages client (driver) connections to the shared device controller. Uses the Reader
