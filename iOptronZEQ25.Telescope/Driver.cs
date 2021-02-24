@@ -40,7 +40,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace ASCOM.iOptronZEQ25.Server
+namespace ASCOM.iOptronZEQ25
 {
     //
     // Your driver's DeviceID is ASCOM.iOptronZEQ25.Telescope

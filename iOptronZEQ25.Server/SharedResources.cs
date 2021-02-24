@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ASCOM.iOptronZEQ25.Server
+namespace ASCOM.iOptronZEQ25
 {
     /// <summary>
     /// The resources shared by all drivers and devices, in this example it's a serial port with a shared SendMessage method
