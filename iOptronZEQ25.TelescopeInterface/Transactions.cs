@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reactive.Linq;
 using TA.Ascom.ReactiveCommunications;
+using TA.Utils.Core;
 
 namespace iOptronZEQ25.TelescopeInterface
 {
@@ -230,8 +231,7 @@ namespace iOptronZEQ25.TelescopeInterface
         public override void ObserveResponse(IObservable<char> source)
         {
             Contract.Ensures(Response != null);
-            Response = new Maybe<string>(string.Empty); // string.Empty is a value, not the absence of a value.
-
+            Response = Maybe<string>.From(string.Empty); // string.Empty is a value, not the absence of a value.
             // iOptron ZEQ25 requires a fraction of a second to process a NoReplyTransaction
             source.Buffer(TimeSpan.FromMilliseconds(250)).Take(1).Subscribe(x =>
             {

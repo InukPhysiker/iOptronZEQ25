@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using System.Timers;
 using TA.Ascom.ReactiveCommunications;
+using TA.Utils.Core;
 
 namespace iOptronZEQ25.TelescopeInterface
 {
