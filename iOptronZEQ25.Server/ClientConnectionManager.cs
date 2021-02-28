@@ -117,7 +117,7 @@ namespace ASCOM.iOptronZEQ25
             if (!controllerInstance.Any())
                 {
                 var controller = new TelescopeController(factory);
-                controllerInstance = new Maybe<TelescopeController>(controller);
+                controllerInstance = Maybe<TelescopeController>.From(controller);
                 }
             var instance = controllerInstance.Single();
             if (!instance.IsOnline)
