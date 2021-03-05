@@ -183,10 +183,6 @@
       <Project>{ea3f192f-ae3b-4f1e-9b33-24d5e4a0a30e}</Project>
       <Name>iOptronZEQ25.TelescopeInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TA.PostSharp.Aspects\TA.PostSharp.Aspects.csproj">
-      <Project>{2f94c35d-e4d0-4277-88df-a6335ce819e9}</Project>
-      <Name>TA.PostSharp.Aspects</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
