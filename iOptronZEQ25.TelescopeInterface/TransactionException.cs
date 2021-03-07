@@ -11,7 +11,7 @@ using TA.Ascom.ReactiveCommunications;
 namespace iOptronZEQ25.TelescopeInterface
 {
     [Serializable]
-    public sealed class TransactionException : Exception
+    public sealed class ZEQ25TransactionException : Exception
     {
         //
         // For guidelines regarding the creation of new exception types, see
@@ -20,11 +20,11 @@ namespace iOptronZEQ25.TelescopeInterface
         //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
         //
 
-        public TransactionException() {}
+        public ZEQ25TransactionException() {}
 
-        public TransactionException(string message) : base(message) {}
+        public ZEQ25TransactionException(string message) : base(message) {}
 
-        public TransactionException(string message, Exception inner) : base(message, inner) {}
+        public ZEQ25TransactionException(string message, Exception inner) : base(message, inner) {}
 
         public DeviceTransaction Transaction { get; set; }
     }

@@ -36,6 +36,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using TA.PostSharp.Aspects;
 
 namespace ASCOM.iOptronZEQ25
 {
@@ -166,29 +167,29 @@ namespace ASCOM.iOptronZEQ25
         /// the new settings are saved, otherwise the old values are reloaded.
         /// THIS IS THE ONLY PLACE WHERE SHOWING USER INTERFACE IS ALLOWED!
         /// </summary>
+        // public void SetupDialog()
+        // {
+        //     // consider only showing the setup dialog if not connected
+        //     // or call a different dialog if connected
+        //     if (IsOnline)
+        //         System.Windows.Forms.MessageBox.Show("Already connected, just press OK");
+
+        //     using (SetupDialogForm F = new SetupDialogForm(tl))
+        //     {
+        //         var result = F.ShowDialog();
+        //         if (result == System.Windows.Forms.DialogResult.OK)
+        //         {
+        //             //WriteProfile(); // Persist device configuration values to the ASCOM Profile store
+        //             //Properties.Settings.Default.Save();
+        //             //SharedResources.UpdateTransactionProcessFactory();
+        //         }
+        //     }
+        // }
+
         public void SetupDialog()
         {
-            // consider only showing the setup dialog if not connected
-            // or call a different dialog if connected
-            if (IsOnline)
-                System.Windows.Forms.MessageBox.Show("Already connected, just press OK");
-
-            using (SetupDialogForm F = new SetupDialogForm(tl))
-            {
-                var result = F.ShowDialog();
-                if (result == System.Windows.Forms.DialogResult.OK)
-                {
-                    //WriteProfile(); // Persist device configuration values to the ASCOM Profile store
-                    //Properties.Settings.Default.Save();
-                    //SharedResources.UpdateTransactionProcessFactory();
-                }
-            }
+           SharedResources.DoSetupDialog(clientId);
         }
-
-        //public void SetupDialog()
-        //{
-        //    SharedResources.DoSetupDialog(clientId);
-        //}
 
         public ArrayList SupportedActions
         {
@@ -205,7 +206,7 @@ namespace ASCOM.iOptronZEQ25
             throw new ASCOM.ActionNotImplementedException("Action " + actionName + " is not implemented by this driver");
         }
 
-        //[MustBeConnected]
+        [MustBeConnected]
         public void CommandBlind(string command, bool raw)
         {
             CheckConnected("CommandBlind");
@@ -215,7 +216,7 @@ namespace ASCOM.iOptronZEQ25
             throw new ASCOM.MethodNotImplementedException("CommandBlind");
         }
 
-        //[MustBeConnected]
+        [MustBeConnected]
         public bool CommandBool(string command, bool raw)
         {
             CheckConnected("CommandBool");
@@ -229,7 +230,7 @@ namespace ASCOM.iOptronZEQ25
             throw new ASCOM.MethodNotImplementedException("CommandBool");
         }
 
-        //[MustBeConnected]
+        [MustBeConnected]
         public string CommandString(string command, bool raw)
         {
             CheckConnected("CommandString");
@@ -260,7 +261,7 @@ namespace ASCOM.iOptronZEQ25
             }
             set
             {
-                tl.LogMessage("Connected", "Set {0}", value);
+                LogMessage("Connected", "Set {0}", value);
                 if (value == IsConnected)
                     return;
 
