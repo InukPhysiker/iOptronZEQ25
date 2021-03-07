@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
-  <Import Project="..\packages\PostSharp.6.8.9\build\PostSharp.props" Condition="Exists('..\packages\PostSharp.6.8.9\build\PostSharp.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -78,9 +77,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.7.8\lib\net45\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="PostSharp, Version=6.8.9.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
-      <HintPath>..\packages\PostSharp.Redist.6.8.9\lib\net45\PostSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -195,10 +191,6 @@
       <Project>{ea3f192f-ae3b-4f1e-9b33-24d5e4a0a30e}</Project>
       <Name>iOptronZEQ25.TelescopeInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TA.PostSharp.Aspects\TA.PostSharp.Aspects.csproj">
-      <Project>{2f94c35d-e4d0-4277-88df-a6335ce819e9}</Project>
-      <Name>TA.PostSharp.Aspects</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -208,14 +200,6 @@
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)\iOptronZEQ25.Server\$(OutDir)\$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\PostSharp.6.8.9\build\PostSharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.6.8.9\build\PostSharp.props'))" />
-    <Error Condition="!Exists('..\packages\PostSharp.6.8.9\build\PostSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.6.8.9\build\PostSharp.targets'))" />
-  </Target>
-  <Import Project="..\packages\PostSharp.6.8.9\build\PostSharp.targets" Condition="Exists('..\packages\PostSharp.6.8.9\build\PostSharp.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
