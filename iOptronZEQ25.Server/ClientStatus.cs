@@ -1,4 +1,4 @@
-﻿// Copyright © 2016-2017 Tigra Astronomy, all rights reserved.
+// Copyright © 2016-2017 Tigra Astronomy, all rights reserved.
 // Licensed under the MIT license, see http://tigra.mit-license.org/
 
 // based on the TA.ArduinoPowerController project
@@ -82,7 +82,7 @@ namespace ASCOM.iOptronZEQ25
 
         public string ToDisplayString()
             {
-            var online = Online ? "Online" : "Idle  ";
+            string online = Online ? "Online" : "Idle  ";
             return $"{ClientId} {online} {Name}";
             }
 
