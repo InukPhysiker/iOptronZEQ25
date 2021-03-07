@@ -4,7 +4,7 @@
 // ================
 //
 // This class is a container for all shared resources that may be needed
-// by the drivers served by the Local Server. 
+// by the drivers served by the Local Server.
 //
 // NOTES:
 //
@@ -32,11 +32,11 @@ namespace ASCOM.iOptronZEQ25
     /// </summary>
     public static class SharedResources
     {
-
         /// <summary>
         ///     ASCOM DeviceID (COM ProgID) for the telescope driver.
         /// </summary>
         public const string TelescopeDriverId = "ASCOM.iOptronZEQ25.Telescope";
+
         /// <summary>
         ///     Driver description for the telescope driver.
         /// </summary>
@@ -49,6 +49,7 @@ namespace ASCOM.iOptronZEQ25
 
         // Shared serial port. This will allow multiple drivers to use one single serial port.
         private static ASCOM.Utilities.Serial s_sharedSerial = new ASCOM.Utilities.Serial();        // Shared serial port
+
         private static int s_z = 0;     // counter for the number of connections to the serial port
 
         static SharedResources()
@@ -99,6 +100,7 @@ namespace ASCOM.iOptronZEQ25
                             ConnectionManager.TransactionProcessorFactory = CreateTransactionProcessorFactory();
                         }
                         break;
+
                     default:
                         Log.Warn("SetupDialog cancelled or failed - reverting to previous settings");
                         Settings.Default.Reload();
@@ -117,8 +119,9 @@ namespace ASCOM.iOptronZEQ25
         //
 
         #region single serial port connector
+
         //
-        // this region shows a way that a single serial port could be connected to by multiple 
+        // this region shows a way that a single serial port could be connected to by multiple
         // drivers.
         //
         // Connected is used to handle the connections to the port.
@@ -195,9 +198,10 @@ namespace ASCOM.iOptronZEQ25
         public static string CommPortName { get; set; }
         public static string ConnectionString { get; set; }
 
-        #endregion
+        #endregion single serial port connector
 
         #region Multi Driver handling
+
         // this section illustrates how multiple drivers could be handled,
         // it's for drivers where multiple connections to the hardware can be made and ensures that the
         // hardware is only disconnected from when all the connected devices have disconnected.
@@ -250,8 +254,7 @@ namespace ASCOM.iOptronZEQ25
                 return false;
         }
 
-        #endregion
-
+        #endregion Multi Driver handling
     }
 
     /// <summary>
@@ -275,7 +278,7 @@ namespace ASCOM.iOptronZEQ25
     //[global::System.AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     //public sealed class ServedClassNameAttribute : Attribute
     //{
-    //    // See the attribute guidelines at 
+    //    // See the attribute guidelines at
     //    //  http://go.microsoft.com/fwlink/?LinkId=85236
 
     //    /// <summary>

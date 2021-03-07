@@ -1,17 +1,17 @@
 ﻿// This file is part of the TA.ArduinoPowerController project
-// 
+//
 // Copyright © 2016-2017 Tigra Astronomy, all rights reserved.
 // Licensed under the MIT license, see http://tigra.mit-license.org/
-// 
+//
 // File: NLogTraceWithArgumentsAttribute.cs  Last modified: 2017-03-16@23:34 by Tim Long
 
+using NLog;
+using PostSharp.Aspects;
+using PostSharp.Aspects.Dependencies;
 using System;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using NLog;
-using PostSharp.Aspects;
-using PostSharp.Aspects.Dependencies;
 
 namespace TA.PostSharp.Aspects
 {
@@ -41,14 +41,14 @@ namespace TA.PostSharp.Aspects
         /// </summary>
         /// <param name="logAtLevel">The log at level.</param>
         public NLogTraceWithArgumentsAttribute(int logAtLevel = 0)
-            {
+        {
             logAtLevelOrdinal = logAtLevel;
-            }
+        }
 
         private LogLevel LogAtLevel
-            {
+        {
             get
-                {
+            {
                 if (logAtLevelOrdinal == LogLevel.Trace.Ordinal)
                     return LogLevel.Trace;
                 if (logAtLevelOrdinal == LogLevel.Debug.Ordinal)
@@ -64,56 +64,56 @@ namespace TA.PostSharp.Aspects
                 if (logAtLevelOrdinal == LogLevel.Off.Ordinal)
                     return LogLevel.Off;
                 throw new ArgumentException("Invalid trace level specified");
-                }
             }
+        }
 
         private void LogMethodEntryWithParameters(MethodExecutionArgs args, int indent = 0)
-            {
+        {
             var builder = new StringBuilder();
             if (indent < 0) indent = 0;
             builder.Append(' ', indent);
             builder.Append(enteringMessage);
             foreach (var argument in args.Arguments)
-                {
+            {
                 if (argument == null)
                     builder.Append("null");
                 else
-                    {
+                {
                     builder.Append(argument.GetType().Name);
                     builder.Append('=');
                     builder.Append(argument);
-                    }
-                builder.Append(", ");
                 }
+                builder.Append(", ");
+            }
             if (args.Arguments.Count > 0)
                 builder.Length -= 2; // Remove the last comma
             builder.Append(')');
             LogWithUnwoundStack(builder.ToString());
-            }
+        }
 
         private void LogMethodExit(MethodExecutionArgs args, int indent = 0)
-            {
+        {
             var builder = new StringBuilder();
             if (indent < 0) indent = 0;
             builder.Append(' ', indent);
             builder.Append(exitingMessage);
             if (args.ReturnValue != null)
-                {
+            {
                 builder.Append(" == ");
                 builder.Append(args.ReturnValue);
-                }
-            LogWithUnwoundStack(builder.ToString());
             }
+            LogWithUnwoundStack(builder.ToString());
+        }
 
         /// <summary>
         ///     Sends output to NLog while correctly preserving the call site of the original logging event.
         /// </summary>
         /// <param name="message">The verbatim message to be logged.</param>
         private void LogWithUnwoundStack(string message)
-            {
+        {
             var logEvent = new LogEventInfo(LogAtLevel, loggerName, message);
             log.Log(MyType, logEvent);
-            }
+        }
 
         /// <summary>
         ///     Method executed <b>before</b> the body of methods to which this aspect is applied.
@@ -125,11 +125,11 @@ namespace TA.PostSharp.Aspects
         ///     <see cref="M:PostSharp.Aspects.IOnMethodBoundaryAspect.OnEntry(PostSharp.Aspects.MethodExecutionArgs)" />.
         /// </param>
         public override void OnEntry(MethodExecutionArgs args)
-            {
+        {
             base.OnEntry(args);
             var useIndent = Interlocked.Increment(ref indent);
             LogMethodEntryWithParameters(args, useIndent);
-            }
+        }
 
         /// <summary>
         ///     Method executed <b>after</b> the body of methods to which this aspect is applied,
@@ -141,11 +141,11 @@ namespace TA.PostSharp.Aspects
         ///     is being executed and which are its arguments.
         /// </param>
         public override void OnExit(MethodExecutionArgs args)
-            {
+        {
             base.OnExit(args);
             LogMethodExit(args, indent);
             Interlocked.Decrement(ref indent);
-            }
+        }
 
         /// <summary>
         ///     Initializes the current aspect. Invoked only once at runtime from the static constructor of type declaring
@@ -153,12 +153,12 @@ namespace TA.PostSharp.Aspects
         /// </summary>
         /// <param name="method">Method to which the current aspect is applied.</param>
         public override void RuntimeInitialize(MethodBase method)
-            {
+        {
             if (method.DeclaringType != null) loggerName = method.DeclaringType.FullName;
             var methodName = method.Name;
             enteringMessage = "Enter " + methodName + '(';
             exitingMessage = "Exit " + methodName + "()";
             log = LogManager.GetLogger(loggerName);
-            }
+        }
     }
 }

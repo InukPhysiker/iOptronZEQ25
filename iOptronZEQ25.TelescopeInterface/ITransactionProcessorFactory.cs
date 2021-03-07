@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TA.Ascom.ReactiveCommunications;
+﻿using TA.Ascom.ReactiveCommunications;
 
 namespace iOptronZEQ25.TelescopeInterface
 {

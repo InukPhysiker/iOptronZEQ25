@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 namespace ASCOM.iOptronZEQ25
 {
     #region C# Definition of IClassFactory
+
     //
     // Provide a definition of theCOM IClassFactory interface.
     //
@@ -17,26 +18,28 @@ namespace ASCOM.iOptronZEQ25
     public interface IClassFactory
     {
         void CreateInstance(IntPtr pUnkOuter, ref Guid riid, out IntPtr ppvObject);
+
         void LockServer(bool fLock);
     }
-    #endregion
+
+    #endregion C# Definition of IClassFactory
 
     //
-    // Universal ClassFactory. Given a type as a parameter of the 
+    // Universal ClassFactory. Given a type as a parameter of the
     // constructor, it implements IClassFactory for any interface
     // that the class implements. Magic!!!
     //
     public class ClassFactory : IClassFactory
     {
-
         #region Access to ole32.dll functions for class factories
 
         // Define two common GUID objects for public usage.
         public static Guid IID_IUnknown = new Guid("{00000000-0000-0000-C000-000000000046}");
+
         public static Guid IID_IDispatch = new Guid("{00020400-0000-0000-C000-000000000046}");
 
         [Flags]
-        enum CLSCTX : uint
+        private enum CLSCTX : uint
         {
             CLSCTX_INPROC_SERVER = 0x1,
             CLSCTX_INPROC_HANDLER = 0x2,
@@ -62,7 +65,7 @@ namespace ASCOM.iOptronZEQ25
         }
 
         [Flags]
-        enum REGCLS : uint
+        private enum REGCLS : uint
         {
             REGCLS_SINGLEUSE = 0,
             REGCLS_MULTIPLEUSE = 1,
@@ -70,41 +73,46 @@ namespace ASCOM.iOptronZEQ25
             REGCLS_SUSPENDED = 4,
             REGCLS_SURROGATE = 8
         }
+
         //
         // CoRegisterClassObject() is used to register a Class Factory
         // into COM's internal table of Class Factories.
         //
         [DllImport("ole32.dll")]
-        static extern int CoRegisterClassObject(
+        private static extern int CoRegisterClassObject(
             [In] ref Guid rclsid,
             [MarshalAs(UnmanagedType.IUnknown)] object pUnk,
             uint dwClsContext,
             uint flags,
             out uint lpdwRegister);
+
         //
-        // Called by a COM EXE Server that can register multiple class objects 
-        // to inform COM about all registered classes, and permits activation 
-        // requests for those class objects. 
-        // This function causes OLE to inform the SCM about all the registered 
+        // Called by a COM EXE Server that can register multiple class objects
+        // to inform COM about all registered classes, and permits activation
+        // requests for those class objects.
+        // This function causes OLE to inform the SCM about all the registered
         // classes, and begins letting activation requests into the server process.
         //
         [DllImport("ole32.dll")]
-        static extern int CoResumeClassObjects();
+        private static extern int CoResumeClassObjects();
+
         //
         // Prevents any new activation requests from the SCM on all class objects
-        // registered within the process. Even though a process may call this API, 
-        // the process still must call CoRevokeClassObject for each CLSID it has 
+        // registered within the process. Even though a process may call this API,
+        // the process still must call CoRevokeClassObject for each CLSID it has
         // registered, in the apartment it registered in.
         //
         [DllImport("ole32.dll")]
-        static extern int CoSuspendClassObjects();
+        private static extern int CoSuspendClassObjects();
+
         //
         // CoRevokeClassObject() is used to unregister a Class Factory
         // from COM's internal table of Class Factories.
         //
         [DllImport("ole32.dll")]
-        static extern int CoRevokeClassObject(uint dwRegister);
-        #endregion
+        private static extern int CoRevokeClassObject(uint dwRegister);
+
+        #endregion Access to ole32.dll functions for class factories
 
         #region Constructor and Private ClassFactory Data
 
@@ -134,9 +142,10 @@ namespace ASCOM.iOptronZEQ25
                 m_InterfaceTypes.Add(T);
         }
 
-        #endregion
+        #endregion Constructor and Private ClassFactory Data
 
         #region Common ClassFactory Methods
+
         public uint ClassContext
         {
             get { return m_ClassContext; }
@@ -186,9 +195,11 @@ namespace ASCOM.iOptronZEQ25
             int i = CoSuspendClassObjects();
             return (i == 0);
         }
-        #endregion
+
+        #endregion Common ClassFactory Methods
 
         #region IClassFactory Implementations
+
         //
         // Implement creation of the type and interface.
         //
@@ -238,6 +249,7 @@ namespace ASCOM.iOptronZEQ25
             // Always attempt to see if we need to shutdown this server application.
             Server.ExitIf();
         }
-        #endregion
+
+        #endregion IClassFactory Implementations
     }
 }

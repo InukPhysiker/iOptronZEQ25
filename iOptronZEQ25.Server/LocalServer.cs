@@ -12,18 +12,14 @@
 // Modified by Chris Rowland and Peter Simpson to allow use with multiple devices of the same type March 2011
 //
 //
-using ASCOM;
-using ASCOM.Utilities;
 using Microsoft.Win32;
 using System;
 using System.Collections;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -31,10 +27,10 @@ namespace ASCOM.iOptronZEQ25
 {
     public static class Server
     {
-
         #region Access to kernel32.dll, user32.dll, and ole32.dll functions
+
         [Flags]
-        enum CLSCTX : uint
+        private enum CLSCTX : uint
         {
             CLSCTX_INPROC_SERVER = 0x1,
             CLSCTX_INPROC_HANDLER = 0x2,
@@ -60,20 +56,23 @@ namespace ASCOM.iOptronZEQ25
         }
 
         [Flags]
-        enum COINIT : uint
+        private enum COINIT : uint
         {
             /// Initializes the thread for multi-threaded object concurrency.
             COINIT_MULTITHREADED = 0x0,
-            /// Initializes the thread for apartment-threaded object concurrency. 
+
+            /// Initializes the thread for apartment-threaded object concurrency.
             COINIT_APARTMENTTHREADED = 0x2,
+
             /// Disables DDE for Ole1 support.
             COINIT_DISABLE_OLE1DDE = 0x4,
+
             /// Trades memory for speed.
             COINIT_SPEED_OVER_MEMORY = 0x8
         }
 
         [Flags]
-        enum REGCLS : uint
+        private enum REGCLS : uint
         {
             REGCLS_SINGLEUSE = 0,
             REGCLS_MULTIPLEUSE = 1,
@@ -82,32 +81,33 @@ namespace ASCOM.iOptronZEQ25
             REGCLS_SURROGATE = 8
         }
 
-
         // CoInitializeEx() can be used to set the apartment model
         // of individual threads.
         [DllImport("ole32.dll")]
-        static extern int CoInitializeEx(IntPtr pvReserved, uint dwCoInit);
+        private static extern int CoInitializeEx(IntPtr pvReserved, uint dwCoInit);
 
         // CoUninitialize() is used to uninitialize a COM thread.
         [DllImport("ole32.dll")]
-        static extern void CoUninitialize();
+        private static extern void CoUninitialize();
 
         // PostThreadMessage() allows us to post a Windows Message to
         // a specific thread (identified by its thread id).
-        // We will need this API to post a WM_QUIT message to the main 
+        // We will need this API to post a WM_QUIT message to the main
         // thread in order to terminate this application.
         [DllImport("user32.dll")]
-        static extern bool PostThreadMessage(uint idThread, uint Msg, UIntPtr wParam,
+        private static extern bool PostThreadMessage(uint idThread, uint Msg, UIntPtr wParam,
             IntPtr lParam);
 
         // GetCurrentThreadId() allows us to obtain the thread id of the
         // calling thread. This allows us to post the WM_QUIT message to
         // the main thread.
         [DllImport("kernel32.dll")]
-        static extern uint GetCurrentThreadId();
-        #endregion
+        private static extern uint GetCurrentThreadId();
+
+        #endregion Access to kernel32.dll, user32.dll, and ole32.dll functions
 
         #region Private Data
+
         private static int objsInUse;                       // Keeps a count on the total number of objects alive.
         private static int serverLocks;                     // Keeps a lock count on this application.
         private static frmMain s_MainForm = null;               // Reference to our main form
@@ -116,7 +116,8 @@ namespace ASCOM.iOptronZEQ25
         private static ArrayList s_ClassFactories;              // Served COM object class factories
         private static string s_appId = "{4a6a340f-f41e-42c8-a645-8627c5372a06}";	// Our AppId
         private static readonly Object lockObject = new object();
-        #endregion
+
+        #endregion Private Data
 
         // This property returns the main thread's id.
         public static uint MainThreadId { get; private set; }   // Stores the main thread's thread id.
@@ -124,8 +125,8 @@ namespace ASCOM.iOptronZEQ25
         // Used to tell if started by COM or manually
         public static bool StartedByCOM { get; private set; }   // True if server started by COM (-embedding)
 
-
         #region Server Lock, Object Counting, and AutoQuit on COM startup
+
         // Returns the total number of objects alive currently.
         public static int ObjectsCount
         {
@@ -164,7 +165,7 @@ namespace ASCOM.iOptronZEQ25
             }
         }
 
-        // This method performs a thread-safe incrementation the 
+        // This method performs a thread-safe incrementation the
         // server lock count.
         public static int CountLock()
         {
@@ -172,7 +173,7 @@ namespace ASCOM.iOptronZEQ25
             return Interlocked.Increment(ref serverLocks);
         }
 
-        // This method performs a thread-safe decrementation the 
+        // This method performs a thread-safe decrementation the
         // server lock count.
         public static int UncountLock()
         {
@@ -180,11 +181,11 @@ namespace ASCOM.iOptronZEQ25
             return Interlocked.Decrement(ref serverLocks);
         }
 
-        // AttemptToTerminateServer() will check to see if the objects count and the server 
+        // AttemptToTerminateServer() will check to see if the objects count and the server
         // lock count have both dropped to zero.
         //
         // If so, and if we were started by COM, we post a WM_QUIT message to the main thread's
-        // message loop. This will cause the message loop to exit and hence the termination 
+        // message loop. This will cause the message loop to exit and hence the termination
         // of this application. If hand-started, then just trace that it WOULD exit now.
         //
         public static void ExitIf()
@@ -208,13 +209,15 @@ namespace ASCOM.iOptronZEQ25
             if (StartedByCOM)
                 Application.Exit();
         }
-        #endregion
+
+        #endregion Server Lock, Object Counting, and AutoQuit on COM startup
 
         // -----------------
         // PRIVATE FUNCTIONS
         // -----------------
 
         #region Dynamic Driver Assembly Loader
+
         //
         // Load the assemblies that contain the classes that we will serve
         // via COM. These will be located in the same folder as
@@ -269,13 +272,14 @@ namespace ASCOM.iOptronZEQ25
                         "iOptronZEQ25", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     return false;
                 }
-
             }
             return true;
         }
-        #endregion
+
+        #endregion Dynamic Driver Assembly Loader
 
         #region COM Registration and Unregistration
+
         //
         // Test if running elevated
         //
@@ -314,7 +318,7 @@ namespace ASCOM.iOptronZEQ25
 
         //
         // Do everything to register this for COM. Never use REGASM on
-        // this exe assembly! It would create InProcServer32 entries 
+        // this exe assembly! It would create InProcServer32 entries
         // which would prevent proper activation!
         //
         // Using the list of COM object types generated during dynamic
@@ -420,7 +424,7 @@ namespace ASCOM.iOptronZEQ25
                         }
                     }
                     //
-                    // ASCOM 
+                    // ASCOM
                     //
                     assy = type.Assembly;
 
@@ -447,7 +451,7 @@ namespace ASCOM.iOptronZEQ25
         }
 
         //
-        // Remove all traces of this from the registry. 
+        // Remove all traces of this from the registry.
         //
         // **TODO** If the above does AppID/DCOM stuff, this would have
         // to remove that stuff too.
@@ -506,9 +510,11 @@ namespace ASCOM.iOptronZEQ25
                 catch (Exception) { }
             }
         }
-        #endregion
+
+        #endregion COM Registration and Unregistration
 
         #region Class Factory Support
+
         //
         // On startup, we register the class factories of the COM objects
         // that we serve. This requires the class facgtory name to be
@@ -538,9 +544,11 @@ namespace ASCOM.iOptronZEQ25
             foreach (ClassFactory factory in s_ClassFactories)
                 factory.RevokeClassObject();
         }
-        #endregion
+
+        #endregion Class Factory Support
 
         #region Command Line Arguments
+
         //
         // ProcessArguments() will process the command-line arguments
         // If the return value is true, we carry on and start this application.
@@ -555,7 +563,6 @@ namespace ASCOM.iOptronZEQ25
             //
             if (args.Length > 0)
             {
-
                 switch (args[0].ToLower())
                 {
                     case "-embedding":
@@ -589,16 +596,18 @@ namespace ASCOM.iOptronZEQ25
 
             return bRet;
         }
-        #endregion
+
+        #endregion Command Line Arguments
 
         #region SERVER ENTRY POINT (main)
+
         //
         // ==================
         // SERVER ENTRY POINT
         // ==================
         //
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (!LoadComObjectAssemblies()) return;                     // Load served COM class assemblies, get types
 
@@ -644,6 +653,7 @@ namespace ASCOM.iOptronZEQ25
                 GarbageCollector.WaitForThreadToStop();
             }
         }
-        #endregion
+
+        #endregion SERVER ENTRY POINT (main)
     }
 }

@@ -14,14 +14,14 @@ namespace ASCOM.iOptronZEQ25
             var currentSelection = Settings.Default.CommPortName;
             var ports = new SortedSet<string>(SerialPort.GetPortNames());
             if (!ports.Contains(currentSelection))
-                {
+            {
                 ports.Add(currentSelection);
-                }
+            }
             CommPortName.Items.Clear();
             CommPortName.Items.AddRange(ports.ToArray());
             var currentIndex = CommPortName.Items.IndexOf(currentSelection);
             CommPortName.SelectedIndex = currentIndex;
-            }
+        }
 
         internal void Save()
         {

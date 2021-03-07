@@ -5,10 +5,6 @@
 // File: CommunicationsStackBuilder.cs modified to use iOptronZEQ25.TelescopeInterace
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TA.Ascom.ReactiveCommunications;
 
 namespace iOptronZEQ25.TelescopeInterface
@@ -19,25 +15,25 @@ namespace iOptronZEQ25.TelescopeInterface
     public static class CommunicationsStackBuilder
     {
         public static ICommunicationChannel BuildChannel(DeviceEndpoint endpoint)
-            {
+        {
             if (endpoint is SerialDeviceEndpoint)
                 return new SerialCommunicationChannel(endpoint);
             throw new NotSupportedException($"There is no supported channel type for the endpoint: {endpoint}")
-                {
-                Data = {["endpoint"] = endpoint}
-                };
-            }
+            {
+                Data = { ["endpoint"] = endpoint }
+            };
+        }
 
         public static TransactionObserver BuildTransactionObserver(ICommunicationChannel channel)
-            {
+        {
             return new TransactionObserver(channel);
-            }
+        }
 
         public static ITransactionProcessor BuildTransactionProcessor(TransactionObserver observer)
-            {
+        {
             var processor = new ReactiveTransactionProcessor();
             processor.SubscribeTransactionObserver(observer);
             return processor;
-            }
+        }
     }
 }

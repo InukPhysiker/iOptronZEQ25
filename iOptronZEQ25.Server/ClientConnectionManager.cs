@@ -4,15 +4,14 @@
 // based on the TA.ArduinoPowerController project
 // File: ClientConnectionManager.cs modified to use iOptronZEQ25.TelescopeInterace
 
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using iOptronZEQ25.TelescopeInterface;
 using JetBrains.Annotations;
 using NLog;
 using PostSharp.Patterns.Model;
 using PostSharp.Patterns.Threading;
-using iOptronZEQ25.TelescopeInterface;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TA.Ascom.ReactiveCommunications;
 using TA.PostSharp.Aspects;
 using TA.Utils.Core;
@@ -40,7 +39,8 @@ namespace ASCOM.iOptronZEQ25
         ///     the entire communications stack).
         /// </param>
         public ClientConnectionManager(ITransactionProcessorFactory factory) : this(factory,
-            performActionsOnOpen: true) {}
+            performActionsOnOpen: true)
+        { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ClientConnectionManager" /> class and allows
@@ -55,12 +55,12 @@ namespace ASCOM.iOptronZEQ25
         ///     if set to <c>true</c> [perform actions on open].
         /// </param>
         internal ClientConnectionManager(ITransactionProcessorFactory factory, bool performActionsOnOpen)
-            {
+        {
             this.factory = factory;
             this.performActionsOnOpen = performActionsOnOpen;
             Clients = new List<ClientStatus>();
             controllerInstance = Maybe<TelescopeController>.Empty;
-            }
+        }
 
         [Reference]
         internal List<ClientStatus> Clients { get; }
@@ -87,10 +87,10 @@ namespace ASCOM.iOptronZEQ25
         ///     Cannot change or set the Transaction Processor Factory while there are connected clients
         /// </exception>
         internal ITransactionProcessorFactory TransactionProcessorFactory
-            {
+        {
             get { return factory; }
             set
-                {
+            {
                 log.Warn("Setting the TransactionProcessorFactory");
                 if (OnlineClientCount > 0)
                     throw new InvalidOperationException(
@@ -98,61 +98,61 @@ namespace ASCOM.iOptronZEQ25
                 // We have no online clients, so destroy any existing transaction processors.
                 factory?.DestroyTransactionProcessor();
                 factory = value;
-                }
             }
+        }
 
         internal event EventHandler<EventArgs> ClientStatusChanged;
 
         [Writer]
         private void DestroyControllerInstance()
-            {
+        {
             if (controllerInstance.Any())
                 controllerInstance.Single().Close();
             controllerInstance = Maybe<TelescopeController>.Empty;
-            }
+        }
 
         [Writer]
         private void EnsureControllerInstanceCreatedAndOpen()
-            {
+        {
             if (!controllerInstance.Any())
-                {
+            {
                 var controller = new TelescopeController(factory);
                 controllerInstance = Maybe<TelescopeController>.From(controller);
-                }
+            }
             var instance = controllerInstance.Single();
             if (!instance.IsOnline)
-                {
+            {
                 instance.Open();
-                }
             }
+        }
 
         [Writer]
         public void GoOffline(Guid clientId)
-            {
+        {
             log.Info($"Go offline for client {clientId}");
             ClientStatus client = null;
             try
-                {
+            {
                 client = Clients.Single(p => p.Equals(clientId));
-                }
+            }
             catch (InvalidOperationException e)
-                {
+            {
                 var message = $"Attempt to go offline by unecognized client {clientId}";
                 log.Error(e, message);
                 //ThrowOnUnrecognizedClient(clientId, e, message);
-                }
+            }
             client.Online = false;
             RaiseClientStatusChanged();
             if (OnlineClientCount == 0)
-                {
+            {
                 log.Warn($"The last client has gone offline - closing connection");
                 if (controllerInstance.Any())
-                    {
+                {
                     controllerInstance.Single().Close();
                     controllerInstance = Maybe<TelescopeController>.Empty;
-                    }
                 }
             }
+        }
 
         /// <summary>
         ///     Gets the controller instance, ensuring that it is open and ready for use.
@@ -167,37 +167,36 @@ namespace ASCOM.iOptronZEQ25
         /// </exception>
         [Writer]
         public TelescopeController GoOnline(Guid clientId)
-            {
+        {
             log.Info($"Go online for client {clientId}");
             ClientStatus client = null;
             try
-                {
+            {
                 client = Clients.Single(p => p.Equals(clientId));
-                }
+            }
             catch (InvalidOperationException e)
-                {
+            {
                 var message = $"Attempt to go online with unregistered client {clientId}";
                 log.Error(e, message);
                 //ThrowOnUnrecognizedClient(clientId, e, message);
-                }
+            }
             try
-                {
+            {
                 EnsureControllerInstanceCreatedAndOpen();
-                }
+            }
             catch (TransactionException trex)
-                {
+            {
                 log.Error(trex, $"NOT CONNECTED due to transaction exception: {trex.Transaction}");
                 DestroyControllerInstance();
                 return null;
-                }
+            }
             var clientOnline = controllerInstance.Single().IsOnline;
             client.Online = clientOnline;
             if (!clientOnline)
                 DestroyControllerInstance();
             RaiseClientStatusChanged();
             return clientOnline ? controllerInstance.Single() : null;
-            }
-
+        }
 
         /// <summary>
         ///     Determines whether the client with the specified ID is registered.
@@ -208,9 +207,9 @@ namespace ASCOM.iOptronZEQ25
         public bool IsClientRegistered(Guid clientId) => Clients.Any(p => p.Equals(clientId));
 
         protected void RaiseClientStatusChanged()
-            {
+        {
             ClientStatusChanged?.Invoke(this, EventArgs.Empty);
-            }
+        }
 
         /// <summary>
         ///     Gets a new unique client identifier.
@@ -218,13 +217,13 @@ namespace ASCOM.iOptronZEQ25
         /// <returns>Guid.</returns>
         [Writer]
         public Guid RegisterClient(string name = null)
-            {
+        {
             var id = Guid.NewGuid();
-            var status = new ClientStatus {ClientId = id, Name = name ?? id.ToString(), Online = false};
+            var status = new ClientStatus { ClientId = id, Name = name ?? id.ToString(), Online = false };
             Clients.Add(status);
             RaiseClientStatusChanged();
             return id;
-            }
+        }
 
         /// <summary>
         ///     Throws an ASCOM.<see cref="T:ASCOM.InvalidOperationException" /> with information about registered clients.
@@ -234,35 +233,35 @@ namespace ASCOM.iOptronZEQ25
         /// <param name="message">The error message.</param>
         [ContractAnnotation("=>halt")]
         private void ThrowOnUnrecognizedClient(Guid clientId, Exception e, string message)
-            {
+        {
             var ex = new ASCOM.InvalidOperationException($"Connection Manager: {message}", e);
             ex.Data["RegisteredClients"] = Clients;
             ex.Data["UnknownClient"] = clientId;
             log.Error(ex, $"Client not found: {clientId}");
             throw ex;
-            }
+        }
 
         [Writer]
         public void UnregisterClient(Guid clientId)
-            {
+        {
             log.Info($"Unregistering client {clientId}");
             var previousClientCount = RegisteredClientCount;
             try
-                {
+            {
                 Clients.Remove(Clients.Single(p => p.Equals(clientId)));
                 RaiseClientStatusChanged();
-                }
+            }
             catch (InvalidOperationException e)
-                {
+            {
                 var message = $"Attempt to unregister unknown client {clientId}";
                 log.Error(e, message);
                 //ThrowOnUnrecognizedClient(clientId, e, "Attempt to unregister an unknown client");
-                }
+            }
             if (previousClientCount == 1 && RegisteredClientCount == 0)
-                {
+            {
                 DestroyControllerInstance();
                 Server.TerminateLocalServer();
-                }
             }
+        }
     }
 }

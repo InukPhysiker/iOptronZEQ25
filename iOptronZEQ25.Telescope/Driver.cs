@@ -187,7 +187,7 @@ namespace ASCOM.iOptronZEQ25
 
         public void SetupDialog()
         {
-           SharedResources.DoSetupDialog(clientId);
+            SharedResources.DoSetupDialog(clientId);
         }
 
         public ArrayList SupportedActions
@@ -658,7 +658,7 @@ namespace ASCOM.iOptronZEQ25
                 //throw new ASCOM.PropertyNotImplementedException("GuideRateDeclination", true);
                 if (value != 0)
                 {
-                CheckRange(value, 0.2 * SiderealRateDPS, 1.00 * SiderealRateDPS, "GuideRateDeclination", "Rate");
+                    CheckRange(value, 0.2 * SiderealRateDPS, 1.00 * SiderealRateDPS, "GuideRateDeclination", "Rate");
                 }
                 telescope.GuideRateDeclination = value;
             }
@@ -679,7 +679,7 @@ namespace ASCOM.iOptronZEQ25
                 //throw new ASCOM.PropertyNotImplementedException("GuideRateRightAscension", true);
                 if (value != 0)
                 {
-                CheckRange(value, 0.2 * SiderealRateDPS, 1.00 * SiderealRateDPS, "GuideRateDeclination", "Rate");
+                    CheckRange(value, 0.2 * SiderealRateDPS, 1.00 * SiderealRateDPS, "GuideRateDeclination", "Rate");
                 }
                 telescope.GuideRateDeclination = value;
             }
