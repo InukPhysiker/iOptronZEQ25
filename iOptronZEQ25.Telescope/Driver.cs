@@ -600,7 +600,7 @@ namespace ASCOM.iOptronZEQ25
         public PierSide DestinationSideOfPier(double RightAscension, double Declination)
         {
             tl.LogMessage("DestinationSideOfPier Get", "Not implemented");
-            throw new ASCOM.PropertyNotImplementedException("DestinationSideOfPier", false);
+            throw new ASCOM.MethodNotImplementedException("DestinationSideOfPier", false.ToString());
         }
 
         public bool DoesRefraction
