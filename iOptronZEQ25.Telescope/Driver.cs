@@ -703,7 +703,10 @@ namespace ASCOM.iOptronZEQ25
             {
                 throw new MethodNotImplementedException("CanMoveAxis " + Enum.GetName(typeof(TelescopeAxes), Axis));
             }
-            CheckRate(Axis, Rate);
+            if (Rate != 0)
+            {
+                CheckRate(Axis, Rate);
+            }
             telescope.MoveAxis(Axis, Rate);
         }
 

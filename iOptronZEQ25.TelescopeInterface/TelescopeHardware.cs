@@ -1018,19 +1018,23 @@ namespace iOptronZEQ25.TelescopeInterface
             {
                 if (value)
                 {
+                    UpdatingTracking = true;
                     isTracking = true;
                     String Command = ":ST1#";
                     var TrackingTransaction = new ZEQ25BooleanTransaction(Command) { Timeout = TimeSpan.FromSeconds(2) };
                     Task.Run(() => transactionProcessor.CommitTransaction(TrackingTransaction));
                     TrackingTransaction.WaitForCompletionOrTimeout();
+                    UpdatingTracking = false;
                 }
                 else
                 {
+                    UpdatingTracking = true;
                     isTracking = false;
                     String Command = ":ST0#";
                     var TrackingTransaction = new ZEQ25BooleanTransaction(Command) { Timeout = TimeSpan.FromSeconds(2) };
                     Task.Run(() => transactionProcessor.CommitTransaction(TrackingTransaction));
                     TrackingTransaction.WaitForCompletionOrTimeout();
+                    UpdatingTracking = false;
                 }
             }
         }

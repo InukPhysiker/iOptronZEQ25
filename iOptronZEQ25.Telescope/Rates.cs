@@ -21,7 +21,9 @@ namespace ASCOM.iOptronZEQ25
     [ComVisible(true)]
     public class Rate : ASCOM.DeviceInterface.IRate
     {
-        private double maximum = 0;
+        private const double SiderealRateDPS = 0.004178; // degrees / second;
+
+        private double maximum = SiderealRateDPS * 1024;
         private double minimum = 0;
 
         //
@@ -101,9 +103,9 @@ namespace ASCOM.iOptronZEQ25
                     // TODO Initialize this array with any Primary axis rates that your driver may provide
                     // Example: m_Rates = new Rate[] { new Rate(10.5, 30.2), new Rate(54.0, 43.6) }
                     // this.rates = new Rate[0];
-                    this.rates = new Rate[10]
+                    this.rates = new Rate[9]
                         {
-                        new Rate(SiderealRateDPS *    0, SiderealRateDPS *    0), //Rate 0
+                        //new Rate(SiderealRateDPS *    0, SiderealRateDPS *    0), //Rate 0
                         new Rate(SiderealRateDPS *    1, SiderealRateDPS *    1), //Rate 1
                         new Rate(SiderealRateDPS *    2, SiderealRateDPS *    2), //Rate 2
                         new Rate(SiderealRateDPS *    8, SiderealRateDPS *    8), //Rate 3
@@ -120,9 +122,9 @@ namespace ASCOM.iOptronZEQ25
                     // TODO Initialize this array with any Secondary axis rates that your driver may provide
                     // this.rates = new Rate[0];
                     // Secondary axis rates that ZEQ25 driver may provide
-                    this.rates = new Rate[10]
+                    this.rates = new Rate[9]
                         {
-                        new Rate(SiderealRateDPS *    0, SiderealRateDPS *    0), //Rate 0
+                        //new Rate(SiderealRateDPS *    0, SiderealRateDPS *    0), //Rate 0
                         new Rate(SiderealRateDPS *    1, SiderealRateDPS *    1), //Rate 1
                         new Rate(SiderealRateDPS *    2, SiderealRateDPS *    2), //Rate 2
                         new Rate(SiderealRateDPS *    8, SiderealRateDPS *    8), //Rate 3
