@@ -5,7 +5,6 @@ namespace ASCOM.iOptronZEQ25
 {
     public partial class Form1 : Form
     {
-
         private ASCOM.DriverAccess.Telescope driver;
 
         public Form1()

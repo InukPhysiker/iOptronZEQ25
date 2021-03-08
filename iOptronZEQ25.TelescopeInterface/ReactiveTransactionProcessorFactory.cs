@@ -18,12 +18,11 @@ namespace iOptronZEQ25.TelescopeInterface
     /// <seealso cref="iOptronZEQ25.TelescopeInterface.ITransactionProcessorFactory" />
     public class ReactiveTransactionProcessorFactory : ITransactionProcessorFactory
     {
-
         private TransactionObserver observer;
         private ReactiveTransactionProcessor processor;
 
         public ReactiveTransactionProcessorFactory(string connectionString)
-            {
+        {
             ConnectionString = connectionString;
         }
 
@@ -37,7 +36,7 @@ namespace iOptronZEQ25.TelescopeInterface
         /// </summary>
         /// <returns>ITransactionProcessor.</returns>
         public ITransactionProcessor CreateTransactionProcessor()
-            {
+        {
             Channel = new ChannelFactory().FromConnectionString(ConnectionString);
             observer = new TransactionObserver(Channel);
             processor = new ReactiveTransactionProcessor();
@@ -46,7 +45,7 @@ namespace iOptronZEQ25.TelescopeInterface
             // iOptron ZEQ25 may need a second to initialize after starting the connection
             Task.Delay(TimeSpan.FromSeconds(1)).Wait();
             return processor;
-            }
+        }
 
         /// <summary>
         ///     Destroys the transaction processor and its dependencies. Ensures that the
@@ -56,7 +55,7 @@ namespace iOptronZEQ25.TelescopeInterface
         ///     <see cref="CreateTransactionProcessor" /> again.
         /// </summary>
         public void DestroyTransactionProcessor()
-            {
+        {
             processor?.Dispose();
             processor = null; // [Sentinel]
             observer = null;
@@ -65,7 +64,7 @@ namespace iOptronZEQ25.TelescopeInterface
             Channel?.Dispose();
             Channel = null; // [Sentinel]
             GC.Collect(3, GCCollectionMode.Forced, blocking: true);
-            }
+        }
 
         public DeviceEndpoint Endpoint => Channel?.Endpoint ?? new InvalidEndpoint();
     }

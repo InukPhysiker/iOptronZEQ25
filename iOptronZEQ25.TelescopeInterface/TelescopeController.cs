@@ -1,7 +1,6 @@
 using NLog;
 using System;
 using System.Threading.Tasks;
-using System.Timers;
 using TA.Ascom.ReactiveCommunications;
 
 namespace iOptronZEQ25.TelescopeInterface

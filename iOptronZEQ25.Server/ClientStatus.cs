@@ -4,7 +4,6 @@
 // based on the TA.ArduinoPowerController project
 // File: ClientStatus.cs modified to use ASCOM.iOptronZEQ25.Server
 
-
 using System;
 
 namespace ASCOM.iOptronZEQ25
@@ -36,59 +35,59 @@ namespace ASCOM.iOptronZEQ25
         public bool Online { get; set; }
 
         public bool Equals(ClientStatus other)
-            {
+        {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             return ClientId.Equals(other.ClientId);
-            }
+        }
 
         public static bool operator ==(ClientStatus left, ClientStatus right)
-            {
+        {
             return Equals(left, right);
-            }
+        }
 
         public static bool operator ==(ClientStatus left, Guid right)
-            {
+        {
             return left?.Equals(right) ?? false;
-            }
+        }
 
         public static bool operator !=(ClientStatus left, ClientStatus right)
-            {
+        {
             return !Equals(left, right);
-            }
+        }
 
         public static bool operator !=(ClientStatus left, Guid right)
-            {
+        {
             return !left?.Equals(right) ?? false;
-            }
+        }
 
         public bool Equals(Guid other)
-            {
+        {
             return ClientId.Equals(other);
-            }
+        }
 
         public override bool Equals(object obj)
-            {
+        {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != typeof(ClientStatus)) return false;
-            return Equals((ClientStatus) obj);
-            }
+            return Equals((ClientStatus)obj);
+        }
 
         public override int GetHashCode()
-            {
+        {
             return ClientId.GetHashCode();
-            }
+        }
 
         public string ToDisplayString()
-            {
+        {
             string online = Online ? "Online" : "Idle  ";
             return $"{ClientId} {online} {Name}";
-            }
+        }
 
         public override string ToString()
-            {
+        {
             return $"{nameof(ClientId)}: {ClientId}, {nameof(Name)}: {Name}, {nameof(Online)}: {Online}";
-            }
+        }
     }
 }

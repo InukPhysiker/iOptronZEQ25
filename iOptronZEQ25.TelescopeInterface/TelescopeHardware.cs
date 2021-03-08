@@ -5,7 +5,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using TA.Ascom.ReactiveCommunications.Transactions;
 
 namespace iOptronZEQ25.TelescopeInterface
 {
@@ -72,7 +71,7 @@ namespace iOptronZEQ25.TelescopeInterface
             // tl.LogMessage("AbortSlew", "Not implemented");
             //throw new ASCOM.MethodNotImplementedException("AbortSlew");
             var AbortSlewTransaction = new ZEQ25BooleanTransaction(":Q#") { Timeout = TimeSpan.FromSeconds(2) };
- 
+
             int Retry = 3;
             for (int i = 0; i < Retry; i++)
             {
@@ -476,6 +475,7 @@ namespace iOptronZEQ25.TelescopeInterface
                     MoveCommand = (direction == 1) ? ":mn#" : ":ms#";
                     // Not inverting axis intentionally to avoid problems near pole
                     break;
+
                 default:
                     // Not expected!
                     return;
