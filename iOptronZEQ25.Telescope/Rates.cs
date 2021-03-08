@@ -1,4 +1,4 @@
-using ASCOM.DeviceInterface;
+﻿using ASCOM.DeviceInterface;
 using System;
 using System.Collections;
 using System.Runtime.InteropServices;
@@ -21,7 +21,9 @@ namespace ASCOM.iOptronZEQ25
     [ComVisible(true)]
     public class Rate : ASCOM.DeviceInterface.IRate
     {
-        private double maximum = 0;
+        private const double SiderealRateDPS = 0.004178; // degrees / second;
+
+        private double maximum = SiderealRateDPS * 1024;
         private double minimum = 0;
 
         //
